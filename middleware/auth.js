@@ -1,7 +1,16 @@
 // import * as admin from "firebase-admin";
-export default function({app, route, redirect}) {
+export default function({app, route, redirect, store}) {
   const user = app.$cookies.get('user-name');
   const rank = app.$cookies.get('user-rank');
+
+  // L'utilisateur a raffraichit la page
+  if(store.state.user === null && app.$cookies.get('user-id')) {
+    store.dispatch('resetInfoFromCookies', {
+      user: { uid: app.$cookies.get('user-id'), email: user+"@sgs.com"},
+      username: user,
+      rank: app.$cookies.get('user-rank')
+    })
+  }
 
   // const auth = firebase.getAuth();
 

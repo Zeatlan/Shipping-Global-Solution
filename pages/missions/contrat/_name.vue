@@ -100,7 +100,7 @@
           <div v-if="members.length > 0" class="completion__users">
             <div v-for="(member, index) in members" :key="index" class="completion__user">
               <img :src="member.avatar === 'default' ? require(`@/assets/img/avatar/default.jpg`) : member.avatar" :alt="`Avatar de ${member.username}`">
-              <nuxt-link :to="`/user/${member.username}`">{{ member.username }}</nuxt-link>
+              <nuxt-link :to="`/user/${member.id}`">{{ member.username }}</nuxt-link>
             </div>
           </div>
 
@@ -113,9 +113,9 @@
               <Button v-else-if="formAlreadySent" class="disabled">Vous avez déjà participé</Button>
 
               <div v-else>
-                <Button v-if="isCompeting && !hasFinished && mission.isActive" @click.native="$refs.form.openBox()">Compléter la mission</Button>
+                <Button v-if="isCompeting && !hasFinished && mission.isActive && mission.membersAchieved.length < mission.completion" @click.native="$refs.form.openBox()">Compléter la mission</Button>
                 <Button v-if="!isCompeting && !hasFinished && mission.isActive" color="green" @click.native="register">Participer</Button>
-                <Button v-if="hasFinished || !mission.isActive" class="disabled">Mission terminée</Button>
+                <Button v-if="hasFinished || !mission.isActive || mission.membersAchieved.length == mission.completion" class="disabled">Mission terminée</Button>
               </div>
             </span>
           </div>
@@ -140,18 +140,14 @@
       <MemberBadge
         v-for="(finisher, index) in members"
         :key="index"
-        :avatar="finisher.avatar"
-        :username="finisher.username"
+        :user="finisher"
         :has-finished="true"
-        :entreprise="finisher.entreprise._id"
       /> 
       
       <MemberBadge
         v-for="contestant in contestants"
         :key="contestant.username"
-        :avatar="contestant.avatar"
-        :username="contestant.username"
-        :entreprise="contestant.entreprise._id"
+        :user="contestant"
       />
     
     </LightBox>
@@ -237,7 +233,10 @@ export default {
       // Search members (Completed)
       this.mission.membersAchieved.forEach(memberRef => {
         memberRef.get().then(member => {
-          this.members.push(member.data());
+          this.members.push({
+            ...member.data(),
+            id: member.id,
+          });
 
           if(member.data().username === this.$store.state.username)
             this.hasFinished = true;
@@ -248,7 +247,10 @@ export default {
       this.$fire.firestore.collection('users').where('contractMissions', '!=', []).get().then(snapshot => {
         snapshot.docs.forEach(doc => {
           if(doc.data().contractMissions.filter(c => c._mission.id === this.missionQuery.ref.id && c.isCompleted === false).length > 0) {
-            this.contestants.push(doc.data())
+            this.contestants.push({
+            ...doc.data(),
+            id: doc.id,
+          })
 
               // Is the current user in the contestants ?
             if(doc.data().username === this.$store.state.username)

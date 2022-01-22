@@ -179,17 +179,8 @@ export default {
       if(this.loadingDots.length === 3) this.loadingDots = [];
       else this.loadingDots.push('.');
     },
-    async URLtoImage(url) {
-      const response = await fetch(url)
-      const data = await response.blob();
-      const ext = url.split(".").pop();
-      const filename = url.split("/").pop();
-      const metadata = { type: `image/${ext}`}
-
-      return new File([data], filename, metadata)
-    },
     async putImage(uid, folder) {
-      const img = await this.$store.dispatch('URLtoImage', require(`@/assets/img/${folder}/default.jpg`))
+      const img = await this.URLtoImage(require(`@/assets/img/${folder}/default.jpg`));
       const snapshot = await this.$fire.storage.ref().child(`users/${uid}/${folder}.jpg`).put(img);
       
       const downloadURL = await snapshot.ref.getDownloadURL();

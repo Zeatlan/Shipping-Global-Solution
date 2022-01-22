@@ -1,9 +1,9 @@
 <template>
   <div class="member-badge" :class="{'finished': hasFinished}">
     <div class="member-badge__user">
-      <img :src="avatar" :alt="`Avatar de ${username}`" width="36" />
+      <img :src="user.avatar" :alt="`Avatar de ${user.username}`" width="36" />
 
-      <nuxt-link :to="`/user/${username}`">{{ username }}</nuxt-link>
+      <nuxt-link :to="`/user/${user.id}`">{{ user.username }}</nuxt-link>
     </div>
 
     <p v-if="entrepriseData">[{{ entrepriseData.acronyme }}]</p>
@@ -14,15 +14,7 @@
   export default {
     name: 'MemberBadge',
     props: {
-      avatar: {
-        required: true,
-        type: String,
-      },
-      username: {
-        required: true,
-        type: String,
-      },
-      entreprise: {
+      user: {
         required: true,
         type: Object,
       },
@@ -38,7 +30,7 @@
       }
     },
     created() {
-      this.$fire.firestore.collection('entreprises').doc(this.entreprise.id).get().then(ent => {
+      this.$fire.firestore.collection('entreprises').doc(this.user.entreprise._id.id).get().then(ent => {
         this.entrepriseData = ent.data();
       });
     }

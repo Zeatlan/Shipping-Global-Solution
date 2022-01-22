@@ -149,9 +149,7 @@
       <MemberBadge
         v-for="contestant in contestants"
         :key="contestant.username"
-        :avatar="contestant.avatar"
-        :username="contestant.username"
-        :entreprise="contestant.entreprise._id"
+        :user="contestant"
       />
     </LightBox>
 

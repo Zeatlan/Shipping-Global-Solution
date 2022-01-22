@@ -64,7 +64,7 @@
             <div v-if="entrepriseAdmins.length > 0" class="stats__admin-list">
               <div v-for="(admin, index) in entrepriseAdmins" :key="index" class="stats__admin-detail">
                 <div v-if="admin.avatar" class="img-pp" :style="`background: url('${admin.avatar}') no-repeat center/cover;`" />
-                <h3><nuxt-link :to="`/user/${admin.username}`">{{ admin.username }}</nuxt-link></h3>
+                <h3><nuxt-link :to="`/user/${admin.id}`">{{ admin.username }}</nuxt-link></h3>
               </div>
             </div>
 
@@ -132,7 +132,7 @@
             <div v-for="(member, index) in memberlist" :key="index" class="info__member-card">
               <div class="user">
                 <div class="img-pp" :style="`background: url('${member.avatar === 'default' || member.avatar === null ? require(`@/assets/img/avatar/default.jpg`) : member.avatar}') no-repeat center/cover;`" />
-                <nuxt-link :to="`/user/${member.username}`">{{ member.username }}</nuxt-link>
+                <nuxt-link :to="`/user/${member.id}`">{{ member.username }}</nuxt-link>
               </div>
               <p>{{ ranks[index] }}</p>
             </div>
@@ -210,10 +210,11 @@ export default {
     const actualUserDocRef = this.$fire.firestore.collection('users').doc(this.$cookies.get('user-id'));
 
     this.$fire.firestore.collection('entreprises').where('name', '==', partnerName).get().then(snapshot => {
-      this.entreprise = {
+      const data = {
         ...snapshot.docs[0].data(),
         id: snapshot.docs[0].id
       };
+      this.entreprise = data;
 
       const entRef = snapshot.docs[0].ref;
 
@@ -235,7 +236,10 @@ export default {
         .get()
         .then(snapgang => {
           snapgang.docs.forEach(doc => {
-            this.entrepriseAdmins.push(doc.data())
+            this.entrepriseAdmins.push({
+              ...doc.data(),
+              id: doc.id
+            })
           })
         })
 
@@ -247,7 +251,10 @@ export default {
         .get()
         .then(snapbang => {
           snapbang.docs.forEach(doc => {
-            this.memberlist.push(doc.data())
+            this.memberlist.push({
+              ...doc.data(),
+              id: doc.id 
+            })
           })
 
           this.memberlist[0].entreprise._id.get().then(s => {

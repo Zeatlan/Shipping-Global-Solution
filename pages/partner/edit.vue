@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="container">
-      <nuxt-link :to="`/partner/${entrepriseId}`" class="back-link"
+      <nuxt-link :to="`/partner/${entreprise.name}`" class="back-link"
         ><font-awesome-icon :icon="['fas', 'arrow-left']" /> Retour à la page de
         l'entreprise
       </nuxt-link>
@@ -162,8 +162,7 @@
               <user-action-card 
                 v-for="(member, index) in memberlist"
                 :key="index"
-                :avatar="member.avatar"
-                :username="member.username"
+                :user="member"
                 :controller-rank="actualUser.entreprise.rank"
                 @reload="reloadMemberlist"
               />
@@ -194,11 +193,11 @@
               v-for="(approb, index) in approbationMember"
               :key="index">
               <td><img :src="approb.avatar" alt=""></td>
-              <td><nuxt-link :to="`/user/${approb.username}`">{{ approb.username }}</nuxt-link></td>
+              <td><nuxt-link :to="`/user/${approb.id}`">{{ approb.username }}</nuxt-link></td>
               <td>{{ requestedDate(approb.requestedAt) }}</td>
               <td>
-                <Font-awesome-icon :icon="['fas', 'thumbs-up']" @click="approve(approb)"/>
-                <Font-awesome-icon :icon="['fas', 'thumbs-down']" @click="disapprove(approb)" />
+                <Font-awesome-icon :icon="['fas', 'thumbs-up']" @click="approve($event, approb)"/>
+                <Font-awesome-icon :icon="['fas', 'thumbs-down']" @click="disapprove($event, approb)" />
               </td>
             </tr>
           </tbody>
@@ -267,10 +266,10 @@ export default {
     // (En fonction de notre appartenance)
     this.$fire.firestore
       .collection('users')
-      .where('username', '==', this.$cookies.get('user-name'))
+      .doc(this.$cookies.get('user-id'))
       .get()
-      .then((snapshot) => {
-        this.actualPartner = this.$fire.firestore.collection('entreprises').doc(snapshot.docs[0].data().entreprise._id.id)
+      .then((docUser) => {
+        this.actualPartner = this.$fire.firestore.collection('entreprises').doc(docUser.data().entreprise._id.id);
 
         // Collection des informations de l'entreprise
         this.actualPartner.get().then((entshot) => {
@@ -286,8 +285,14 @@ export default {
           .get()
           .then((members) => {
             members.docs.forEach(member => {
-              if(member.data().username === this.$cookies.get('user-name')) this.actualUser = member.data();
-              this.memberlist.push(member.data());
+              if(member.data().username.toLowerCase() === this.$cookies.get('user-name').toLowerCase()) {
+                const data = { ...member.data(), id: member.id }
+                this.actualUser = data;
+              }
+              this.memberlist.push({
+                ...member.data(),
+                id: member.id
+              });
             })
           })
 
@@ -300,6 +305,7 @@ export default {
             // Récupérer les informations des membres
             snapshot.docs.forEach(snap => {
               this.$fire.firestore.collection('users').doc(snap.data().user.id).get().then(member => {
+
                 const object = {
                   avatar: member.data().avatar,
                   username: member.data().username,
@@ -324,26 +330,47 @@ export default {
                   minute:'2-digit'
                 });
     },
-    approve(request) {
-      this.$fire.firestore.collection('users').doc(request.userId).get().then(user => {
-        const data = user.data();
+    approve(evt, request) {
+        const element = evt.target.closest('tr');
 
-        data.entreprise.rank = 3;
-        data.entreprise._id = this.$fire.firestore.collection('entreprises').doc(request.entreprise.id);
-        this.$fire.firestore.collection('users').doc(user.id).set(data);
-        this.$fire.firestore.collection('join-request').doc(request.id).delete();
-        this.$store.dispatch('sendNotif', {
-          type: 'success',
-          message: `La requête de ${request.username} a été acceptée.`
+        this.$gsap.to(element, 0.3, {
+          opacity: 0,
+          x: -200,
+          background: '#2fb74d',
+          onComplete: () => {
+            element.parentElement.removeChild(element);
+            this.$fire.firestore.collection('users').doc(request.userId).get().then(user => {
+              const data = user.data();
+
+              data.entreprise.rank = 3;
+              data.entreprise._id = this.$fire.firestore.collection('entreprises').doc(request.entreprise.id);
+              this.$fire.firestore.collection('users').doc(user.id).set(data);
+              this.$fire.firestore.collection('join-request').doc(request.id).delete();
+              this.$store.dispatch('sendNotif', {
+                type: 'success',
+                message: `La requête de ${request.username} a été acceptée.`
+              });
+            })
+          }
         });
-      })
     },
-    disapprove(request) {
-      this.$fire.firestore.collection('join-request').doc(request.id).delete();
-      this.$store.dispatch('sendNotif',{
-        type: 'success',
-        message: `La requête de ${request.username} a été rejetée.`
-      })
+    disapprove(evt, request) {
+      const element = evt.target.closest('tr');
+
+      this.$gsap.to(element, 0.3, {
+        opacity: 0,
+        x: -200,
+        background: '#e04141',
+        onComplete: () => {
+          element.parentElement.removeChild(element);
+
+          this.$fire.firestore.collection('join-request').doc(request.id).delete();
+          this.$store.dispatch('sendNotif',{
+            type: 'success',
+            message: `La requête de ${request.username} a été rejetée.`
+          })
+        }
+      });
     },
     // Validation de l'URL
     validURL(str) {
@@ -415,7 +442,7 @@ export default {
             this.entreprise.avatar = URL
           })
       } else if (this.avatarFile === 'default') {
-        const img = await this.$store.dispatch('URLtoImage', require(`@/assets/img/avatar/defaultEnt.png`))
+        const img = await this.URLtoImage(require(`@/assets/img/avatar/defaultEnt.png`));
         const snapshot = await this.$fire.storage
           .ref()
           .child(`entreprise/${this.entrepriseId}/avatar.jpg`)
@@ -534,7 +561,7 @@ export default {
       this.memberlist = [];
       this.$fire.firestore
         .collection('users')
-        .where('entreprise._id', '==', this.actualPartner)
+        .where('entreprise._id.id', '==', this.actualPartner.id)
         .where('username', '>=', this.searchMember)
         .where('username', '<=', this.searchMember + '\uF8FF')
         .orderBy('username')
@@ -551,7 +578,7 @@ export default {
       // Collection de la liste des membres
       await this.$fire.firestore
         .collection('users')
-        .where('entreprise._id', '==', this.actualPartner)
+        .where('entreprise._id.id', '==', this.actualPartner.id)
         .orderBy('entreprise.rank')
         .get()
         .then((members) => {

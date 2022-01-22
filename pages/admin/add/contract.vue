@@ -298,7 +298,7 @@ export default {
       const mission = this.buildObject();
 
       this.$fire.firestore.collection('missions-contrats').add(mission).then(async (newDoc) => {
-        let img = await this.$store.dispatch('URLtoImage', require('@/assets/img/banner/defaultMission.jpg'))
+        let img = await this.URLtoImage(require(`@/assets/img/banner/defaultMission.jpg`));
 
         if(this.banner.file){
           img = this.banner.file;

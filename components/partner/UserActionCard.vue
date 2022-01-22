@@ -3,11 +3,11 @@
     <div class="left-side">
       <div class="user-action-card__icons">
         <img src="" alt="" />
-        <div class="img-pp" :style="`background: url('${avatar || require('@/assets/img/avatar/default.jpg')}') no-repeat center/cover;`"/>
+        <div class="img-pp" :style="`background: url('${user.avatar || require('@/assets/img/avatar/default.jpg')}') no-repeat center/cover;`"/>
       </div>
 
       <div v-if="rankNumber !== null" class="user-action-card__details">
-        <nuxt-link :to="`/user/${username}`">{{ username }}</nuxt-link>
+        <nuxt-link :to="`/user/${user.id}`">{{ user.username }}</nuxt-link>
         <p>{{ ranks[rankNumber] }}</p>
       </div>
     </div>
@@ -24,12 +24,8 @@
 export default {
   name: 'UserActionCard',
   props: {
-    avatar: {
-      type: String || null,
-      required: true,
-    },
-    username: {
-      type: String,
+    user: {
+      type: Object,
       required: true,
     },
     controllerRank: {
@@ -58,9 +54,8 @@ export default {
   },
   mounted() {
     // Récupération de l'utilisateur
-    this.$fire.firestore
-    .collection('users')
-    .where('username', '==', this.username)
+    this.$fire.firestore.collection('users')
+    .where('username', '==', this.user.username)
     .get()
     .then(users => {
       this.member = users.docs[0].data();
@@ -105,7 +100,7 @@ export default {
         icon: 'check',
         color: 'green',
         title: 'Succès',
-        message: `${this.username} a été ${isPromotion ? 'promu' : 'rétrogradé'} ${this.ranks[number]}.`,
+        message: `${this.user.username} a été ${isPromotion ? 'promu' : 'rétrogradé'} ${this.ranks[number]}.`,
       }
       this.rankNumber = number;
       this.rankname = this.ranks[number];
@@ -119,7 +114,7 @@ export default {
           icon: 'check',
           color: 'green',
           title: 'Succès',
-          message: `${this.username} a été exclu.`,
+          message: `${this.user.username} a été exclu.`,
         }
         const poleEmploi = this.$fire.firestore.collection('entreprises').doc('default'); // TODO: Changer default en 0 pour la fin du projet
 

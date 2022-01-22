@@ -168,15 +168,7 @@ export default {
         return this.convertToUTC(nextWeek);
       }
 
-      return this.convertToUTC(today); // TODO: Use store fucntion 'convertToUTC'
-    },
-    convertToUTC(date) {
-      const table = date.split(',')
-      const timezone = table[1].replace(' ', 'T');
-      const tableTwo = table[0].split('/');
-      const final = tableTwo[2] +"-"+ tableTwo[1] +"-"+ tableTwo[0] + timezone;
-
-      return final;
+      return this.convertToUTC(today);
     },
     updateLogo(file) {
       this.logo.file = file;
@@ -213,7 +205,7 @@ export default {
       // Add mission
       this.$fire.firestore.collection('missions-speciales').doc(this.slug.sid).update(this.mission).then(async (newDoc) => {
         if(this.logo.url !== this.mission.logo){
-          let img = await this.$store.dispatch('URLtoImage', require('@/assets/img/avatar/default.jpg'))
+          let img = await this.URLtoImage(require(`@/assets/img/avatar/default.jpg`));
 
           if(this.logo.file)
             img = this.logo.file;

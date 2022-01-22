@@ -152,11 +152,11 @@ export default {
     },
     async getUserInfo() {
       try {
-        await this.$fire.firestore.collection('users').where('username', '==', this.slug.id).get().then((snapshot) => {
+        await this.$fire.firestore.collection('users').doc(this.slug.id).get().then((snapshot) => {
 
-          this.user = snapshot.docs[0].data();
+          this.user = snapshot.data();
 
-          this.userId = snapshot.docs[0].id;
+          this.userId = snapshot.id;
 
           // Récupérer la date de création du compte
           const date = new Date(this.user.createdAt.seconds * 1000);

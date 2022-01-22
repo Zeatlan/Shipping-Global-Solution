@@ -29,7 +29,7 @@
             </p>
 
             <div class="text__nav">
-              <nuxt-link :to="`/user/${$cookies.get('user-name')}`" @click.native="redirect(`/user/${$cookies.get('user-name')}`)" 
+              <nuxt-link :to="`/user/${$cookies.get('user-id')}`" @click.native="redirect(`/user/${$cookies.get('user-id')}`)" 
                 ><font-awesome-icon :icon="['fas', 'user']"
               /></nuxt-link>
               <nuxt-link to="/user/edit/" @click.native="redirect(`/user/edit/`)"

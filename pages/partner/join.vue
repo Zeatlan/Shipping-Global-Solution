@@ -28,10 +28,10 @@
           <div v-else>
             <div class="header">
               <div class="ent-profile__banner">
-                <img v-if="urlBanner" :src="urlBanner" alt="Preview banner">
+                <img v-show="urlBanner" :src="urlBanner" alt="Preview banner">
                 <span v-if="game" class="game">{{ game }}</span>
               </div>
-              <div v-if="urlLogo" class="ent-profile__logo">
+              <div v-show="urlLogo" class="ent-profile__logo">
                 <img :src="urlLogo" alt="Preview logo">
               </div>
             </div>
@@ -109,7 +109,7 @@
         </div>
       </div>
 
-      <!-- STEP 4: Created at -->
+      <!-- STEP 4: Histoire -->
       <div v-if="step==4" class="form-row">
         <h2>Pour la faire courte...</h2>
 
@@ -253,10 +253,10 @@ export default {
       game: '',
       createdAt: null,
       acronyme: '',
-      logo: '',
-      urlLogo: null, // TODO: UrlLogo par défaut,
-      banner: '',
-      urlBanner: null, // TODO: urlBanner par défaut
+      logo: null,
+      urlLogo: '', // TODO: UrlLogo par défaut,
+      banner: null,
+      urlBanner: '', // TODO: urlBanner par défaut
       story: '',
       member: '',
       suggestions: null,
@@ -322,6 +322,20 @@ export default {
         opacity: 0
       }).then(() => {
         this.step = 1;
+
+        // New default Logo
+        const logo = require('@/assets/img/avatar/default.jpg');
+        fetch(logo).then(res => res.blob()).then(blob => { 
+          this.logo = blob;
+          this.urlLogo = URL.createObjectURL(blob); 
+        })
+
+        // New default Banner
+        const banner = require('@/assets/img/banner/default.jpg');
+        fetch(banner).then(res => res.blob()).then(blob => { 
+          this.banner = blob;
+          this.urlBanner = URL.createObjectURL(blob);
+        })
       })
     },
     previousQuestion() {
@@ -360,12 +374,15 @@ export default {
       }else if(this.step === 2) { // Jeu joué
         if(this.game === '') this.error = true; 
       }else if(this.step === 3){ // Date de création 
-        if(this.createdAt === null) this.error = true; 
+        const today = new Date();
+        const createdAt = new Date(this.createdAt);
+        if(this.createdAt === null || (today.getTime() < createdAt.getTime())) this.error = true; 
       }else if(this.step === 4) { // Acronyme
         if(this.acronyme === '' || this.acronyme.length > 10) this.error = true;
       }else if(this.step === 8) { // Comrades
         if(this.members.length < 0) this.error = true; // TODO Change '0' to '3' when official release
       }else if(this.step === 9) {
+
         const fd = new FormData();
         fd.append('image', this.logo, this.logo.name);
         fd.append('image', this.banner, this.banner.name);

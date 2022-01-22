@@ -2,7 +2,7 @@
   <div id="edit-user">
     <div v-if="user.isValid" class="container">
 
-      <nuxt-link v-if="user" :to="`/user/${user.username}`" class="back-link"><font-awesome-icon :icon="['fas', 'arrow-left']" /> Retour au profil </nuxt-link>
+      <nuxt-link v-if="user" :to="`/user/${user.id}`" class="back-link"><font-awesome-icon :icon="['fas', 'arrow-left']" /> Retour au profil </nuxt-link>
 
       <div class="pres">
         <h1>Panneau de configuration</h1>
@@ -105,7 +105,7 @@
       </div>
     </div>
     <div v-else class="container">
-      <nuxt-link v-if="user" :to="`/user/${user.username}`" class="back-link"><font-awesome-icon :icon="['fas', 'arrow-left']" /> Retour au profil </nuxt-link>
+      <nuxt-link v-if="user" :to="`/user/${user.id}`" class="back-link"><font-awesome-icon :icon="['fas', 'arrow-left']" /> Retour au profil </nuxt-link>
 
       <div class="white-box permission-error">
         <h1>Accès interdit</h1>
@@ -179,7 +179,9 @@ export default {
   },
   mounted() {
     this.$fire.firestore.collection('users').doc(this.$cookies.get('user-id')).get().then(snapshot => {
-      this.user = snapshot.data();
+      this.user = {
+        ...snapshot.data(),
+        id: snapshot.id};
     })
   },
   methods: {
@@ -385,9 +387,10 @@ export default {
         await this.$fire.storage.ref().child(`users/${this.$fire.auth.currentUser.uid}/avatar.jpg`).put(this.avatarFile);
         await this.$fire.storage.ref().child(`users/${this.$fire.auth.currentUser.uid}/avatar.jpg`).getDownloadURL().then(URL => {
           this.user.avatar = URL;
+          this.$store.dispatch('getUserAvatar')
         })
       }else if(this.avatarFile === 'default') {
-        const img = await this.$store.dispatch('URLtoImage', require(`@/assets/img/avatar/default.jpg`))
+        const img = await this.URLtoImage(require(`@/assets/img/avatar/default.jpg`));
         const snapshot = await this.$fire.storage.ref().child(`users/${this.$fire.auth.currentUser.uid}/avatar.jpg`).put(img);
         
         this.user.avatar = await snapshot.ref.getDownloadURL();

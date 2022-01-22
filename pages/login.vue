@@ -86,7 +86,7 @@ export default {
           email
         });
 
-        this.$cookies.set('user-name', this.username, {
+        this.$cookies.set('user-name', this.username.toLowerCase(), {
           maxAge: 1000 * 3600 * 24 * 30
         });  
         this.$cookies.set('user-id', uid, {

@@ -100,6 +100,7 @@ export default {
     this.$fire.firestore.collection('missions-contrats').get().then(snap => {
       this.nbMissions += snap.docs.length;
     });
+    
   },
 }
 </script>

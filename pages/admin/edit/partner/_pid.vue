@@ -154,8 +154,7 @@
               <user-action-card 
                 v-for="(member, index) in memberlist"
                 :key="index"
-                :avatar="member.avatar"
-                :username="member.username"
+                :user="member"
                 :controller-rank="0"
                 @reload="reloadMemberlist"
               />
@@ -286,7 +285,10 @@ export default {
       .get()
       .then((members) => {
         members.docs.forEach(member => {
-          this.memberlist.push(member.data());
+          this.memberlist.push({
+            ...member.data(),
+            id: member.id
+          });
         })
       })
   },
@@ -359,7 +361,7 @@ export default {
             this.entreprise.avatar = URL
           })
       } else if (this.avatarFile === 'default') {
-        const img = await this.$store.dispatc('URLtoImage', require(`@/assets/img/avatar/defaultEnt.png`));
+        const img = await this.URLtoImage(require(`@/assets/img/avatar/defaultEnt.png`));
         
         const snapshot = await this.$fire.storage
           .ref()

@@ -22,7 +22,7 @@
                   day: 'numeric'
                 }) }}</p>          
                 
-                <nuxt-link v-if="creators[index]" :to="`/user/${creators[index].username}`">
+                <nuxt-link v-if="creators[index]" :to="`/user/${creators[index].id}`">
                   <div class="img-pp" :style="`background: url('${creators[index].avatar}') no-repeat center/cover;`" />
                   {{ creators[index].username }} 
                 </nuxt-link>
@@ -225,7 +225,10 @@ export default {
       this.entreprises.push(data);
 
       this.$fire.firestore.collection('users').where('username', '==', doc.data().createdBy).get().then(user => {
-        this.creators.push(user.docs[0].data());
+        this.creators.push({
+          ...user.docs[0].data(),
+          id: user.docs[0].id
+        });
       });
     }
   }

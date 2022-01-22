@@ -1,19 +1,19 @@
 <template>
   <div class="team-card">
     <!-- Image profile + pseudo -->   
-    <nuxt-link :to="`/user/${username}`">
+    <nuxt-link :to="`/user/${user.id}`">
       <div class="team-card__img"
-        :style="`background-image:url('${picture}');`">
+        :style="`background-image:url('${user.avatar}');`">
         <div class="mask"></div>
         
-        <p>{{ username }}</p>
+        <p>{{ user.username }}</p>
       </div>
     </nuxt-link>
 
     <!-- Badges -->
     <div class="team-card__badges">
       <Badge 
-        v-for="r in roles" :key="r"
+        v-for="r in user.roles" :key="r"
         :icon="r"
       >
         {{ roleName[r] }}
@@ -31,17 +31,9 @@
       Badge,
     },
     props: {
-      picture: {
+      user: {
+        type: Object,
         required: true,
-        type: String,
-      },
-      username: {
-        required: true,
-        type: String,
-      },
-      roles: {
-        required: true,
-        type: Array
       }
     },
     data() {

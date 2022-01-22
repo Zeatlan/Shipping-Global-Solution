@@ -4,18 +4,17 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    padding: 20px 0;
+    padding: 1.3rem 0;
     background: $blue-actif;
     color: white;
+    z-index: 999;
 
     &.displayed {
       display: block;
     }
 
     .container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      @include display-flex(space-between);
 
       p {
         color: white;
@@ -291,7 +290,7 @@
           svg {
             cursor: pointer;
             font-size: $menu-size;
-            margin: 0 5px;
+            margin: 0 0.3rem;
           }
           .promote {
             color: $green-100;
@@ -346,15 +345,15 @@
 
           &:last-of-type {
             text-align: center;
-            font-size: $menu-size;
+            font-size: $h3-size;
 
             svg {
               cursor: pointer;
               color: white;
               background-color: $red-100;
               border-radius: 100px;
-              padding: 0.6rem;
-              transition: all 0.3s ease-in-out;
+              padding: 0.3rem;
+              @include transition-ease;
 
               &:hover {
                 background-color: $red-80;

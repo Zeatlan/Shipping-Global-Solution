@@ -4,7 +4,7 @@
     <td>
       <div class="flexing">
         <img :src="member.avatar" :alt="`Avatar de ${member.username}`" width="36"/>
-        <nuxt-link :to="`/user/${member.username}`">{{ member.username }}</nuxt-link>
+        <nuxt-link :to="`/user/${member.id}`">{{ member.username }}</nuxt-link>
       </div>
     </td>
     <td>

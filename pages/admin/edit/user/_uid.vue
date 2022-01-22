@@ -458,7 +458,7 @@ export default {
           this.user.avatar = URL;
         })
       }else if(this.avatarFile === 'default') {
-        const img = await this.$store.dispatch('URLtoImage', require(`@/assets/img/avatar/default.jpg`))
+        const img = await this.URLtoImage(require(`@/assets/img/avatar/default.jpg`));
         const snapshot = await this.$fire.storage.ref().child(`users/${this.slug.uid}/avatar.jpg`).put(img);
         
         this.user.avatar = await snapshot.ref.getDownloadURL();

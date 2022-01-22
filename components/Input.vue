@@ -124,7 +124,7 @@ export default {
 
       // Check Datetime-local
       if(this.type === 'datetime-local') {
-        const today = await this.$store.dispatch('convertToUTC', new Date().toLocaleDateString('fr-FR', { hour: 'numeric', minute: 'numeric'}));
+        const today = await this.convertToUTC( new Date().toLocaleDateString('fr-FR', { hour: 'numeric', minute: 'numeric'}));
         if(today > this.object.text)
           this.object.error = true;
       }

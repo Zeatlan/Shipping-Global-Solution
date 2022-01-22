@@ -12,9 +12,7 @@
           <TeamCard
             v-for="(sadmin, key) in sAdmins"
             :key="key"
-            :picture="sadmin.avatar"
-            :username="sadmin.username"
-            :roles="sadmin.roles"
+            :user="sadmin"
           />
         </div>
       </div>
@@ -30,9 +28,7 @@
           <TeamCard
             v-for="(admin, key) in admins"
             :key="key"
-            :picture="admin.avatar"
-            :username="admin.username"
-            :roles="admin.roles"
+            :user="admin"
           />
         </div>
       </div>
@@ -48,9 +44,7 @@
           <TeamCard
             v-for="(mod, key) in mods"
             :key="key"
-            :picture="mod.avatar"
-            :username="mod.username"
-            :roles="mod.roles"
+            :user="mod"
           />
         </div>
       </div>
@@ -66,9 +60,7 @@
           <TeamCard
             v-for="(dev, key) in devs"
             :key="key"
-            :picture="dev.avatar"
-            :username="dev.username"
-            :roles="dev.roles"
+            :user="dev"
           />
         </div>
       </div>
@@ -101,15 +93,20 @@ export default {
     this.fetchDb('code');     // Devs
   },
   methods: {
-    fetchDb(role) {
-      this.$fire.firestore.collection('team').where('roles', 'array-contains', role).get().then(snap => {
-        snap.docs.forEach(doc => {
-          if(role === 'crown') this.sAdmins.push(doc.data());
-          if(role === 'tools') this.admins.push(doc.data());
-          if(role === 'hammer') this.mods.push(doc.data());
-          if(role === 'code') this.devs.push(doc.data());
-        })
-      });
+    async fetchDb(role) {
+      const fetchTeam = await this.$fire.firestore.collection('team').where('roles', 'array-contains', role).get();
+
+      fetchTeam.docs.forEach(async doc => {
+
+        // Get id user
+        const fetchUser = await this.$fire.firestore.collection('users').where('username', '==', doc.data().username).get();
+        const id = fetchUser.docs[0].id;
+
+        if(role === 'crown') this.sAdmins.push({...doc.data(), id});
+        if(role === 'tools') this.admins.push({...doc.data(), id});
+        if(role === 'hammer') this.mods.push({...doc.data(), id});
+        if(role === 'code') this.devs.push({...doc.data(), id});
+      })
     }
   }
 }

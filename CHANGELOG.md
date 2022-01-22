@@ -2,6 +2,21 @@
 
 Ce document stipulera de toutes les modifications effectuées.
 
+## 1.0.1 • 23/01/2022
+
+### **Ajouts**
+
+### **Modifications**
+
+- Les liens vers les profils sont désormais des ID pour éviter les complications ( `/user/Hk4XQle1bygpV3pSFeiCIhnMbA73` au lieu de `/user/Zeatlan` par exemple).
+- Animation quand l'on approuve / désapprouve un membre pour son entreprise.
+
+### **Fixs**
+
+- L'image de profil se met à jour dans le menu quand nous la modifions.
+- Fix du bouton "Mission terminée" qui ne s'affichait pas.
+- Fix approbation - liste des membres dans la gestion de l'entreprise.
+
 ## v1.0.0 • 21/01/2022
 
 ### **Ajouts**

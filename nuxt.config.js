@@ -28,7 +28,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '@/plugins/bl-components'
+    '@/plugins/bl-components',
+    '@/plugins/mixinCommonMethods'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -39,6 +40,7 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     '@nuxtjs/fontawesome',
+    '@nuxtjs/pwa',
     'nuxt-gsap-module'
   ],
 
@@ -71,14 +73,14 @@ export default {
       '@nuxtjs/firebase',
       {
         config: {  
-          apiKey: "AIzaSyDfEaf9suBZMIuCxMQAngSvBsEb1K5J-V4",
-          authDomain: "shipping-global-solution-62fc7.firebaseapp.com",
-          databaseURL: "https://shipping-global-solution-62fc7-default-rtdb.europe-west1.firebasedatabase.app",
-          projectId: "shipping-global-solution-62fc7",
-          storageBucket: "shipping-global-solution-62fc7.appspot.com",
-          messagingSenderId: "428417418481",
-          appId: "1:428417418481:web:27d5ac99fed24afc021550",
-          measurementId: "G-QHM1V54M02"
+          apiKey: process.env.APIKEY,
+          authDomain: process.env.AUTHDOMAIN,
+          databaseURL: process.env.DATABASEURL,
+          projectId: process.env.PROJECTID,
+          storageBucket: process.env.STORAGEBUCKET,
+          messagingSenderId: process.env.MESSAGINGSENDERID,
+          appId: process.env.APPID,
+          measurementId: process.env.MEASUREMENTID
         },
         services: {
           auth: {
@@ -100,6 +102,17 @@ export default {
     '@nuxtjs/proxy',
     ['cookie-universal-nuxt', { alias: 'cookies' }],
   ],
+  pwa: {
+    meta: false,
+    icon: false,
+
+    workbox: {
+      importScripts: [
+        '/firebase-auth-sw.js'
+      ],
+      dev: process.env.NODE_ENV === 'development',
+    }
+  },
 
   router: {
     middleware: ['auth']

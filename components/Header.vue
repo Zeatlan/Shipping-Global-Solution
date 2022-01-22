@@ -62,7 +62,7 @@
             </p>
 
             <div class="text__nav">
-              <nuxt-link :to="`/user/${$cookies.get('user-name')}`"
+              <nuxt-link :to="`/user/${$cookies.get('user-id')}`"
                 ><font-awesome-icon :icon="['fas', 'user']"
               /></nuxt-link>
               <nuxt-link to="/user/edit/"
@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import {mapActions, mapGetters, mapState} from 'vuex'
 import Button from './Button.vue'
 import DropdownHeader from './DropdownHeader.vue'
 import Burger from './Burger.vue'
@@ -145,7 +145,7 @@ export default {
             href: '/story/',
           },
           {
-            icon: 'truck-moving',
+            icon: 'users',
             title: 'Notre équipe',
             description: 'Découvrez notre équipe au complet.',
             href: '/team/',
@@ -163,12 +163,6 @@ export default {
             title: 'Missions contrats',
             description: 'Découvrez les missions contrats.',
             href: '/missions/list/?tab=1',
-          },
-          {
-            icon: 'tractor',
-            title: 'Missions Farming',
-            description: 'Découvrez les missions Farming',
-            href: '/missions/list/?tab=2',
           },
         ],
         [
@@ -190,9 +184,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(['user', 'username', 'avatar']),
+    ...mapState(['user', 'username']),
     ...mapGetters({
       isLoggedIn: 'isLoggedIn',
+      avatar: 'avatar'
     }),
   },
   watch: {
@@ -216,9 +211,9 @@ export default {
     })
   },
   methods: {
-    getUserAvatar() {
-      this.$store.dispatch('getUserAvatar')
-    },
+    ...mapActions({
+      getUserAvatar: 'getUserAvatar'
+    }),
     openDropdown(number) {
       this.selected = number
       if (this.hidden) {

@@ -17,7 +17,7 @@
           <tbody>
             <tr v-for="user in users" :key="user.username">
               <td><img :src="user.avatar" :alt="`Avatar de ${user.username}`" width="48" /></td>
-              <td><nuxt-link :to="`/user/${user.username}`">{{ user.username }}</nuxt-link></td>
+              <td><nuxt-link :to="`/user/${user.id}`">{{ user.username }}</nuxt-link></td>
               <td>{{ user.rank }}</td>
               <td class="discord">{{ user.discord }}</td>
               <td>{{ createdTime(user) }}</td>
