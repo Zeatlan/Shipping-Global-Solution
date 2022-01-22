@@ -175,14 +175,14 @@ export default {
           opacity: 0,
           onComplete: () => {
             element.parentElement.removeChild(element);
-            /* this.$fire.storage.ref().child(`users/${user.id}`).listAll().then(files => {
+            this.$fire.storage.ref().child(`users/${user.id}`).listAll().then(files => {
               files.items.forEach(item => {
                 item.delete();
               })
             });
 
-            this.$fire.firestore.collection('users').doc(user.id).delete(); */
-            console.log(this.$fire.auth.getUser(user.id))
+            this.$fire.firestore.collection('users').doc(user.id).delete();
+            // TODO Delete member from auth (back-end ?)
 
             this.$store.dispatch('sendNotif', {
               type: 'success',
