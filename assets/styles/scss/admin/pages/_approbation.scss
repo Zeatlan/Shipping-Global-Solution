@@ -1,0 +1,39 @@
+#approbation {
+  .wrapper {
+    height: 100vh;
+    h1 {
+      text-align: center;
+    }
+    .wrapper-body {
+      width: 65%;
+      margin: 0 auto;
+
+      table {
+        td.actions {
+          display: flex;
+          justify-content: space-around;
+          margin: 5px;
+
+          svg {
+            font-size: $h3-size;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+          }
+          .fa-check {
+            color: $green-100;
+
+            &:hover {
+              color: $green-80;
+            }
+          }
+          .fa-times {
+            color: $red-100;
+            &:hover {
+              color: $red-80;
+            }
+          }
+        }
+      }
+    }
+  }
+}

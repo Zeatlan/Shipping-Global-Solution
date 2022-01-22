@@ -1,0 +1,177 @@
+#leaderboard {
+  .blue-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: $blue-actif;
+    width: 100%;
+    height: 50vh;
+    z-index: 1;
+  }
+
+  .big-header {
+    position: relative;
+    z-index: 2;
+
+    // Media Query : Small
+    @include sm {
+      margin-top: 2rem;
+    }
+
+    &__title {
+      @include display-flex(space-between);
+      padding: 6rem 0;
+
+      // Media Query : Small
+      @include sm {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      h1 {
+        color: white;
+        width: fit-content;
+        flex: 3;
+
+        // Media Query : Small
+        @include sm {
+          margin-bottom: 1rem;
+        }
+
+        svg {
+          color: $yellow-100;
+        }
+      }
+
+      p {
+        flex: 2;
+        color: $blue-60;
+        font-size: $menu-size;
+      }
+    }
+  }
+
+  .leaderboard {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 8rem;
+    .flex-header {
+      @include display-flex(space-between, flex-end);
+    }
+
+    .tabs__header {
+      position: relative;
+      flex: 1;
+      justify-content: left;
+
+      li {
+        background: transparent;
+        color: $blue-80;
+
+        &.tabs__selected {
+          color: white;
+          border-bottom: 3px solid white;
+          border-radius: 0;
+        }
+      }
+    }
+
+    &-times {
+      margin: 0.5rem 0;
+    }
+
+    button {
+      color: $blue-60;
+      background: $blue-actif-lighter;
+      border-radius: 0;
+
+      &:first-of-type {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+
+      &:last-of-type {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+
+      .active {
+        background: $blue-60;
+        color: $blue-actif-lighter;
+      }
+    }
+
+    .ladder {
+      // Media Query : Small
+      @include sm {
+        overflow-x: auto;
+      }
+      &-table {
+        @include center-div;
+        border-spacing: 2.5rem 1.5rem;
+
+        thead {
+          th {
+            color: $gray-90;
+            font-size: $menu-size;
+            text-align: left;
+
+            &:nth-child(2) {
+              width: 150px;
+            }
+
+            &:nth-child(3) {
+              width: 250px;
+            }
+
+            &:last-of-type {
+              text-align: right;
+              width: 100px;
+            }
+          }
+        }
+
+        tbody {
+          img {
+            border-radius: 100px;
+          }
+
+          td {
+            color: $blue-actif;
+            font-size: $h3-size;
+            font-weight: 700;
+
+            &.rank {
+              text-align: center;
+              font-size: $menu-size;
+            }
+
+            &:nth-child(2),
+            &:nth-child(3) {
+              font-size: $menu-size;
+              a {
+                color: $blue-actif;
+                font-weight: 700;
+                margin-left: 0.7rem;
+              }
+
+              .flexing {
+                @include display-flex(flex-start);
+              }
+            }
+
+            &:nth-child(3n) {
+              a {
+                color: $gray-100;
+              }
+            }
+
+            &:last-of-type {
+              text-align: right;
+            }
+          }
+        }
+      }
+    }
+  }
+}

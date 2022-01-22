@@ -1,0 +1,48 @@
+$colors: $blue-actif, $purple-100, $red-100, $green-100, $pink-100;
+$colorsName: blue, purple, red, green, pink;
+
+.stat-card {
+  @include display-flex(flex-start);
+  padding: 0.7rem;
+  height: 80px;
+  margin: 1rem 0;
+
+  &__icon {
+    @include display-flex;
+    border-radius: 5px;
+    padding: 1rem;
+
+    svg {
+      color: white;
+      font-size: $h1-size;
+    }
+  }
+
+  &__text {
+    @include display-flex(flex-start, flex-start, column);
+    margin-left: 1rem;
+
+    p {
+      color: $gray-100;
+      font-weight: 700;
+      margin: 0.7rem 0 0 0;
+    }
+
+    h3 {
+      font-size: $h1-size;
+      font-weight: 700;
+      margin: 0.7rem 0 0 0;
+    }
+  }
+
+  @for $i from 1 through length($colorsName) {
+    &.#{nth($colorsName, $i)} {
+      .stat-card__icon {
+        background: nth($colors, $i);
+      }
+      .stat-card__text h3 {
+        color: nth($colors, $i);
+      }
+    }
+  }
+}

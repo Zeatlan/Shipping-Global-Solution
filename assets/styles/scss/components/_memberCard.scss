@@ -1,0 +1,25 @@
+.info {
+  &__member-card {
+    @include display-flex(space-between);
+    margin: 0 1rem;
+
+    p {
+      font-size: $body-size;
+    }
+
+    .user {
+      @include display-flex;
+      column-gap: 10px;
+      a {
+        color: set-link-color(#fff);
+        font-size: $body-size;
+      }
+
+      img {
+        width: 24px;
+        height: 24px;
+        border-radius: 100px;
+      }
+    }
+  }
+}

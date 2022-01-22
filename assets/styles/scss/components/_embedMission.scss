@@ -1,0 +1,317 @@
+// Missions contrats
+.contract-embed {
+  position: relative;
+  @include display-flex(center, center, column);
+  row-gap: 1.5rem;
+  padding: 0.7rem 1rem;
+  border-radius: 5px;
+  border: 2px solid $blue-actif;
+
+  & ~ .failed {
+    border-color: $red-100;
+  }
+
+  & ~ .success {
+    border-color: $green-100;
+  }
+
+  .top-button {
+    @include display-flex;
+    position: absolute;
+    top: -18px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 36px;
+    height: 36px;
+    font-size: $menu-size;
+    color: $blue-actif;
+    border: 2px solid $blue-actif;
+    border-radius: 50px;
+    background: $gray-40;
+    @include transition-ease;
+
+    &.contract {
+      &-edit {
+        right: 75px;
+
+        &:hover {
+          color: white;
+          background: $blue-actif;
+        }
+      }
+
+      &-delete {
+        cursor: pointer;
+        color: $red-100;
+        border-color: $red-100;
+        left: 75px;
+
+        &:hover {
+          color: white;
+          background: $red-100;
+        }
+      }
+    }
+  }
+
+  &__header {
+    @include display-flex(space-between);
+    width: 100%;
+
+    h2 {
+      color: $blue-80;
+      margin: 0;
+    }
+
+    span {
+      font-size: $menu-size;
+      color: $green-100;
+    }
+  }
+
+  &__destination {
+    @include display-flex(space-between);
+    column-gap: 1rem;
+    width: 100%;
+
+    .contract-embed__row {
+      span {
+        flex-wrap: wrap;
+      }
+    }
+  }
+
+  &__row {
+    @include display-flex(space-between);
+    column-gap: 1rem;
+    margin: 0.3rem 0;
+
+    span.city {
+      font-size: $menu-size;
+
+      &,
+      span.warehouse {
+        color: $gray-100;
+      }
+    }
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__distance {
+    @include display-flex(center, center, column);
+
+    p.km {
+      color: $blue-90;
+      font-weight: 700;
+    }
+
+    progress {
+      width: 100%;
+      height: 15px;
+      background-color: white;
+      margin-top: 0.3rem;
+
+      &.in-progess {
+        background-color: $yellow-100;
+      }
+
+      &::-webkit-progress-bar {
+        outline: 2px solid white;
+        background-color: white;
+      }
+
+      &::-webkit-progress-value {
+        background-color: $blue-actif;
+      }
+      &.in-progress::-webkit-progress-value {
+        background-color: $yellow-100;
+      }
+      &.success::-webkit-progress-value {
+        background-color: $green-100;
+      }
+      &.failed::-webkit-progress-value {
+        background-color: $red-100;
+      }
+
+      &::-moz-progress-bar {
+        background-color: $blue-actif;
+      }
+      &.in-progress::-moz-progress-bar {
+        background-color: $yellow-100;
+      }
+      &.success::-moz-progress-bar {
+        background-color: $green-100;
+      }
+      &.failed::-moz-progress-bar {
+        background-color: $red-100;
+      }
+    }
+  }
+
+  &__date {
+    color: $blue-90;
+    text-align: center;
+    font-weight: 700;
+
+    margin: 0 0 2rem 0;
+
+    .white-box {
+      padding: 0.4rem;
+    }
+  }
+
+  &__button {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    max-width: 150px;
+    min-height: 30px;
+    line-height: 30px;
+    color: #fff;
+    background-color: $blue-actif;
+    border-radius: 50px;
+    text-align: center;
+    padding: 0.4rem;
+    @include center-div;
+
+    &:hover {
+      background-color: $blue-actif-lighter;
+      color: $blue-60;
+    }
+
+    &.failed {
+      background-color: $red-100;
+    }
+
+    &.success {
+      background-color: $green-100;
+    }
+  }
+}
+
+// Mission spéciales
+.speciale-embed {
+  position: relative;
+  @include display-flex(space-between);
+  width: fit-content;
+  border: 2px solid $blue-actif;
+  width: 100%;
+
+  .top-button {
+    position: absolute;
+    @include display-flex;
+    top: -18px;
+    left: 0;
+    right: 0;
+    @include center-div;
+    width: 36px;
+    height: 36px;
+    font-size: $menu-size;
+    color: $blue-actif;
+    border: 2px solid $blue-actif;
+    border-radius: 50px;
+    background: $gray-40;
+    @include transition-ease;
+
+    &.speciale {
+      &-edit {
+        right: 75px;
+
+        &:hover {
+          color: white;
+          background: $blue-actif;
+        }
+      }
+      &-delete {
+        cursor: pointer;
+        color: $red-100;
+        border-color: $red-100;
+        left: 75px;
+
+        &:hover {
+          color: white;
+          background: $red-100;
+        }
+      }
+    }
+  }
+
+  &__logo {
+    flex: 1;
+    margin-left: 0.6rem;
+    img {
+      width: 64px;
+      height: 64px;
+      border: 2px solid white;
+      border-radius: 100px;
+    }
+  }
+
+  &__body {
+    flex: 6;
+    margin: 2rem 1rem 2.5rem 1.5rem;
+  }
+
+  &__header {
+    @include display-flex(space-between);
+
+    h2 {
+      color: $blue-actif;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    p {
+      color: set-text-color($gray-40);
+    }
+  }
+
+  &__intro {
+    color: set-text-color($gray-40);
+    margin: 1rem 0;
+  }
+
+  &__date {
+    @include display-flex(space-between, top);
+    color: $blue-90;
+
+    span.white-box {
+      padding: 0.4rem;
+    }
+  }
+
+  &__button {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    max-width: 150px;
+    min-height: 30px;
+    line-height: 30px;
+    color: #fff;
+    background-color: $blue-actif;
+    border-radius: 50px;
+    text-align: center;
+    padding: 0.4rem;
+    @include center-div;
+
+    &:hover {
+      background-color: $blue-actif-lighter;
+      color: $blue-60;
+    }
+
+    &.failed {
+      background-color: $red-100;
+    }
+
+    &.success {
+      background-color: $green-100;
+    }
+  }
+}

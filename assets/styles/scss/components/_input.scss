@@ -1,0 +1,19 @@
+input[type='text'],
+input[type='number'],
+input[type='file'],
+input[type='password'],
+textarea {
+  position: relative;
+  width: 100%;
+  border: none;
+  border: 1px solid $gray-100;
+  border-radius: 5px;
+  padding: 0.3rem 0 0.3rem 1rem;
+  margin: 0.5rem 0;
+  box-sizing: border-box;
+}
+
+textarea {
+  padding: 1rem;
+  padding-right: 0;
+}

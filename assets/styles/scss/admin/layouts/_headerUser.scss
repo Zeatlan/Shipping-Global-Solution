@@ -1,0 +1,84 @@
+#header-user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  border-bottom: 1px solid $gray-80;
+  padding: 5px 15px;
+
+  .user {
+    display: flex;
+    align-items: center;
+
+    img.avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50px;
+    }
+
+    .text {
+      margin-left: 10px;
+
+      h2,
+      p {
+        margin: 0;
+      }
+
+      h2 {
+        color: $blue-100;
+      }
+
+      p {
+        display: flex;
+        align-items: center;
+        color: $gray-100;
+
+        span {
+          display: flex;
+          align-items: center;
+          background: $blue-actif;
+          border-radius: 10px;
+          padding: 3px 5px;
+          color: white;
+          margin-left: 2px;
+          gap: 5px;
+        }
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+
+    input {
+      border: 0;
+      background: $gray-60;
+      border-radius: 5px;
+      padding: 5px 10px;
+      transition: all 0.3s ease-in-out;
+
+      &:active,
+      &:focus {
+        outline: none !important;
+        border: 1px solid $gray-100;
+      }
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: $blue-actif;
+      color: white;
+      border-radius: 50px;
+      width: 32px;
+      height: 32px;
+      margin-left: 5px;
+
+      &:hover {
+        background: $blue-actif-lighter;
+      }
+    }
+  }
+}

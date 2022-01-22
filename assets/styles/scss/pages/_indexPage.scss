@@ -1,0 +1,139 @@
+.big-block {
+  position: relative;
+  text-align: center;
+  background-color: $blue-120;
+  border-radius: 25px;
+  padding: 4em 1.75em;
+  margin-top: 5em;
+
+  // Media queries : Small
+  @include sm {
+    margin-top: 7em;
+  }
+
+  button {
+    position: absolute;
+    bottom: -25px;
+    left: 0;
+    right: 0;
+    @include center-div;
+    min-width: 250px;
+  }
+
+  .intro {
+    width: 50%;
+    @include center-div;
+
+    // Media queries : Small
+    @include sm {
+      width: 100%;
+    }
+
+    h1 {
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: $h3-size;
+      color: $blue-80;
+      font-weight: 700;
+      line-height: $h3-size + 6;
+    }
+  }
+
+  .qualities {
+    @include display-grid(repeat(2, minmax(300px, 400px)), auto, 4rem);
+
+    justify-content: center;
+    margin: 4rem 0 3rem 0;
+    text-align: left;
+    user-select: none;
+
+    // Media queries : small
+    @include sm {
+      @include display-grid(1fr, repeat(2, 1fr), 4rem);
+      text-align: center;
+    }
+  }
+}
+
+// Reversed color ( white background )
+.informations {
+  @include display-grid(repeat(4, 1fr), auto, 2rem);
+  justify-content: center;
+  margin: 9rem 0;
+
+  // Media Queries : small
+  @include sm {
+    @include display-grid(repeat(2, 1fr), repeat(2, 1fr), 2rem);
+  }
+
+  // Media Queries : Extra small
+  @include xs {
+    @include display-grid(1fr, 1fr, 2rem);
+    margin: 4rem 0;
+  }
+}
+
+// Join us
+
+.join-us {
+  background-color: $blue-100;
+
+  .container {
+    @include display-flex(space-between);
+    padding: 5rem 0;
+
+    // Media queries : Small
+    @include sm {
+      @include display-flex(space-between, center, column);
+
+      button {
+        margin-top: 3rem;
+      }
+    }
+
+    .text {
+      width: 60%;
+
+      // Media queries : Small
+      @include sm {
+        width: 100%;
+        text-align: center;
+      }
+
+      h1 {
+        color: #fff;
+      }
+
+      p {
+        color: $blue-80;
+        font-size: $menu-size;
+      }
+    }
+  }
+}
+
+.incroyable-classe {
+  color: white;
+  width: 100%;
+  padding: 50px 0;
+  text-align: center;
+
+  @include xs {
+    background: red;
+  }
+  @include sm {
+    background: blue;
+  }
+  @include md {
+    background: green;
+  }
+  @include lg {
+    background: purple;
+  }
+  @include xl {
+    background: orange;
+  }
+}

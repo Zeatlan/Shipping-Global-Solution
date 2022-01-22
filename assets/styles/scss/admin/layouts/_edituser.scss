@@ -1,0 +1,19 @@
+.admin-edit-user {
+  h1 {
+    text-align: center;
+  }
+
+  .rank {
+    form {
+      margin: 0 15px;
+
+      div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 200px;
+        margin: 15px 0;
+      }
+    }
+  }
+}

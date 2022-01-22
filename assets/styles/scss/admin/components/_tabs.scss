@@ -1,0 +1,34 @@
+.tabs {
+  &__header {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    justify-content: space-between;
+
+    li {
+      background: white;
+      color: $blue-actif;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: $menu-size;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+
+      &.tabs__selected {
+        background: $blue-actif;
+        color: white;
+      }
+
+      &:hover {
+        background: $blue-actif;
+        color: white;
+      }
+
+      &.disabled {
+        background: white;
+        color: $gray-80;
+        cursor: wait;
+      }
+    }
+  }
+}

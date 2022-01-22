@@ -1,0 +1,254 @@
+.login-box {
+  position: relative;
+  background: white;
+  padding: 1.5rem;
+  margin-top: 5rem;
+  margin-bottom: 0.7rem;
+  border-radius: 5px;
+  text-align: left;
+  overflow: hidden;
+
+  @include display-grid(repeat(3, 1fr), 0.5fr 2fr, 1.5rem, true);
+
+  // Media Queries: Medium
+  @include md {
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+  // Media Queries: Medium
+  @include sm {
+    grid-template-columns: 1fr;
+    margin-top: 8rem;
+  }
+
+  .intro-header {
+    grid-column: 2;
+    grid-row: 1;
+    // Media Queries: Medium
+    @include sm {
+      grid-column: 1;
+    }
+  }
+
+  h1 {
+    color: $blue-actif;
+    margin: 0;
+  }
+
+  h1,
+  p.introduction {
+    position: relative;
+    text-align: center;
+    z-index: 99;
+  }
+
+  p.introduction {
+    margin: 0.3rem 0;
+  }
+
+  p,
+  label {
+    color: $gray-100;
+  }
+
+  .form {
+    grid-column: 2;
+    grid-row: 2;
+
+    @include display-grid(auto, repeat(4, 1fr), 0.3rem, true);
+    position: relative;
+    z-index: 99;
+
+    // Media Queries: Medium
+    @include sm {
+      grid-column: 1;
+    }
+  }
+
+  &__col {
+    @include display-grid(1fr 10fr, auto, 0.5rem, true);
+    margin-top: 1rem;
+  }
+
+  &__password-forgotten {
+    display: block;
+    color: $blue-actif;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+}
+
+.log {
+  margin: 10rem 0;
+}
+
+.discord-box {
+  position: relative;
+  background: $blue-actif;
+  color: $blue-60;
+  border-radius: 5px;
+  padding: 1.2rem;
+  text-align: left;
+  overflow: hidden;
+
+  @include display-grid(1fr 1fr 1fr, auto, 3rem, true);
+
+  // Media Queries : Medium
+  @include md {
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+  // Media Queries: Medium
+  @include sm {
+    grid-template-columns: 1fr;
+  }
+
+  &__row {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    margin: 10px 0;
+    z-index: 99;
+
+    label {
+      font-size: $menu-size;
+      color: $gray-40;
+    }
+  }
+
+  .form {
+    width: 100%;
+    grid-column: 2;
+  }
+
+  p {
+    margin-top: 1.2rem;
+  }
+
+  svg.discord-icon {
+    grid-column: 3;
+    font-size: $biggest-size;
+    color: #fff;
+    margin: 0 auto;
+  }
+}
+
+.container__authentication {
+  text-align: center;
+  button.register__submit {
+    margin: 1.4rem auto 5rem auto;
+    width: 200px;
+  }
+  button.register__loading {
+    cursor: progress;
+    background: white;
+    color: $blue-actif;
+    font-weight: 700;
+    margin: 1.4rem auto 5rem auto;
+    width: 200px;
+  }
+
+  button.login__submit {
+    display: block;
+    margin: 1.4rem auto 5rem auto;
+    width: 200px;
+    text-align: center;
+  }
+}
+
+.login-box__error,
+.discord-box__error {
+  display: flex;
+  align-items: center;
+  background-color: $red-80;
+  color: white;
+  border-radius: 10px;
+  padding: 0.3rem;
+
+  svg {
+    margin: auto 0.3rem;
+  }
+}
+
+.blob1,
+.blob2,
+.blob3 {
+  position: absolute;
+  z-index: 1;
+  background-repeat: no-repeat;
+
+  // Media Queries : Small
+  @include sm {
+    display: none;
+  }
+}
+
+.blob1 {
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 301px;
+
+  // Media Queries : Medium
+  @include md {
+    width: 200px;
+  }
+}
+
+.blob2 {
+  bottom: -40px;
+  left: -40px;
+  width: 367px;
+  height: 246px;
+
+  // Media Queries : Medium
+  @include md {
+    left: -170px;
+  }
+}
+
+// Blobs register
+#register {
+  .blob1 {
+    background-image: url('../../img/blob1_form.png');
+  }
+
+  .blob2 {
+    background-image: url('../../img/blob2_form.png');
+  }
+
+  .blob3 {
+    top: 0px;
+    left: 0px;
+    background-image: url('../../img/blob3_form.png');
+    width: 368px;
+    height: 103px;
+
+    // Media Queries : Medium
+    @include md {
+      left: -120px;
+    }
+  }
+}
+
+#login {
+  h1,
+  a {
+    color: $pink-100;
+  }
+
+  button {
+    background-color: $pink-100;
+    margin: 0 auto;
+
+    &:hover {
+      background-color: $pink-80;
+    }
+  }
+
+  .blob1 {
+    background-image: url('../../img/blob1_form_login.png');
+  }
+
+  .blob2 {
+    background-image: url('../../img/blob2_form_login.png');
+  }
+}

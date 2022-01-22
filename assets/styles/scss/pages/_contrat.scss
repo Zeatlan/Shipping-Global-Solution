@@ -1,0 +1,253 @@
+#mission-contrat {
+  .header {
+    position: relative;
+    margin-top: 5rem;
+    z-index: 1;
+
+    &__banner {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      border-radius: 5px;
+    }
+
+    &__title {
+      position: absolute;
+      bottom: -25px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      color: $blue-actif;
+      background: white;
+      width: 400px;
+      text-align: center;
+      border-radius: 5px;
+      padding: 0.7rem 0;
+    }
+
+    &__description {
+      margin: 3.5rem 0;
+      color: $gray-100;
+      text-align: center;
+      font-size: $menu-size;
+    }
+  }
+
+  .body {
+    @include display-flex(space-between, top);
+    column-gap: 2rem;
+    margin-bottom: 5rem;
+
+    // Media Queries : Large
+    @include lg {
+      flex-direction: column;
+      row-gap: 3rem;
+    }
+
+    .missions-details {
+      @include display-grid(repeat(3, 1fr), auto, 2.5rem 1rem, true);
+      flex: 3;
+
+      .tab-mission {
+        @include display-flex(space-around, top, column);
+        background: white;
+        border-radius: 5px;
+        text-align: center;
+        justify-self: center;
+        width: 100%;
+
+        &__title {
+          margin: 10px;
+          color: $gray-100;
+        }
+
+        &__description {
+          overflow-wrap: break-word;
+          margin: 5px;
+          color: $blue-actif;
+        }
+
+        h3.tab-mission__title {
+          color: $blue-actif;
+        }
+
+        p.tab-mission__description {
+          color: $gray-100;
+        }
+      }
+
+      .date-begin {
+        grid-column: 1;
+      }
+
+      .date-end {
+        grid-column: 3;
+      }
+
+      .green-mission {
+        border: 1px solid $green-100;
+
+        .tab-mission__description {
+          color: $green-100;
+        }
+      }
+      .red-mission {
+        border: 1px solid $red-100;
+
+        .tab-mission__description {
+          color: $red-100;
+        }
+      }
+
+      .destination {
+        @include display-flex(top, top, column);
+        @include center-div;
+        width: 75%;
+
+        &__country,
+        &__warehouse {
+          @include display-flex(space-between, center);
+          margin: 0.4rem;
+        }
+
+        &__warehouse {
+          svg {
+            color: $blue-actif;
+          }
+        }
+      }
+
+      .km {
+        @include display-flex(top, center, column);
+        p {
+          color: $gray-100;
+          font-size: $menu-size;
+          font-weight: 700;
+        }
+        span.line {
+          width: 100%;
+          height: 2px;
+          background: $gray-100;
+        }
+      }
+    }
+
+    .completion {
+      flex: 1;
+      position: relative;
+      text-align: center;
+      background: white;
+      border-radius: 5px;
+      min-height: 300px;
+      padding-top: 1rem;
+
+      // Media Queries : Large
+      @include lg {
+        width: 50%;
+        min-height: 250px;
+        @include center-div;
+      }
+
+      // Media Queries : Small
+      @include sm {
+        width: 100%;
+      }
+
+      &__title {
+        color: $gray-100;
+        text-align: center;
+      }
+
+      &__percent {
+        color: $green-100;
+        text-align: center;
+      }
+
+      &__users {
+        @include display-flex(space-between, top);
+        flex-wrap: wrap;
+        margin: 0.9rem;
+      }
+      &__user {
+        @include display-flex(top, center);
+
+        img {
+          width: 24px;
+          height: 24px;
+          border-radius: 100px;
+        }
+
+        a {
+          margin-left: 5px;
+          color: $blue-100;
+        }
+      }
+
+      &__actions span {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        @include display-grid(auto, 1fr 1fr);
+
+        // Media Queries : Small
+        @include sm {
+          @include display-grid(1fr 1fr, auto);
+        }
+
+        button {
+          width: 150px;
+          margin: 0.4rem auto;
+        }
+      }
+    }
+  }
+
+  .form {
+    margin: 15px;
+
+    select {
+      width: 100%;
+    }
+
+    .input-row {
+      label {
+        color: $gray-100;
+      }
+
+      @include display-grid(auto, 1fr 1fr);
+      margin: 1.5rem 0;
+
+      input,
+      select {
+        border: 1px solid $gray-100;
+        border-radius: 5px;
+        padding: 0.3rem 0.5rem;
+      }
+
+      &.error {
+        input {
+          border: 1px solid $red-100;
+        }
+      }
+    }
+
+    p.error {
+      color: white;
+      background: $red-80;
+      border: 1px solid $red-120;
+      border-radius: 5px;
+      padding: 0.5rem;
+    }
+
+    .validation-btn {
+      width: 100%;
+      text-align: center;
+
+      button {
+        width: 240px;
+      }
+    }
+  }
+}

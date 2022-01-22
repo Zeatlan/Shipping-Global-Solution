@@ -1,0 +1,199 @@
+#partner {
+  .header {
+    position: relative;
+    border-radius: 5px;
+    margin-top: 5rem;
+    overflow: hidden;
+    z-index: 1;
+
+    // Media Queries : Small
+    @include sm {
+      margin-top: 8rem;
+    }
+
+    &__banner {
+      width: 100%;
+      height: 200px;
+    }
+
+    &__info {
+      @include display-flex(space-between, top);
+      margin: 2rem 3rem;
+
+      // Media Queries : Small
+      @include sm {
+        flex-direction: column;
+      }
+
+      .header {
+        &__text {
+          @include display-flex(flex-start);
+          column-gap: 20px;
+        }
+
+        &__logo {
+          .img-pp {
+            width: 128px;
+            height: 128px;
+            border-radius: 100%;
+
+            // Media Queries : Medium
+            @include md {
+              width: 96px;
+              height: 96px;
+            }
+
+            // Media Queries : Small
+            @include sm {
+              width: 72px;
+              height: 72px;
+            }
+          }
+        }
+
+        &__main {
+          @include display-flex(flex-start, top, column);
+
+          h1 {
+            color: $blue-100;
+            margin: 0;
+
+            // Media Queries : Small
+            @include sm {
+              font-size: $h2-size;
+            }
+          }
+
+          p {
+            color: $gray-100;
+            margin: 0.4rem 0;
+          }
+        }
+      }
+    }
+
+    &__action {
+      margin: 1rem 0;
+
+      // Media Queries : Small
+      @include sm {
+        margin-top: 2rem;
+        @include center-div;
+      }
+    }
+  }
+
+  .body {
+    @include display-grid(repeat(3, 1fr), auto, 2rem);
+    margin: 3rem 0;
+    color: set-text-color(#fff);
+
+    & > .white-box {
+      padding: 1rem;
+    }
+
+    // Media Queries : Small
+    @include sm {
+      @include display-flex(flex-start, top, column);
+    }
+
+    // Stats
+    .stats__number {
+      @include display-flex(space-around);
+      text-align: center;
+
+      &-detail {
+        @include display-flex(space-between, center, column);
+        min-height: 85px;
+        & > h2 {
+          font-size: $h1-size;
+        }
+      }
+    }
+
+    // Admins
+    .stats__admin {
+      &-list {
+        @include display-flex(space-around);
+      }
+
+      .img-pp {
+        width: 64px;
+        height: 64px;
+        border-radius: 100px;
+        @include center-div;
+      }
+
+      p {
+        font-size: $menu-size;
+      }
+
+      &-detail {
+        @include display-flex(center, center, column);
+        margin-top: 1rem;
+        h3 {
+          margin: 0.4rem 0;
+          a {
+            color: set-link-color($blue-actif);
+          }
+        }
+      }
+    }
+
+    // Links
+    .stats__links {
+      p {
+        font-size: $menu-size;
+      }
+
+      &-detail {
+        @include display-flex(space-around);
+        margin-top: 2rem;
+      }
+    }
+
+    // Story
+    .info__story {
+      grid-column: 1 / span 2;
+
+      &-title {
+        position: relative;
+        margin: 1rem 0 1rem 1rem;
+        width: fit-content;
+
+        span.separator {
+          display: block;
+          position: absolute;
+          bottom: -2px;
+          right: 0;
+          width: 35%;
+          height: 3px;
+          background: $blue-actif;
+          border-radius: 100px;
+        }
+      }
+
+      p {
+        margin: 1rem;
+        span {
+          margin: 0 0.03rem;
+        }
+      }
+    }
+
+    .info__memberlist {
+      grid-column: 3;
+      overflow-y: auto;
+
+      p {
+        margin: 1rem 0 1rem 1rem;
+      }
+
+      .img-pp {
+        border-radius: 100px;
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+}

@@ -1,0 +1,95 @@
+.list {
+  h1 {
+    color: $blue-100;
+    margin-top: 3rem;
+
+    // Media Queries : Small
+    @include sm {
+      margin-top: 8rem;
+    }
+  }
+
+  .body {
+    margin: 2rem 0 6rem 0;
+    @include display-flex(space-between, top);
+    column-gap: 3rem;
+
+    // Media queries : Medium
+    @include md {
+      flex-direction: column-reverse;
+    }
+
+    .filter {
+      flex: 1;
+      min-height: 200px;
+      padding: 0.7rem;
+
+      // Media Queries : Medium
+      @include md {
+        width: 80%;
+        margin-bottom: 3rem;
+        @include center-div;
+      }
+
+      // Media Queries : Small
+      @include sm {
+        width: 100%;
+      }
+
+      h2 {
+        position: relative;
+        width: fit-content;
+        color: $blue-100;
+
+        .line {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          display: block;
+          width: 30px;
+          height: 3px;
+          background-color: $blue-100;
+        }
+
+        // Media Queries : Medium
+        @include md {
+          @include center-div;
+
+          .line {
+            left: 0;
+            @include center-div;
+          }
+        }
+      }
+
+      .form-row {
+        display: block;
+        margin: 2rem 0;
+        margin-right: 0.7rem;
+
+        // Media Queries : Medium
+        @include md {
+          width: 70%;
+          margin: 2rem auto;
+        }
+
+        label {
+          display: block;
+          color: set-text-color(#fff);
+        }
+
+        input {
+          width: 100%;
+          color: set-text-color(#fff);
+          padding: 0.4rem 0.3rem;
+          border-radius: 5px;
+          border: 1px solid set-text-color(#fff);
+        }
+      }
+
+      .submit {
+        text-align: center;
+      }
+    }
+  }
+}

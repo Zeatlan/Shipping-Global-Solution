@@ -1,0 +1,8 @@
+#ressources {
+  .list {
+    display: grid;
+    grid-template-columns: repeat(3, 350px);
+    justify-content: space-between;
+    gap: 1em;
+  }
+}

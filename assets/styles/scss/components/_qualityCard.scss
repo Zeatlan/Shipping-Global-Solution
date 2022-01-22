@@ -1,0 +1,92 @@
+.quality-card {
+  @include display-grid(70px auto, auto, 3.5rem);
+
+  // Media queries : small
+  @include sm {
+    @include display-grid(auto, 70px, 2rem, true);
+  }
+
+  &:hover > .icon {
+    transform: rotate(45deg);
+    color: $pink-100;
+  }
+
+  .icon {
+    width: 92px;
+    height: 92px;
+    text-align: center;
+    line-height: 92px;
+    font-size: $big-size;
+    color: $blue-actif;
+    background-color: set-text-color($blue-120);
+    border-radius: 100%;
+    @include transition-ease;
+
+    // Media queries : small
+    @include sm {
+      margin: 0 auto;
+    }
+  }
+
+  .info {
+    h2 {
+      color: set-text-color($blue-120);
+      margin: 0;
+    }
+
+    p {
+      color: $blue-80;
+      line-height: $body-size + 3;
+      margin: 0.3rem 0;
+    }
+  }
+}
+
+.quality-card-reversed {
+  position: relative;
+  @include display-grid(15px auto, auto, 3rem);
+  background: #fff;
+  border-radius: 15px;
+  padding: 0.2rem 1rem;
+  align-items: center;
+  min-height: $biggest-size;
+  height: 80px;
+  overflow: hidden;
+
+  .icon {
+    position: relative;
+    z-index: 5;
+    @include display-flex;
+    width: $biggest-size;
+    height: $biggest-size;
+    line-height: $biggest-size;
+    font-size: $h1-size;
+    color: set-text-color($blue-actif);
+    background: $blue-actif;
+    border-radius: 100%;
+  }
+
+  .info {
+    @include display-grid(auto, auto, 0.5rem, true);
+    text-align: center;
+    width: 100%;
+
+    h2,
+    p {
+      position: relative;
+      z-index: 5;
+      color: $blue-100;
+    }
+
+    h2 {
+      margin: 1rem 0 0 0;
+    }
+  }
+
+  &:hover > .icon {
+    h2,
+    p {
+      color: white;
+    }
+  }
+}

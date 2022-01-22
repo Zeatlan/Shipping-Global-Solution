@@ -1,0 +1,141 @@
+$roles: (
+  'super-admin': $purple-100,
+  'admin': $red-100,
+  'mod': $blue-100,
+  'dev': $green-100,
+);
+
+#team {
+  margin: 3rem 0;
+
+  // Media queries : Small
+  @include sm {
+    margin: 8rem 0;
+  }
+
+  .team-block {
+    h1 {
+      position: relative;
+      width: fit-content;
+      margin: 5rem 0 0 0;
+
+      .line {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 75%;
+        height: 3px;
+      }
+    }
+  }
+
+  @each $role, $color in $roles {
+    ##{$role} {
+      h1 {
+        color: $color;
+      }
+      .line {
+        background-color: $color;
+      }
+    }
+  }
+
+  .cards {
+    @include display-grid(repeat(auto-fill, 80px), auto, 2rem);
+
+    .team-card {
+      width: 80px;
+      border-radius: 5px;
+      margin-top: 1.2rem;
+
+      a:hover {
+        color: white;
+      }
+
+      &__img {
+        position: relative;
+        width: 100%;
+        height: 80px;
+        background-position: center center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        border-radius: 5px;
+        @include transition-ease;
+
+        .mask,
+        p {
+          opacity: 0;
+          position: absolute;
+          width: 100%;
+          @include transition-ease;
+        }
+
+        .mask {
+          top: 0;
+          left: 0;
+          height: 80px;
+          background: rgba(0, 0, 0, 0.6);
+          z-index: 1;
+          border-radius: 5px;
+        }
+
+        p {
+          bottom: 20px;
+          text-align: center;
+          overflow-wrap: break-word;
+          margin: 0;
+          z-index: 2;
+        }
+
+        &:hover {
+          p,
+          .mask {
+            opacity: 1;
+          }
+        }
+      }
+
+      &__badges {
+        @include display-flex(center);
+        margin-top: 0.4rem;
+
+        .badge {
+          position: relative;
+          display: inline-block;
+
+          &__title {
+            width: 120px;
+            background-color: rgba(65, 65, 65, 0.9);
+            color: #fff;
+            text-align: center;
+            padding: 0.3rem 0.3rem;
+            border-radius: 6px;
+
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -4.7rem;
+            margin-bottom: 0.6rem;
+
+            &::after {
+              content: ' ';
+              position: absolute;
+              top: 100%;
+              left: 50%;
+              margin-left: -0.3rem;
+              border-width: 5px;
+              border-style: solid;
+              border-color: rgba(65, 65, 65, 0.9) transparent transparent
+                transparent;
+            }
+          }
+
+          svg {
+            color: $gray-100;
+            margin: 0 0.3rem;
+          }
+        }
+      }
+    }
+  }
+}

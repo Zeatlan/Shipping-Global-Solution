@@ -1,0 +1,20 @@
+#mission-list {
+  .body {
+    .contract-embed {
+      margin: 0 0 2.5rem 0;
+
+      &:first-child {
+        margin-top: 1.5rem;
+      }
+    }
+
+    .tabs {
+      flex: 3;
+
+      .missions {
+        @include display-grid(1fr, auto, 2rem);
+        margin-top: 2.5rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+#partner-list {
+  .body {
+    .listing {
+      flex: 3;
+
+      .partner-card {
+        @include display-flex(space-between);
+        padding: 1rem;
+        margin-bottom: 1.3rem;
+
+        p {
+          color: $gray-100;
+        }
+
+        &__info {
+          @include display-grid(auto 3fr, auto, 1rem);
+
+          .img-ent {
+            @include carre(64px);
+            border-radius: 100px;
+          }
+        }
+
+        &__text {
+          h2 {
+            margin: 0.7rem 0 0 0;
+
+            // Media Queries : Small
+            @include sm {
+              font-size: $h3-size;
+            }
+            a {
+              color: $blue-actif;
+
+              span {
+                color: $gray-100;
+              }
+            }
+          }
+        }
+
+        &__detail {
+          text-align: right;
+
+          p {
+            margin: 0 0 15px 0;
+          }
+
+          a {
+            display: flex;
+            align-items: center;
+            justify-content: right;
+            column-gap: 10px;
+            font-size: $menu-size;
+            color: $blue-100;
+
+            .img-pp {
+              width: 24px;
+              height: 24px;
+              border-radius: 100px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

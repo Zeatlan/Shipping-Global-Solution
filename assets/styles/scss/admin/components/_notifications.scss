@@ -1,0 +1,102 @@
+.notifications {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column-reverse;
+  z-index: 99;
+
+  // Media Queries : Extra Small
+  @include xs {
+    width: 90%;
+    right: 10px;
+    @include center-div;
+  }
+
+  .notif-block {
+    position: relative;
+    width: 400px;
+    color: white;
+    font-size: $menu-size;
+    border-radius: 5px;
+    margin: 0.3rem 0;
+
+    // Media Queries : Extra Small
+    @include xs {
+      width: 100%;
+    }
+
+    &__wrapper {
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      width: 93%;
+    }
+
+    &.green {
+      background: $green-100;
+    }
+
+    &.red {
+      background: $red-100;
+    }
+
+    &.blue {
+      background: $blue-actif;
+    }
+
+    &.purple {
+      background: $purple-100;
+    }
+
+    &__icon {
+      @include display-flex;
+      background: white;
+      padding: 0.6rem;
+      border-radius: 100%;
+      margin: 0 1rem;
+
+      svg {
+        width: 24px;
+        height: 24px;
+        color: $green-100;
+        border-radius: 100%;
+        font-size: $h2-size;
+
+        &.red {
+          color: $red-100;
+        }
+
+        &.blue {
+          color: $blue-100;
+        }
+
+        &.purple {
+          color: $purple-100;
+        }
+      }
+    }
+
+    h3,
+    p {
+      margin: 0;
+    }
+
+    span.close {
+      position: absolute;
+      top: 10px;
+      right: 5px;
+      cursor: pointer;
+      font-size: $h2-size;
+      min-height: max-content;
+      padding: 0 0.5rem;
+    }
+  }
+
+  &.admin-notifications {
+    top: 0;
+    bottom: auto;
+    right: 10px;
+    left: auto;
+  }
+}

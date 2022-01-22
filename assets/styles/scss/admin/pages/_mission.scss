@@ -1,0 +1,269 @@
+#contract {
+  .wrapper {
+    h1 {
+      color: $blue-actif;
+    }
+
+    .wrapper-body {
+      .nothing-inside {
+        width: 100%;
+        text-align: center;
+        svg {
+          font-size: $biggest-size;
+          background: $gray-100;
+          border: 2px solid $gray-100;
+          border-radius: 50px;
+          path {
+            color: $gray-40;
+          }
+        }
+        h1 {
+          color: $gray-100;
+          font-weight: 500;
+
+          a {
+            color: $blue-90;
+
+            &:hover {
+              color: $blue-actif;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.list {
+  .listing-mission {
+    @include display-grid(repeat(3, 1fr), auto, 4rem);
+    margin-top: 3rem;
+
+    .contract-embed__admin {
+      width: 400px;
+      margin: 0 auto 0 0;
+
+      .contract-embed__header {
+        margin-top: 20px;
+      }
+
+      .contract-embed__date {
+        margin-bottom: 40px;
+      }
+    }
+  }
+}
+
+.admin-form {
+  p.error {
+    color: $red-100;
+  }
+
+  .form {
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: 2fr repeat(4, 1fr);
+    gap: 1em;
+
+    &-one {
+      @include display-grid(1fr, auto, 1em);
+      padding: 3rem;
+    }
+  }
+
+  .white-box {
+    width: 100%;
+    margin: 0 auto;
+
+    .wrapper {
+      margin: 15px;
+      p.center {
+        color: $gray-100;
+        text-align: center;
+        font-size: $menu-size;
+        font-weight: 700;
+      }
+    }
+
+    &.general {
+      grid-column: 1/5;
+      grid-row: 1/5;
+    }
+
+    h2 {
+      color: white;
+      background: $blue-actif;
+      padding: 5px;
+      margin-top: 0;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      align-items: center;
+      margin: 10px 0;
+
+      input,
+      textarea,
+      select {
+        border-radius: 5px;
+        padding: 5px 15px;
+      }
+
+      textarea {
+        max-width: 100%;
+        padding: 15px;
+        resize: none;
+        border: 1px solid $gray-100;
+      }
+
+      input {
+        &[type='text'],
+        &[type='datetime-local'],
+        &[type='number'] {
+          border: 1px solid $gray-100;
+        }
+      }
+
+      &.error {
+        input {
+          &[type='text'],
+          &[type='datetime-local'],
+          &[type='number'] {
+            border: 1px solid $red-100;
+          }
+        }
+        textarea {
+          border: 1px solid $red-100;
+        }
+      }
+    }
+
+    .banner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 1fr;
+      height: 200px;
+      border: 1px solid $gray-100;
+      border-radius: 5px;
+      margin: 15px auto;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+
+      .block {
+        background-color: transparent;
+        text-align: center;
+        border-radius: 5px;
+        padding: 15px;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+          background-color: white;
+        }
+      }
+
+      p {
+        color: $gray-100;
+        font-size: $menu-size;
+        margin: 5px 0;
+        &:last-of-type {
+          font-size: $body-size;
+          margin-bottom: 15px;
+          color: $gray-90;
+        }
+
+        &.error {
+          color: $red-100;
+          background: white;
+          padding: 5px;
+          border-radius: 5px;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+  .add-mission {
+    button {
+      width: 300px;
+    }
+    margin: 15px 0;
+    text-align: center;
+  }
+
+  .showcase-selected {
+    background: $purple-60;
+    border: 1px solid $purple-100;
+    border-radius: 5px;
+    padding: 15px;
+
+    p {
+      color: $purple-120;
+    }
+
+    .items {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1em;
+
+      span.dest-span {
+        text-align: center;
+        background: $purple-80;
+        color: white;
+        padding: 10px 0;
+        border-radius: 10px;
+        cursor: pointer;
+        border: 1px solid $purple-100;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+          background: $purple-100;
+        }
+      }
+    }
+  }
+}
+
+#add-speciale {
+  .white-box {
+    width: 900px;
+  }
+
+  .preview-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    margin-bottom: 15px;
+
+    .block {
+      p {
+        color: $gray-100;
+      }
+
+      input {
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  .logo {
+    width: 96px;
+    height: 96px;
+    border-radius: 50px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+}

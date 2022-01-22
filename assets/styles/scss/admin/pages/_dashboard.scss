@@ -1,0 +1,36 @@
+#dashboard {
+  h1 {
+    color: $blue-100;
+  }
+
+  h3.title {
+    color: $blue-actif;
+  }
+
+  .wrapper-body {
+    @include display-flex(space-between, top);
+    column-gap: 2rem;
+
+    .left-pan {
+      flex: 3;
+
+      .stats {
+        @include display-grid(repeat(4, 1fr), auto, 2rem);
+      }
+
+      .panels {
+        @include display-grid(1fr 2fr 1fr, auto, 2rem);
+        margin-top: 3rem;
+      }
+    }
+
+    .right-pan {
+      @include display-flex(start-flex, start-flex, column);
+      flex: 1;
+
+      h3:not(:first-of-type) {
+        margin-top: 2rem;
+      }
+    }
+  }
+}

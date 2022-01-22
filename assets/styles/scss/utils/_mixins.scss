@@ -1,0 +1,32 @@
+@mixin transition-ease {
+  transition: all 0.3s ease-in-out;
+}
+
+@mixin display-flex($x: center, $y: center, $direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $x;
+  align-items: $y;
+}
+
+@mixin display-grid($column: auto, $row: auto, $gap: 0, $centered: false) {
+  display: grid;
+  grid-template-columns: $column;
+  grid-template-rows: $row;
+  grid-gap: $gap;
+
+  @if ($centered == true) {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@mixin center-div {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@mixin carre($value) {
+  width: $value;
+  height: $value;
+}

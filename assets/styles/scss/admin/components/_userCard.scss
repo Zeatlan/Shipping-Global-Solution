@@ -1,0 +1,45 @@
+.user-card {
+  @include display-flex(space-between);
+  margin: 0.7rem 0;
+
+  &:first-of-type {
+    margin-top: 0.3rem;
+  }
+
+  &__info {
+    @include display-flex(flex-start);
+
+    img {
+      width: 64px;
+    }
+
+    .text {
+      @include display-flex(space-around, flex-start, column);
+      margin-left: 1rem;
+
+      h3 {
+        color: $blue-actif;
+        margin: 0 0 0.3rem 0;
+      }
+
+      p {
+        margin: 0.3rem 0 0 0;
+        color: $gray-100;
+      }
+    }
+  }
+
+  &__actions {
+    margin-right: 1.4rem;
+
+    svg,
+    a {
+      color: $gray-100;
+    }
+
+    .fa-crown {
+      cursor: auto;
+      color: $yellow-100;
+    }
+  }
+}

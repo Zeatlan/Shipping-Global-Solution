@@ -1,0 +1,50 @@
+.listing-admin {
+  h1 {
+    text-align: center;
+    color: $blue-100;
+  }
+  table {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    border-collapse: collapse;
+
+    th {
+      padding: 15px 0;
+      color: $gray-100;
+    }
+
+    a {
+      color: $blue-actif;
+    }
+
+    .discord {
+      background: $blue-actif;
+      color: white;
+    }
+
+    .is-valid {
+      font-size: $h3-size;
+      background: $red-80;
+      color: white;
+
+      &.valid {
+        background: $green-80;
+      }
+    }
+
+    .actions {
+      text-align: center;
+
+      svg {
+        color: $gray-100;
+        font-size: $menu-size;
+      }
+
+      .fa-trash-alt {
+        color: $red-100;
+        cursor: pointer;
+      }
+    }
+  }
+}

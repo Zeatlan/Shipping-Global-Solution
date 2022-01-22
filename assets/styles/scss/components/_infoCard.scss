@@ -1,0 +1,75 @@
+.info-card {
+  position: relative;
+  @include display-flex(flex-start);
+  flex: 2 1 auto;
+  column-gap: 2rem;
+  border: 1px solid $blue-80;
+  border-radius: 5px;
+  overflow: hidden;
+
+  &__bg {
+    position: absolute;
+    top: -12px;
+    left: -15px;
+    height: 130%;
+    width: 80px;
+    background-color: $blue-actif;
+    transform: rotate(15deg);
+    z-index: 1;
+  }
+
+  &__icon {
+    position: relative;
+    @include display-flex(flex-start);
+    height: 100%;
+    padding: 1.2rem;
+
+    .img-pp,
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 100px;
+      z-index: 99;
+    }
+
+    .img-pp {
+      width: 64px;
+      height: 64px;
+      margin: 0 1rem;
+    }
+  }
+
+  &__title {
+    color: $gray-100;
+    font-size: $menu-size;
+    margin-bottom: 0.4rem;
+  }
+
+  &__body {
+    color: set-link-color(#fff);
+    font-weight: 700;
+    font-family: Roboto, sans-serif;
+
+    a {
+      color: set-link-color(#fff);
+
+      &:hover {
+        color: $blue-actif-lighter;
+      }
+    }
+  }
+
+  &.entreprise {
+    .info-card {
+      &__bg {
+        top: -25px;
+        height: 140%;
+        width: 156px;
+      }
+
+      &__details {
+        margin-left: 1.4rem;
+      }
+    }
+  }
+}

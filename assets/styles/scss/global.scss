@@ -1,0 +1,158 @@
+@import 'base/index';
+@import 'utils/index';
+@import 'components/index';
+@import 'layouts/index';
+@import 'pages/index';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $body-font;
+  font-size: $body-size;
+  background-color: $gray-40;
+  height: 100%;
+}
+
+.test {
+  background: green;
+  width: 100%;
+  height: 60px;
+  @include display-flex;
+
+  @include xl {
+    background: blue;
+  }
+  @include lg {
+    background: aqua;
+  }
+  @include md {
+    background: yellow;
+  }
+  @include sm {
+    background: orange;
+  }
+  @include xs {
+    background: red;
+  }
+}
+
+a {
+  text-decoration: none;
+  text-transform: none;
+  @include transition-ease;
+
+  &:hover {
+    color: $blue-80;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+// Headers
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: $title-font;
+  font-weight: 700;
+
+  &.biggest {
+    font-size: $biggest-size;
+  }
+}
+
+h1 {
+  font-size: $h1-size;
+}
+
+h2 {
+  font-size: $h2-size;
+}
+
+h3 {
+  font-size: $h3-size;
+}
+
+// Big body
+.menu {
+  font-size: $menu-size;
+}
+
+// Container
+.container {
+  max-width: 1050px;
+  margin: 0 auto;
+
+  @include lg {
+    max-width: 920px;
+  }
+
+  @include md {
+    max-width: 720px;
+  }
+
+  @include sm {
+    max-width: 480px;
+  }
+
+  @include xs {
+    max-width: 95%;
+  }
+}
+
+.white-box {
+  background: white;
+  border-radius: 5px;
+
+  h2 {
+    color: $blue-actif;
+  }
+}
+
+.placeholder {
+  padding: 3rem;
+  color: $gray-100;
+  text-align: center;
+  font-size: $menu-size;
+
+  span {
+    background: $purple-100;
+    color: #fff;
+    border-radius: 3px;
+    padding: 0.3rem;
+  }
+}
+
+.permission-error {
+  padding: 15px;
+  margin: 30px 0;
+
+  h1 {
+    color: $red-100 !important;
+    margin: 0;
+  }
+
+  p {
+    color: $gray-100 !important;
+  }
+}
+
+.page-enter-active,
+.page-leave-active {
+  @include transition-ease;
+}
+
+.page-enter,
+.page-leave-active {
+  opacity: 0;
+}
