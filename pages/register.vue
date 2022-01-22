@@ -220,7 +220,7 @@ export default {
             }).then(() => {
               this.$store.dispatch('sendNotif', {
                 type: 'info',
-                message: `Salut ${this.username} ! Bienvenue sur Shippong Global Solution.`
+                message: `Salut ${this.username} ! Bienvenue sur Shipping Global Solution.`
               });
 
               this.$store.commit('SET_USER', cred.user);
@@ -237,7 +237,7 @@ export default {
                 maxAge: 1000 * 3600 * 24 * 30
               });
               // TODO: Faire passer à false lors de la version officielle
-              this.$cookies.set('user-rank', true, {
+              this.$cookies.set('user-valid', true, {
                 maxAge: 1000 * 3600 * 24 * 30
               });
 

@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="container">
+
       <!-- Presentation block -->
       <div class="big-block">
         <div class="intro">
@@ -73,6 +74,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import ButtonAction from '@/components/ButtonAction.vue'
 import QualityCard from '@/components/QualityCard.vue'
 
@@ -88,6 +90,9 @@ export default {
       nbMissions: 0,
     }
   },
+  computed: {
+    ...mapGetters({rank: 'rank'})
+  },
   created() {
     this.$fire.firestore.collection('users').get().then(snap => {
       this.nbCamionneurs = snap.docs.length;
@@ -100,7 +105,6 @@ export default {
     this.$fire.firestore.collection('missions-contrats').get().then(snap => {
       this.nbMissions += snap.docs.length;
     });
-    
-  },
+  }
 }
 </script>

@@ -187,7 +187,7 @@ export default {
     ...mapState(['user', 'username']),
     ...mapGetters({
       isLoggedIn: 'isLoggedIn',
-      avatar: 'avatar'
+      avatar: 'avatar',
     }),
   },
   watch: {
@@ -197,8 +197,7 @@ export default {
   },
   mounted() {
     // Initialize user avatar (if connected)
-    if (this.isLoggedIn) this.getUserAvatar()
-
+    if (this.isLoggedIn) this.getUserAvatar();
     document.addEventListener('click', ({ target }) => {
       if (!this.hidden) {
         const dropdown = target.closest('.dropdown-list')

@@ -1,7 +1,6 @@
 const actions = {
   async nuxtServerInit({ dispatch, commit }, { res }) {
     if(res && res.locals && res.locals.user) {
-      console.log("Nuxt server");
       const { allClaims: claims, idToken: token, ...authUser } = res.locals.user;
 
       await dispatch('onAuthStateChangedAction', {
@@ -27,7 +26,7 @@ const actions = {
       ctx.commit('SET_USER', {
         uid,
         email
-      })
+      });
     }
   },
   async resetInfoFromCookies({ commit, dispatch }, { user, username, rank }) {
@@ -79,6 +78,7 @@ const getters = {
   user: state => state.user,
   username: state => state.username,
   avatar: state => state.avatar,
+  rank: state => state.rank,
   isLoggedIn: (state) => {
     try {
       return state.user.uid !== null

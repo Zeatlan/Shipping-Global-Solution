@@ -5,29 +5,28 @@
 
     <nav class="navbar">
       <ul ref="menu">
-        <li>
+        <li v-if="['Développeur', 'Super Administrateur', 'Administrateur', 'modérateur'].includes($cookies.get('user-rank'))">
           <nuxt-link to="/admin/dashboard/">
             <Font-awesome-icon :icon="['fas', 'home']" />
             <span v-show="isHovering">Tableau de bord</span>
           </nuxt-link>
         </li>
 
-        <li>
+        <li v-if="['Développeur', 'Super Administrateur', 'Administrateur', 'modérateur'].includes($cookies.get('user-rank'))">
           <nuxt-link to="/admin/users/">
             <Font-awesome-icon :icon="['fas', 'users']" />
             <span v-show="isHovering">Utilisateurs</span>
           </nuxt-link>
         </li>
 
-        <li>
+        <li v-if="['Développeur', 'Super Administrateur', 'Administrateur', 'modérateur'].includes($cookies.get('user-rank'))">
           <nuxt-link to="/admin/partners">
             <Font-awesome-icon :icon="['fas', 'building']" />
             <span v-show="isHovering">Entreprises</span>
           </nuxt-link>
         </li>
-        </li>
 
-        <li>
+        <li v-if="['Développeur', 'Super Administrateur', 'Administrateur', 'modérateur'].includes($cookies.get('user-rank'))">
           <nuxt-link to="/admin/approbation">
             <Font-awesome-icon :icon="['fas', 'check']" />
             <span v-show="isHovering">Approbation des missions</span>
@@ -45,6 +44,13 @@
           <nuxt-link to="/admin/contracts">
             <Font-awesome-icon :icon="['fas', 'file-signature']" />
             <span v-show="isHovering">Missions contrats</span>
+          </nuxt-link>
+        </li>
+
+        <li v-if="['Développeur', 'Super Administrateur', 'Administrateur'].includes($cookies.get('user-rank'))">
+          <nuxt-link to="/">
+            <Font-awesome-icon :icon="['fas', 'tractor']" />
+            <span v-show="isHovering">Missions farming</span>
           </nuxt-link>
         </li>
 
