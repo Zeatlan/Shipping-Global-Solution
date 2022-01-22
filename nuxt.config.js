@@ -18,8 +18,8 @@ export default {
       '~/assets/style/css/global.css'
     ],
   },
-  ssr: false,
-  target: 'static',
+  ssr: true,
+  target: 'server',
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
@@ -40,7 +40,6 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     '@nuxtjs/fontawesome',
-    '@nuxtjs/pwa',
     'nuxt-gsap-module'
   ],
 
@@ -102,17 +101,6 @@ export default {
     '@nuxtjs/proxy',
     ['cookie-universal-nuxt', { alias: 'cookies' }],
   ],
-  pwa: {
-    meta: false,
-    icon: false,
-
-    workbox: {
-      importScripts: [
-        '/firebase-auth-sw.js'
-      ],
-      dev: process.env.NODE_ENV === 'development',
-    }
-  },
 
   router: {
     middleware: ['auth']
