@@ -18,8 +18,8 @@ export default {
       '~/assets/style/css/global.css'
     ],
   },
-  ssr: true,
-  target: 'server',
+  ssr: false,
+  target: 'static',
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
