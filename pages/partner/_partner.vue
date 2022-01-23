@@ -3,12 +3,12 @@
     <div class="container">
       <!-- Header -->
       <div class="header white-box">
-        <div v-if="entrepriseBanner" class="header__banner" :style="`background: url('${entrepriseBanner}') no-repeat center/cover;`"></div>
+        <div v-if="entreprise.banner" class="header__banner" :style="`background: url('${entreprise.banner}') no-repeat center/cover;`"></div>
         <div v-else class="header__banner"><PuSkeleton width="100%" height="200px" /></div>
         <div class="header__info">
           <div class="header__text">
             <div class="header__logo">
-              <div v-if="entrepriseAvatar" class="img-pp" :style="`background: url('${entrepriseAvatar}') no-repeat center/cover;`" />
+              <div v-if="entreprise.avatar" class="img-pp" :style="`background: url('${entreprise.avatar}') no-repeat center/cover;`" />
               <PuSkeleton v-else circle width="128px" height="128px" />
             </div>
             <div class="header__main">
@@ -30,7 +30,7 @@
             </div>
           </div>
 
-          <div class="header__action">
+          <div v-if="Object.keys(entreprise).length > 0" class="header__action">
             <Button v-if="userRank < 2" @click.native="$router.push(`/partner/edit`)">Gestion de l'entreprise</Button>
             <Button v-else-if="userRank === 2" @click.native="$router.push(`/partner/edit`)">Modération de l'entreprise</Button>
             <Button v-else-if="userRank === 3 && entreprise.name !== 'Pôle Emploi'" color="red" @click.native="leaveEntreprise">Quitter l'entreprise</Button>
@@ -166,8 +166,6 @@ export default {
     return {
       slug: this.$route.params,
       entreprise: {},
-      entrepriseAvatar: null,
-      entrepriseBanner: null,
       entrepriseAdmins: [],
       memberlist: [],
       ranks: [],
@@ -176,7 +174,8 @@ export default {
       textSize: ['24px', '48px', '64px', '124px'],
       countSpecialMissions: 0,
       countContractMissions: 0,
-      loading: true
+      loading: true,
+      actualUser: null,
     }
   },
   computed: {
@@ -273,26 +272,25 @@ export default {
             if(snap.docs.length > 0) this.askedJoin = true;
           })
 
-      this.getImage('avatar')
-      this.getImage('banner')
+        actualUserDocRef.get().then((snap) => {
+          this.actualUser = snap.data();
+        }) 
 
     });
 
   },
   methods: {
-    getImage(type) {
-      this.$fire.storage.ref().child(`entreprises/${this.entreprise.id}/${type}.jpg`).getDownloadURL().then((foundURL) => {
-        if(type==='avatar') this.entrepriseAvatar = foundURL;
-        else this.entrepriseBanner = foundURL;
-      }, () => {
-        if(type==='avatar') this.entrepriseAvatar = require(`@/assets/img/avatar/defaultEnt.png`);
-        else this.entrepriseBanner = require(`@/assets/img/avatar/defaultEnt.png`);
-      });
-    },
     getRandomSizeText() {
       return Math.floor(Math.random()*this.textSize.length);
     },
     joinEntreprise() {
+      if(this.actualUser.entreprise.rank === 0) {
+        return this.$store.dispatch('sendNotif', {
+          type: 'error',
+          message: 'Attention ! Vous êtes déjà propriétaire d\'une entreprise, vous devez d\'abord la supprimer ou donner le rôle fondateur à quelqu\'un d\'autre.'
+        })
+      }
+
       const userRef = this.$fire.firestore.collection('users').doc(this.$cookies.get('user-id'));
       const entrepriseRef = this.$fire.firestore.collection('entreprises').doc(this.entreprise.id);
 
@@ -302,14 +300,8 @@ export default {
         requestedAt: new Date()
       }).then(() => {
         this.askedJoin = true;
-        const notif = {
-          icon: 'check',
-          color: 'green',
-          title: 'Succès',
-          message: `Vous avez demandé à rejoindre ${this.entreprise.name}.`,
-        }
 
-        this.$store.commit('ADD_NOTIFICATION', notif);
+        this.$store.dispatch('sendNotif', { type: 'success', message: `Vous avez demandé à rejoindre ${this.entreprise.name}.`});
       });
     },
     leaveEntreprise() {

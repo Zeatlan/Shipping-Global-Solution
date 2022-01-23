@@ -109,7 +109,7 @@
         </div>
       </div>
 
-      <!-- STEP 4: Histoire -->
+      <!-- STEP 4: Acronyme -->
       <div v-if="step==4" class="form-row">
         <h2>Pour la faire courte...</h2>
 
@@ -131,10 +131,6 @@
         <input type="file" name="logo" accept="image/jpeg, image/gif image/png" required @change="previewLogo($event)">
         <p v-if="error" class="error">Erreur lors de l'upload du fichier !</p>
 
-        <div id="preview-logo">
-          <img v-if="urlLogo" :src="urlLogo" />
-        </div>
-
         <div class="form-row__buttons">
           <Button class="continue" :arrow="true" @click.native="nextQuestion">Continuer</Button>
           <Button class="back" :reverse-arrow="true" @click.native="previousQuestion">Retour</Button>
@@ -148,10 +144,6 @@
         <label for="banner">Notre bannière est ( Laissez vide pour garder la bannière par défaut )</label>
         <input type="file" name="banner" accept="image/jpeg, image/gif image/png" required @change="previewBanner">
         <p v-if="error" class="error">Erreur lors de l'upload du fichier !</p>
-
-        <div id="preview-banner">
-          <img v-if="urlBanner" :src="urlBanner" />
-        </div>
 
         <div class="form-row__buttons">
           <Button class="continue" :arrow="true" @click.native="nextQuestion">Continuer</Button>
@@ -210,9 +202,12 @@
           <li>Vous ne pouvez être le fondateur que d'une seule entreprise ! Si vous souhaitez en créer une nouvelle vous devrez quitter votre entreprise.</li>
         </ul>
 
-        <div class="form-row__buttons">
+        <div v-if="!isLoading" class="form-row__buttons">
           <Button class="continue" :check="true" @click.native="nextQuestion">Finaliser mon inscription</Button>
           <Button class="back" :reverse-arrow="true" @click.native="previousQuestion">Retour</Button>
+        </div>
+        <div v-else class="form-row__buttons">
+          <Button :primary="false" class="disabled">Inscription en cours...</Button>
         </div>
       </div>
 
@@ -265,6 +260,8 @@ export default {
       icontl: this.$gsap.timeline(),
       isDisabled: false,
       autoId: 1,
+      isLoading: false,
+      newDoc: null,
     }
   },
   computed: {
@@ -339,6 +336,8 @@ export default {
       })
     },
     previousQuestion() {
+      if(this.isLoading) return;
+        
       const gsap = this.$gsap;
       this.error = false;
 
@@ -359,6 +358,8 @@ export default {
 
     },
     async nextQuestion() {
+      if(this.isLoading) return;
+
       const gsap = this.$gsap;
       // const tl = gsap.timeline();
 
@@ -382,81 +383,77 @@ export default {
       }else if(this.step === 8) { // Comrades
         if(this.members.length < 0) this.error = true; // TODO Change '0' to '3' when official release
       }else if(this.step === 9) {
+        this.isLoading = true;
 
         const fd = new FormData();
         fd.append('image', this.logo, this.logo.name);
         fd.append('image', this.banner, this.banner.name);
 
-        this.$fire.firestore.collection('entreprises').get().then((snapshot) => {
+        // Replace every member with their reference
+        for(let member of this.members) {
+          member = member.ref;
+        }
 
-          // Replace every member with their reference
-          for(let member of this.members) {
-            member = member.ref;
-          }
-
-
-          this.$fire.firestore.collection('entreprises').add({
-            acronyme: this.acronyme,
-            createdAt: this.createdAt,
-            createdBy: this.$cookies.get('user-name'),
-            discord: '',
-            isEurotruckEntreprise: (this.game === 'Eurotruck Simulator 2'),
-            name: this.nameEntreprise,
-            game: this.game,
-            members: this.members.length + 1, // +1 for the creator
-            tempMembers: this.members, // Temporary list of members (Once approved they'll be added to the partner)
-            isApproved: false,
-            ranks: [
-              {
-                name: "Fondateur",
-                priority: 1,
-              },
-              {
-                name: "Administrateur",
-                priority: 2,
-              },
-              {
-                name: "Modérateur",
-                priority: 3,
-              },
-              {
-                name: "Membre",
-                priority: 4,
-              }
-            ],
-            story: this.story,
-            trucksbook: "",
-          }).then((doc) => {
-
-              // Add to storage
-              this.$fire.storage.ref().child(`entreprises/${doc.id}/avatar.jpg`).put(this.logo).then(logoSnap => {
-                this.$fire.storage.ref().child(`entreprises/${doc.id}/banner.jpg`).put(this.banner).then(bannerSnap => {
-                  logoSnap.ref.getDownloadURL().then(downloadLogo => {
-                    bannerSnap.ref.getDownloadURL().then(downloadBanner => {
-                      // Set avatar & banner
-                      this.$fire.firestore.collection('entreprises').doc(doc.id).update({
-                        avatar: downloadLogo,
-                        banner: downloadBanner,
-                      });
-                    })
-                  })
-                  
-                });
-
-              });
-
-              // Set user to fondator
-              this.$fire.firestore.collection('users').doc(this.$cookies.get('user-id')).get().then(author => {
-                const data = author.data();
-                data.entreprise._id = this.$fire.firestore.collection('entreprises').doc(doc.id);
-                data.entreprise.rank = 0;
-
-                this.$fire.firestore.collection('users').doc(this.$cookies.get('user-id')).set(data);
-              })
-            }).catch(e => {
-              console.log(e);
-            })
+        // Add new Entreprise
+        this.newDoc = await this.$fire.firestore.collection('entreprises').add({
+          acronyme: this.acronyme,
+          createdAt: this.createdAt,
+          createdBy: this.$cookies.get('user-name'),
+          discord: '',
+          isEurotruckEntreprise: (this.game === 'Eurotruck Simulator 2'),
+          name: this.nameEntreprise,
+          game: this.game,
+          members: this.members.length + 1, // +1 for the creator
+          tempMembers: this.members, // Temporary list of members (Once approved they'll be added to the partner)
+          isApproved: false,
+          ranks: [
+            {
+              name: "Fondateur",
+              priority: 1,
+            },
+            {
+              name: "Administrateur",
+              priority: 2,
+            },
+            {
+              name: "Modérateur",
+              priority: 3,
+            },
+            {
+              name: "Membre",
+              priority: 4,
+            }
+          ],
+          story: this.story,
+          trucksbook: "",
         });
+        
+        // Put image to storage
+        const logoSnap = await this.$fire.storage.ref().child(`entreprises/${this.newDoc.id}/avatar.jpg`).put(this.logo);
+        const bannerSnap = await this.$fire.storage.ref().child(`entreprises/${this.newDoc.id}/banner.jpg`).put(this.banner);
+
+        // Get Logo & Banner image URL
+        const downloadLogo = await logoSnap.ref.getDownloadURL();
+        const downloadBanner = await bannerSnap.ref.getDownloadURL();
+
+        // Set avatar & banner
+        this.$fire.firestore.collection('entreprises').doc(this.newDoc.id).update({
+          avatar: downloadLogo,
+          banner: downloadBanner,
+        });
+
+        // Set user to fondator
+        const author = await this.$fire.firestore.collection('users').doc(this.$cookies.get('user-id')).get();
+
+        const data = author.data();
+        
+        data.entreprise._id = this.$fire.firestore.collection('entreprises').doc(this.newDoc.id);
+        data.entreprise.rank = 0;
+        data.entreprise.joinedAt = new Date();
+
+        author.ref.set(data);
+
+        this.isLoading = false;
       }
 
       if(this.error || this.alreadyExistError) return;
@@ -517,7 +514,7 @@ export default {
       if(newWindow){
         window.open(location);
       }else{
-        this.$router.push('/');
+        this.$router.push('/partner/' + this.newDoc.name.replace('%20', '-'));
       }
     },
   }

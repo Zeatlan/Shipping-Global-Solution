@@ -157,6 +157,12 @@
 
               .flexing {
                 @include display-flex(flex-start);
+
+                .avatar {
+                  background-size: cover;
+                  @include carre(36px);
+                  border-radius: 50px;
+                }
               }
             }
 

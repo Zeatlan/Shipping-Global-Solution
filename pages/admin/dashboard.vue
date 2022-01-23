@@ -53,13 +53,6 @@
                 color="pink"
                 :reversed="true"
               />
-              <StatCard 
-                icon="tractor"
-                title="Missions Farming"
-                :stat="missionsFarming"
-                color="green"
-                :reversed="true"
-              />
             </div>
 
             <div class="last-missions">
@@ -78,13 +71,6 @@
                 :title="`${lastContratMission.depart.country.name} - ${lastContratMission.arrive.country.name}`"
                 :stat="lastContratMission.name"
                 color="pink"
-                :reversed="true"
-              />
-              <StatCard 
-                icon="tractor"
-                title="A définir"
-                stat="A définir"
-                color="green"
                 :reversed="true"
               />
             </div>
@@ -176,10 +162,8 @@ export default {
       waitingApprobation: 0,
       missionsSpeciales: 0,
       missionsContrats: 0,
-      missionsFarming: 0,
       lastSpecialeMission: {},
       lastContratMission: {},
-      lastFarmingMission: {},
       sAdmins: [],
       admins: [],
       mods: [],
@@ -230,19 +214,20 @@ export default {
     // All Special missions
     // And last created mission
     this.$fire.firestore.collection('missions-speciales').orderBy('createdAt', 'desc').get().then(speciales => {
-      this.lastSpecialeMission = speciales.docs[0].data();
-      this.missionsSpeciales = speciales.docs.length;
+      if(speciales.docs.length > 0){
+        this.lastSpecialeMission = speciales.docs[0].data();
+        this.missionsSpeciales = speciales.docs.length;
+      }
     });
 
     // All Contract Missions
     // And last created mission
     this.$fire.firestore.collection('missions-contrats').orderBy('createdAt', 'desc').get().then(contrats => {
-      this.lastContratMission = contrats.docs[0].data();
-      this.missionsContrats = contrats.docs.length;
+      if(contrats.docs.length > 0){
+        this.lastContratMission = contrats.docs[0].data();
+        this.missionsContrats = contrats.docs.length;
+      }
     })
-
-
-    // All Farming Missions
 
   }
 }

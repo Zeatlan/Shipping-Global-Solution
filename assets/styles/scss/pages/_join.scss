@@ -249,33 +249,6 @@
       }
     }
 
-    #preview-logo {
-      @include display-flex;
-      width: 128px;
-
-      border-radius: 100px;
-      border: 2px solid $blue-actif;
-      margin: 1.3rem auto;
-      overflow: hidden;
-
-      img {
-        max-width: 100%;
-        max-height: 128px;
-      }
-    }
-
-    #preview-banner {
-      @include display-flex;
-      width: 100%;
-      margin: 1.3rem auto;
-      overflow: hidden;
-
-      img {
-        max-width: 100%;
-        max-height: 200px;
-      }
-    }
-
     textarea {
       white-space: pre-wrap;
       resize: vertical;

@@ -67,7 +67,7 @@
           </p>
         </div>
 
-        <ButtonAction title="Nous découvrir" @click.native="discover" />
+        <ButtonAction title="Nous découvrir" @click.native="$router.push('/story')" />
       </div>
     </div>
   </div>

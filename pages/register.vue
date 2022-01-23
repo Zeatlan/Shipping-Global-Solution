@@ -187,77 +187,81 @@ export default {
       return downloadURL;
     },
     async createUser() {
+      if(this.isLoading) return;
+
       this.isLoading = true;
       try {
-        await this.$fire.auth.createUserWithEmailAndPassword(
+        // Create new user
+        const cred = await this.$fire.auth.createUserWithEmailAndPassword(
           this.fakemail,
           this.password
-        ).then((cred) => {
-          this.putImage(cred.user.uid, 'avatar').then((urlAvatar) => {
-            this.avatar = urlAvatar;
-           this.putImage(cred.user.uid, 'banner').then((urlBanner) => {
-            this.banner = urlBanner;
-            this.$fire.firestore.collection('users').doc(cred.user.uid).set({
-              username: this.username,
-              avatar: this.avatar,
-              banner: this.banner,
-              discord: this.discord,
-              steam: null,
-              trucksbook: this.trucksbook || null,
-              isPlayingEurotruck: this.eurotruck_simulator,
-              isPlayingFarming: this.farming_simulator,
-              entreprise: {
-                _id: this.$fire.firestore.collection('entreprises').doc('0'),
-                rank: 3
-              },
-              rank: 'Membre', // Membre - Modérateur - Administrateur - Super Administrateur
-              farmingMissions: [],
-              specialMissions: [],
-              contractMissions: [],
-              totalKm: 0,
-              createdAt: new Date(),
-              isValid: true, // TODO: Faire passer à false lors de la version officielle
-            }).then(() => {
-              this.$store.dispatch('sendNotif', {
-                type: 'info',
-                message: `Salut ${this.username} ! Bienvenue sur Shipping Global Solution.`
-              });
+        );
 
-              this.$store.commit('SET_USER', cred.user);
+        // Avatar & Banner
+        this.avatar = await this.putImage(cred.user.uid, 'avatar');
+        this.banner = await this.putImage(cred.user.uid, 'banner');
 
-              const { uid } = cred.user;
+        // New user document [ Firestore ]
+        await this.$fire.firestore.collection('users').doc(cred.user.uid).set({
+          username: this.username,
+          avatar: this.avatar,
+          banner: this.banner,
+          discord: this.discord,
+          steam: null,
+          trucksbook: this.trucksbook || null,
+          isPlayingEurotruck: this.eurotruck_simulator,
+          isPlayingFarming: this.farming_simulator,
+          entreprise: {
+            _id: this.$fire.firestore.collection('entreprises').doc('0'),
+            rank: 3,
+            joinedAt: new Date()
+          },
+          rank: 'Membre', // Membre - Modérateur - Administrateur - Super Administrateur
+          farmingMissions: [],
+          specialMissions: [],
+          contractMissions: [],
+          totalKm: 0,
+          createdAt: new Date(),
+          isValid: true, // TODO: Faire passer à false lors de la version officielle
+        });
 
-              this.$cookies.set('user-name', this.username, {
-                maxAge: 1000 * 3600 * 24 * 30
-              });  
-              this.$cookies.set('user-id', uid, {
-                maxAge: 1000 * 3600 * 24 * 30
-              });
-              this.$cookies.set('user-rank', 'Membre', {
-                maxAge: 1000 * 3600 * 24 * 30
-              });
-              // TODO: Faire passer à false lors de la version officielle
-              this.$cookies.set('user-valid', true, {
-                maxAge: 1000 * 3600 * 24 * 30
-              });
+        // Success
+        this.$store.dispatch('sendNotif', {
+          type: 'info',
+          message: `Salut ${this.username} ! Bienvenue sur Shipping Global Solution.`
+        });
 
-              // Ajouter un nouveau membre à Pole emploi
-              this.$fire.firestore.collection('entreprises').doc('0').get().then(poleEmploi => {
-                const data = poleEmploi.data();
-                data.members += 1;
-                this.$fire.firestore.collection('entreprises').doc('0').set(data);
-              })
 
-              this.isLoading = false;
+        this.$cookies.set('user-name', this.username, {
+          maxAge: 1000 * 3600 * 24 * 30,
+          path:'/'
+        });  
+        this.$cookies.set('user-id', cred.user.uid, {
+          maxAge: 1000 * 3600 * 24 * 30,
+          path:'/'
+        });
+        this.$cookies.set('user-rank', 'Membre', {
+          maxAge: 1000 * 3600 * 24 * 30,
+          path:'/'
+        });
+        // TODO: Faire passer à false lors de la version officielle
+        this.$cookies.set('user-valid', true, {
+          maxAge: 1000 * 3600 * 24 * 30,
+          path:'/'
+        });
 
-              clearInterval(this.interval)
-              this.$router.push('/');
-            }).catch(e => {
-              console.log(e);
-            });
-           });
-          });
-        })
+        this.$store.dispatch('getUserAvatar');
+
+        // Add new member to default partner
+        const poleEmploi = await this.$fire.firestore.collection('entreprises').doc('0').get()
+
+        const data = poleEmploi.data();
+        data.members += 1;
+        this.$fire.firestore.collection('entreprises').doc('0').update(data);
+
+        this.isLoading = false;
+        clearInterval(this.interval);
+        this.$router.push('/');
       } catch (e) {
         this.isUsernameUsed = true;
         this.isLoading = false;

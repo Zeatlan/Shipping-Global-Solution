@@ -2,6 +2,34 @@
 
 Ce document stipulera de toutes les modifications effectuées.
 
+# 1.0.2 • 23/01/2022
+
+### **Ajouts**
+
+- Les utilisateurs peuvent désormais savoir leur ancienneté dans leur entreprise. ( Elle est enregistrée dans la base de donnée mais pas sur l'interface, je pense d'abord refaire la structure de la page de profil pour avoir un meilleur rendu visuel )
+- Ajout de message quand il n'y a rien à afficher dans la liste des missions (et toutes les autres listes du site).
+- Classement fonctionnel sur le `profil`.
+
+### **Modifications**
+
+- Les boutons sur la page de profil / entreprise ne s'affichent pas avant que les autres données soient chargées (De sorte à éviter de cliquer sur un bouton qui n'avait pas pour effet d'être appuyé).
+- Redirection vers notre profil quand l'on a fini de modifier.
+
+### **Fixs**
+
+- Ajout du lien sur le bouton "Nous Découvrir" en bas de page.
+- Fix de l'inscription ( L'image de profil ne s'affichait pas correctement une fois l'inscription terminée ).
+- Fix édition d'utilisateur qui pouvait crash + l'ajout d'une redirection vers la liste des utilisateurs une fois l'édition terminée.
+- Fix du profil ( Le bouton de modification de profil pouvait ne pas apparaître ).
+- Fix des notifications, il n'y avait rien d'encombrant ou de gênant pour les utilisateurs mais l'erreur dans la console me perturbait.
+- Nous ne pouvons plus rejoindre une entreprise si nous sommes propriétaire d'une autre ( ça évitera les entreprises à l'abandon ).
+- Fix des cookies, si vous êtes sur la `v1.0.2` et que vous rencontrez des erreurs comme des pages qui affichent une erreur, supprimez vos cookies. (Vous n'aurez besoin de le faire qu'une seule fois, si le problème persiste alors il provient sûrement d'autres choses).
+
+### **Suppressions**
+
+- Fusion `mission farming` => `mission contrat` car les deux avaient les mêmes fonctionnalités.
+- Suppression de la dupplication des preview dans la création d'entreprise.
+
 ## 1.0.1 • 23/01/2022
 
 ### **Ajouts**

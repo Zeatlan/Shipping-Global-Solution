@@ -6,7 +6,7 @@ importScripts(
 importScripts(
   'https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js'
 )
-firebase.initializeApp({"apiKey":"AIzaSyDfEaf9suBZMIuCxMQAngSvBsEb1K5J-V4","authDomain":"shipping-global-solution-62fc7.firebaseapp.com","databaseURL":"https:\u002F\u002Fshipping-global-solution-62fc7-default-rtdb.europe-west1.firebasedatabase.app","projectId":"shipping-global-solution-62fc7","storageBucket":"shipping-global-solution-62fc7.appspot.com","messagingSenderId":"428417418481","appId":"1:428417418481:web:27d5ac99fed24afc021550","measurementId":"G-QHM1V54M02"})
+firebase.initializeApp({"apiKey":"AIzaSyDP6cYqdnH5Y40Rrwo_6rQmIGefbqV4vz0","authDomain":"dev-sgs.firebaseapp.com","databaseURL":"https:\u002F\u002Fdev-sgs.europe-west3.firebasedatabase.app","projectId":"dev-sgs","storageBucket":"dev-sgs.appspot.com","messagingSenderId":"484679867993","appId":"1:484679867993:web:f130fe69370f94a94bdb48","measurementId":"G-QHM1V54M02"})
 
 // Initialize authService
 const authService = firebase.auth()

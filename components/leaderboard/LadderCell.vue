@@ -3,13 +3,13 @@
     <td class="rank">{{ rank }}</td>
     <td>
       <div class="flexing">
-        <img :src="member.avatar" :alt="`Avatar de ${member.username}`" width="36"/>
+        <div class="avatar avatar-member" :style="`background:url(${member.avatar}) no-repeat center/cover;`" />
         <nuxt-link :to="`/user/${member.id}`">{{ member.username }}</nuxt-link>
       </div>
     </td>
     <td>
       <div class="flexing">
-        <img :src="entreprise.avatar" width="36" />
+        <div class="avatar avatar-entreprise" :style="`background:url(${entreprise.avatar}) no-repeat center/cover;`" />
         <nuxt-link :to="`/partner/${entreprise.id}`">{{ entreprise.name }}</nuxt-link>
       </div>
     </td>

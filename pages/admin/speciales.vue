@@ -17,6 +17,11 @@
             :editable="true"
           />
         </div>
+
+        <div v-show="missions.length === 0" class="nothing-inside">
+          <Font-awesome-icon :icon="['fas', 'question-circle']" />
+          <h1>Aucune mission ? Pourquoi ne pas en <nuxt-link to="/admin/add/speciale">ajouter une nouvelle</nuxt-link> ?</h1>
+        </div>
       </div>
     </div>
   </div>

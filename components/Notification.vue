@@ -65,9 +65,9 @@ export default {
         left: -100,
         bottom: -100
       }).then(() => {
+        this.$el.parentNode.removeChild(this.$el);
         this.$destroy();
         this.$store.commit('REMOVE_NOTIFICATION', toRemove);
-        this.$el.parentNode.removeChild(this.$el);
       })
     }
   }

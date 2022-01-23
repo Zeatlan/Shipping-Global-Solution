@@ -5,31 +5,7 @@
     }
 
     .wrapper-body {
-      .nothing-inside {
-        width: 100%;
-        text-align: center;
-        svg {
-          font-size: $biggest-size;
-          background: $gray-100;
-          border: 2px solid $gray-100;
-          border-radius: 50px;
-          path {
-            color: $gray-40;
-          }
-        }
-        h1 {
-          color: $gray-100;
-          font-weight: 500;
-
-          a {
-            color: $blue-90;
-
-            &:hover {
-              color: $blue-actif;
-            }
-          }
-        }
-      }
+      // Nothing inside
     }
   }
 }

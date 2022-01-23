@@ -11,6 +11,9 @@
               :mission="speciale"
               :mission-id="speciale.id"
             />
+            <div v-show="mSpeciales.length === 0" class="placeholder white-box">
+              Il semblerait qu'il n'y ait pas encore de <span>mission spéciale</span> à afficher.
+            </div>
           </Tab>
           <!-- Liste des missions contrats -->
           <Tab title="Missions Contrats">
@@ -18,6 +21,9 @@
               :mission="contrat"
               :mission-id="contrat.id"
             />
+            <div v-show="mContrats.length === 0" class="placeholder white-box">
+              Il semblerait qu'il n'y ait pas encore de <span>mission contrat</span> à afficher.
+            </div>
           </Tab>
           <!-- Liste des missions farming -->
           <Tab title="Missions Farming">

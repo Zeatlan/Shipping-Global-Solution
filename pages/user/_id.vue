@@ -6,7 +6,7 @@
       <div class="header">
         <!-- Banner -->
         <div v-if="user.banner" class="banner" :style="`background: url('${user.banner}') no-repeat center/cover;`">
-          <Button v-if="$cookies.get('user-name') === slug.id && user.isValid" @click.native="$router.push('/user/edit/')">Modifier le profil</Button>
+          <Button v-if="$cookies.get('user-id') === slug.id && user.isValid" @click.native="$router.push('/user/edit/')">Modifier le profil</Button>
         </div>
         <PuSkeleton v-else width="100%" height="200px" />
 
@@ -66,10 +66,10 @@
 
             <div class="general-info__stats">
               <InfoCard :icon="require('@/assets/img/icons/calendar.png')" title="Création du compte" :body="createdAt" />
-              <InfoCard :icon="require('@/assets/img/icons/crown.png')" title="Classement missions" body="1er sur 24" />
+              <InfoCard :icon="require('@/assets/img/icons/crown.png')" title="Classement missions" :body="ranked" />
               <InfoCard :icon="require('@/assets/img/icons/distance.png')" title="Kilomètres parcourus" :body="user.totalKm" />
               <InfoCard :icon="require('@/assets/img/icons/pushcart.png')" title="Livraisons effectuées" :body="totalMissions" />
-              <InfoCard :icon="entrepriseAvatar" class="partner-card" is-div title="Entreprise" :body="userEntreprise.name" />
+              <InfoCard :icon="userEntreprise.avatar" class="partner-card" is-div title="Entreprise" :body="userEntreprise.name" />
             </div>
           </div>
 
@@ -133,13 +133,21 @@ export default {
       userId: null,
       createdAt: '',
       userEntreprise: {},
-      entrepriseAvatar: '',
       missionsContracts: [],
       missionsSpeciales: [],
       totalMissions: 0,
+      userRanking: 0,
+      totalUser: 0,
     }
   },
-  mounted() {
+  computed: {
+    ranked() {
+      const suffix = (this.userRanking === 1) ? 'er' : 'ème';
+
+      return this.userRanking + suffix + " sur " + this.totalUser;
+    }
+  },
+  created() {
     this.getUserInfo();
   },
   methods: {
@@ -155,7 +163,6 @@ export default {
         await this.$fire.firestore.collection('users').doc(this.slug.id).get().then((snapshot) => {
 
           this.user = snapshot.data();
-
           this.userId = snapshot.id;
 
           // Récupérer la date de création du compte
@@ -165,19 +172,15 @@ export default {
           // Récupérer le nombre total de missions + leurs infos
           this.fetchMissions(this.user.contractMissions, 'missions-contrats')
           this.fetchMissions(this.user.specialMissions, 'missions-speciales')
+          this.fetchLeaderboard();
           // this.fetchMissions(this.user.farmingMissions)
 
           // this.missions.push(this.user.contractMissions, this.user.farmingMissions, this.user.specialMissions);
         })
         
         // Récupération de l'entreprise de l'utilisateur
-        await this.$fire.firestore.collection('entreprises').doc(this.user.entreprise._id.id).get().then((snapshotEntreprise) => {
-          this.userEntreprise = snapshotEntreprise.data();
-
-          this.$fire.storage.ref().child(`entreprises/${snapshotEntreprise.id}/avatar.jpg`).getDownloadURL().then((foundURL) => {
-            this.entrepriseAvatar = foundURL;
-          });
-        }) 
+        const snapshotEntreprise = await this.$fire.firestore.collection('entreprises').doc(this.user.entreprise._id.id).get()
+        this.userEntreprise = snapshotEntreprise.data();
       }catch(e) {
         console.log(e);
       }
@@ -192,6 +195,16 @@ export default {
           else if(database === 'missions-speciales') this.missionsSpeciales.push(mission);
         });
       }
+    },
+    async fetchLeaderboard() {
+      const snapLadder = await this.$fire.firestore.collection('users').orderBy('totalKm', 'desc').get();
+
+      this.totalUser = snapLadder.docs.length;
+      snapLadder.docs.forEach(userDoc => {
+        if(userDoc.id === this.slug.id) {
+          this.userRanking = snapLadder.docs.findIndex(el => el.id === userDoc.id) + 1;
+        }
+      })
     }
   }
 }

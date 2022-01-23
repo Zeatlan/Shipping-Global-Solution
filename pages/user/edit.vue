@@ -397,14 +397,18 @@ export default {
       }
 
       // Mise à jour du nom d'affichage
-      this.$fire.firestore.collection('users').doc(this.$fire.auth.currentUser.uid).set(this.user).then(() => {
-        this.$store.dispatch('sendNotif', {
-          message: `Vos informations ont été modifiés dans la base de données.`
-        });
-        this.$cookies.set('user-name', this.user.username);
-        this.needToBeSaved = false;
-        this.loading = false;
+      await this.$fire.firestore.collection('users').doc(this.$fire.auth.currentUser.uid).update(this.user);
+
+      this.$store.dispatch('sendNotif', {
+        message: `Vos informations ont été modifiés dans la base de données.`
       });
+      this.$cookies.set('user-name', this.user.username, {
+        maxAge: 1000 * 3600 * 24 * 30,
+        path:'/'
+      });
+      this.needToBeSaved = false;
+      this.loading = false;
+      this.$router.push(`/user/${this.$cookies.get('user-id')}`);
     }
   }
 }

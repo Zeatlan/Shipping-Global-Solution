@@ -118,6 +118,31 @@ h3 {
     color: $blue-actif;
   }
 }
+.nothing-inside {
+  width: 100%;
+  text-align: center;
+  svg {
+    font-size: $biggest-size;
+    background: $gray-100;
+    border: 2px solid $gray-100;
+    border-radius: 50px;
+    path {
+      color: $gray-40;
+    }
+  }
+  h1 {
+    color: $gray-100 !important;
+    font-weight: 500;
+
+    a {
+      color: $blue-90;
+
+      &:hover {
+        color: $blue-actif;
+      }
+    }
+  }
+}
 
 .placeholder {
   padding: 3rem;
@@ -130,6 +155,14 @@ h3 {
     color: #fff;
     border-radius: 3px;
     padding: 0.3rem;
+  }
+
+  a {
+    color: $blue-actif;
+
+    &:hover {
+      color: $pink-100;
+    }
   }
 }
 

@@ -152,24 +152,6 @@ export default {
     return {
       slug: this.$route.params,
       user: {},
-      successNotif: {
-        icon: 'check',
-        color: 'green',
-        title: 'Succès',
-        message: 'Ceci est un succès'
-      },
-      errorNotif: {
-        icon: 'times',
-        color: 'red',
-        title: 'Erreur',
-        message: 'Ceci est un succès'
-      },
-      dataNotif: {
-        icon: 'robot',
-        color: 'blue',
-        title: '::SERVER::',
-        message: 'Ceci est une information du serveur'
-      },
       bannerFile: null,
       avatarFile: null,
       username: '',
@@ -452,6 +434,7 @@ export default {
           this.user.banner = URL;
         })
       }
+
       if(this.avatarFile && this.avatarFile !== 'default') {
         await this.$fire.storage.ref().child(`users/${this.slug.uid}/avatar.jpg`).put(this.avatarFile);
         await this.$fire.storage.ref().child(`users/${this.slug.uid}/avatar.jpg`).getDownloadURL().then(URL => {
@@ -466,35 +449,39 @@ export default {
 
       // Mise à jour du nom d'affichage
       this.$fire.firestore.collection('users').doc(this.slug.uid).set(this.user).then(() => {
-        this.$store.dispatch('sendNotif',this.dataNotif, `Les informations ont été modifiées dans la base de données.`);
+        this.$store.dispatch('sendNotif', { type: 'robot', message: `Les informations ont été modifiées dans la base de données.` });
         this.needToBeSaved = false;
         this.loading = false;
       });
 
       // Mise à jour de la team
-      // Ajout d'un membre dans la team
-      if(!this.team.id) {
-        this.$fire.firestore.collection('team').add({
-          avatar: this.user.avatar,
-          roles: this.team.roles,
-          username: this.user.username
-        })
-      }else{
-        // Suppression du membre dans la team
-        if(this.team.roles.length === 0)
-          this.$fire.firestore.collection('team').doc(this.team.id).delete();
-        
-        // Mettre à jour l'utilisateur dans la team
-        if(this.team.roles.length > 0)
-          this.$fire.firestore.collection('team').doc(this.team.id).update(this.team);
-      }
-       
 
-      this.$fire.firestore.collection('team').where('username', '==', this.user.username).get().then(teams => {
-        if(teams.docs.length > 0) this.team = { id: teams.docs[0].id, ...teams.docs[0].data() }
-      })
-      
-      console.log(this.team);
+      // Ne pas continuer si nous n'avons pas modifié la team
+      if(Object.keys(this.team).length > 0) {
+        // Ajout d'un membre dans la team
+        if(!this.team.id && this.team.roles.length > 0) {
+          this.$fire.firestore.collection('team').add({
+            avatar: this.user.avatar,
+            roles: this.team.roles,
+            username: this.user.username
+          })
+        }else{
+          // Suppression du membre dans la team
+          if(this.team.roles.length === 0 && this.team.id)
+            this.$fire.firestore.collection('team').doc(this.team.id).delete();
+          
+          // Mettre à jour l'utilisateur dans la team
+          if(this.team.roles.length > 0 && this.team.id)
+            this.$fire.firestore.collection('team').doc(this.team.id).update(this.team);
+        }
+        
+
+        this.$fire.firestore.collection('team').where('username', '==', this.user.username).get().then(teams => {
+          if(teams.docs.length > 0) this.team = { id: teams.docs[0].id, ...teams.docs[0].data() }
+        })
+      }
+
+      this.$router.push('/admin/users');
     }
   }
 }

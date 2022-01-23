@@ -90,6 +90,7 @@ sw.*
 *.swp
 
 changelog.html
+background-header.jpg
 memo.json
 .firebaserc
 .eslintrc.js

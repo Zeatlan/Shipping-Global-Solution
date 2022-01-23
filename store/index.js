@@ -27,6 +27,13 @@ const actions = {
         uid,
         email
       });
+
+      ctx.commit('SET_USERNAME', email.split('@')[0])
+
+      this.$fire.firestore.collection('users').doc(uid).get().then(user => {
+        const rank = user.data().rank;
+        ctx.commit('SET_RANK', rank);
+      })
     }
   },
   async resetInfoFromCookies({ commit, dispatch }, { user, username, rank }) {

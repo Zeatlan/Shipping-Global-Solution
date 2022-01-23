@@ -140,6 +140,11 @@
               >
               </textarea>
             </div>
+
+            <!-- Suppression de l'entreprise -->
+            <!-- <div v-if="actualUser.entreprise.rank === 0" class="data__row">
+              <Bouton color="red">Supprimer l'entreprise</Bouton>
+            </div> -->
             
             <div class="change-button">
               <Button class="change-button" @click.native="saveData"
@@ -158,7 +163,6 @@
           </div>
 
           <div v-if="memberlist.length > 0" class="users-card">
-            
               <user-action-card 
                 v-for="(member, index) in memberlist"
                 :key="index"
@@ -166,8 +170,6 @@
                 :controller-rank="actualUser.entreprise.rank"
                 @reload="reloadMemberlist"
               />
-            
-
           </div>
 
 
@@ -339,12 +341,16 @@ export default {
           background: '#2fb74d',
           onComplete: () => {
             element.parentElement.removeChild(element);
+
             this.$fire.firestore.collection('users').doc(request.userId).get().then(user => {
               const data = user.data();
 
               data.entreprise.rank = 3;
               data.entreprise._id = this.$fire.firestore.collection('entreprises').doc(request.entreprise.id);
-              this.$fire.firestore.collection('users').doc(user.id).set(data);
+              data.joinedAt = new Date();
+
+              user.ref.update(data);
+              
               this.$fire.firestore.collection('join-request').doc(request.id).delete();
               this.$store.dispatch('sendNotif', {
                 type: 'success',

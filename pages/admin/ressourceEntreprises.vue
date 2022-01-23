@@ -5,7 +5,7 @@
       <Button @click.native="$router.push('/admin/add/ressourceEntreprises')">Ajouter une destination</Button>
       <div class="wrapper-body container">
         
-        <table class="white-box">
+        <table v-show="destinations.length > 0" class="white-box">
           <thead>
             <th>Nom</th>
             <th>Localisations</th>
@@ -27,6 +27,11 @@
             </tr>
           </tbody>
         </table>
+
+        <div v-show="destinations.length === 0" class="nothing-inside">
+          <Font-awesome-icon :icon="['fas', 'question-circle']" />
+          <h1>Aucune destination ? Pourquoi ne pas en <nuxt-link to="/admin/add/ressourceEntreprises">ajouter une nouvelle</nuxt-link> ?</h1>
+        </div>
 
       </div>
     </div>

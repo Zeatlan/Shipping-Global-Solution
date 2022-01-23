@@ -48,13 +48,6 @@
         </li>
 
         <li v-if="['Développeur', 'Super Administrateur', 'Administrateur'].includes($cookies.get('user-rank'))">
-          <nuxt-link to="/">
-            <Font-awesome-icon :icon="['fas', 'tractor']" />
-            <span v-show="isHovering">Missions farming</span>
-          </nuxt-link>
-        </li>
-
-        <li v-if="['Développeur', 'Super Administrateur', 'Administrateur'].includes($cookies.get('user-rank'))">
           <nuxt-link to="/admin/ressources">
             <Font-awesome-icon :icon="['fas', 'warehouse']" />
             <span v-show="isHovering">Ressources</span>

@@ -61,13 +61,14 @@ export default {
           margin: 0,
         })
 
-        this.tl.to(icon, 0.3, {
+        this.tl.to(icon, 0.1, {
           position: 'absolute',
           minHeight: '100%',
           borderRadius: 0,
+          left: 0,
           color: '#5e7fc5'
         })
-        .to(icon, 0.3, {
+        .to(icon, 0.2, {
           width: '100%',
         })
       }
@@ -90,13 +91,13 @@ export default {
           flexDirection: 'column'
         })
 
-        this.tl.to(icon, 0.3, {
+        this.tl.to(icon, 0.2, {
           position: 'relative',
           width: '64px',
           borderRadius: '100px',
           color: 'white'
         })
-        .to(icon, 0.3, {
+        .to(icon, 0.1, {
           minHeight: '64px',
         })
       }

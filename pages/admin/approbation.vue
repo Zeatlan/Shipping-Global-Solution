@@ -17,7 +17,7 @@
                 <th>Date de complétion</th>
                 <th>Actions</th>
               </thead>
-              <tbody>
+                <tbody>
                 <tr v-for="(s, idx) in speciales" :key="idx">
                   <td>{{ s.mission }}</td>
                   <td>{{ s.user }}</td>
@@ -32,6 +32,10 @@
                 </tr>
               </tbody>
             </table>
+
+            <div v-else class="placeholder white-box">
+              Aucun formulaire n'a été trouvé, attendez que des membres complètent leurs missions spéciales.
+            </div>
 
           </Tab>
 
@@ -59,6 +63,10 @@
                 </tr>
               </tbody>
             </table>
+
+            <div v-else class="placeholder white-box">
+              Aucun formulaire n'a été trouvé, attendez que des membres complètent leurs missions contrats.
+            </div>
 
           </Tab>
         </Tabs>

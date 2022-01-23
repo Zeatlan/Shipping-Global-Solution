@@ -87,20 +87,24 @@ export default {
         });
 
         this.$cookies.set('user-name', this.username.toLowerCase(), {
-          maxAge: 1000 * 3600 * 24 * 30
+          maxAge: 1000 * 3600 * 24 * 30,
+          path:'/'
         });  
         this.$cookies.set('user-id', uid, {
-          maxAge: 1000 * 3600 * 24 * 30
+          maxAge: 1000 * 3600 * 24 * 30,
+          path:'/'
         });
 
         this.$fire.firestore.collection('users').doc(uid).get().then(user => {
           this.$store.commit('SET_USERNAME', user.data().username);
           this.$cookies.set('user-rank', user.data().rank, {
-            maxAge: 1000 * 3600 * 24 * 30
+            maxAge: 1000 * 3600 * 24 * 30,
+            path:'/'
           });
 
           this.$cookies.set('user-valid', user.data().isValid, {
-            maxAge: 1000 * 3600 * 24 * 30
+            maxAge: 1000 * 3600 * 24 * 30,
+            path:'/'
           });
 
           this.$store.commit('SET_RANK', user.data().rank);
