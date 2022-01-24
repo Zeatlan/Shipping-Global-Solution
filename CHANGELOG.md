@@ -2,6 +2,13 @@
 
 Ce document stipulera de toutes les modifications effectuées.
 
+# 1.0.3.1 25/01/2022
+
+#### **Fixs**
+
+- Page de profil cassée ( Wtf ?? ).
+- Fix user tooltip ( Agrandissement de la box )
+
 # 1.0.3 • 25/01/2022
 
 ### **Ajouts**

@@ -16,7 +16,7 @@
     bottom: 0;
     margin: auto;
     z-index: 99;
-    width: 400px;
+    width: 425px;
     height: 500px;
     background: $gray-10;
     border-radius: 5px;
@@ -24,7 +24,7 @@
 
     // Media Queries : Extra small
     @include xs {
-      width: 325px;
+      width: 350px;
     }
 
     &__header {

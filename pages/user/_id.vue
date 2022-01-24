@@ -118,7 +118,7 @@
               :mission="mission.data()"
               :mission-id="mission.id"
             />
-            <p v-if="missionsContracts.length === 0" class="historique__info">Aucune mission pour le moment.</p>
+            <p v-if="!missionsContracts.length && !missionsSpeciales.length" class="historique__info">Aucune mission pour le moment.</p>
           </div>
           <div v-else class="historique__body">
             <PuSkeleton width="100%" height="156px" />

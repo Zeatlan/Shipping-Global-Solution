@@ -207,6 +207,7 @@
     }
 
     .infos {
+      @include display-flex(stretch, stretch, column);
       flex: 2;
     }
 
