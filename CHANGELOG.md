@@ -30,6 +30,7 @@ Ce document stipulera de toutes les modifications effectuées.
 - Ajustement des missions spéciales : Nous n'affichons que les remorques qui seront utilisées dans la mission.
 - Fix `mission spéciale`, les champs se duppliquaient et donnaient un rendu catastrophique.
 - Fix `mission spéciale` (Oui encore), le résumé de la mission retourne désormais à la ligne comme nous l'avions tapé.
+- Fix de la page histoire.
 
 # 1.0.2 • 23/01/2022
 

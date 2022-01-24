@@ -1,7 +1,7 @@
 <template>
   <div>
     <nuxt-link v-if="!isCard" class="user-link"
-      :to="`user/${user.id}`"
+      :to="`/user/${user.id}`"
       @mouseenter.native="$emit('cell-hovered', { hovered: true, user: user, el: $el})"
       @mouseleave.native="$emit('cell-hovered', { hovered: false, user: user, el: $el})"
     >
@@ -10,7 +10,7 @@
     </nuxt-link>
 
     <nuxt-link v-else class="user-link-card"
-      :to="`user/${user.id}`"
+      :to="`/user/${user.id}`"
       @mouseenter.native="$emit('cell-hovered', { hovered: true, user: user, el: $el})"
       @mouseleave.native="$emit('cell-hovered', { hovered: false, user: user, el: $el})">
       <div class="user-pp" :class="size" :style="`background: url('${user.avatar}') no-repeat center/cover;`" />
