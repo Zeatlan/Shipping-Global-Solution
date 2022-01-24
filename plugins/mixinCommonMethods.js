@@ -23,7 +23,12 @@ if(!Vue.__global_mixin__) {
         const finalDate = tableTwo[2] +"-"+ tableTwo[1] +"-"+ tableTwo[0] + timezone;
   
         return finalDate;
+      },
+      // Convert date to dd/mm/yyyy
+      convertDateHorizontalBar(date) {
+        const dateFormatted = new Date(date.seconds * 1000);
+        return dateFormatted.getDate() +  '/' +  (dateFormatted.getMonth()+1) + '/' + dateFormatted.getFullYear();
       }
-    }
+    },
   })
 }

@@ -1,0 +1,60 @@
+.user-link {
+  @include display-flex(flex-start);
+  column-gap: 0.3rem;
+
+  & > .user-pp,
+  &-card > .user-pp {
+    border-radius: 50px;
+    @include carre(16px);
+
+    &.small {
+      @include carre(12px);
+    }
+
+    &.medium {
+      @include carre(24px);
+    }
+
+    &.large {
+      @include carre(32px);
+    }
+
+    &.xl {
+      @include carre(48px);
+    }
+
+    &.xxl {
+      @include carre(64px);
+    }
+
+    &.xxxl {
+      @include carre(92px);
+    }
+  }
+
+  // For cards
+  &-card {
+    @include display-flex(center, center, column);
+
+    & > .user-pp {
+      border-radius: 5px;
+      border: 3px solid transparent;
+      @include transition-ease;
+    }
+
+    & > h3 {
+      color: $blue-50;
+      line-height: $h3-size;
+    }
+
+    & > span {
+      color: $gray-70;
+    }
+
+    &:hover {
+      & > .user-pp {
+        border: 3px solid $blue-40;
+      }
+    }
+  }
+}

@@ -55,7 +55,7 @@
           @include display-flex(flex-start, top, column);
 
           h1 {
-            color: $blue-100;
+            color: $blue-90;
             margin: 0;
 
             // Media Queries : Small
@@ -65,8 +65,26 @@
           }
 
           p {
-            color: $gray-100;
+            color: $gray-70;
             margin: 0.4rem 0;
+          }
+
+          .creator {
+            @include display-flex(flex-start);
+            column-gap: 0.5rem;
+            a {
+              @include display-flex(flex-start);
+              column-gap: 0.2rem;
+              color: $blue-60;
+
+              img {
+                border-radius: 100%;
+              }
+
+              &:hover {
+                color: $blue-40;
+              }
+            }
           }
         }
       }
@@ -134,7 +152,7 @@
         h3 {
           margin: 0.4rem 0;
           a {
-            color: set-link-color($blue-actif);
+            color: set-link-color($blue-60);
           }
         }
       }
@@ -168,7 +186,7 @@
           right: 0;
           width: 35%;
           height: 3px;
-          background: $blue-actif;
+          background: $blue-60;
           border-radius: 100px;
         }
       }

@@ -1,4 +1,4 @@
-$colors: $blue-actif, $pink-100, $green-100, $yellow-100;
+$colors: $blue-60, $pink-60, $green-70, $yellow-60;
 
 a {
   color: white;
@@ -18,8 +18,8 @@ a {
 
   .navbar {
     width: 100%;
-    color: $blue-60;
-    background-color: $blue-100;
+    color: $blue-20;
+    background-color: $blue-90;
 
     & > .container {
       height: 100px;
@@ -59,20 +59,20 @@ a {
 
         &:hover {
           cursor: pointer;
-          color: $blue-80;
+          color: $blue-40;
         }
 
         a {
-          color: $blue-60;
+          color: $blue-20;
 
           &:hover {
-            color: $blue-80;
+            color: $blue-40;
           }
         }
       }
 
       .active {
-        color: $blue-80;
+        color: $blue-40;
       }
     }
 
@@ -99,11 +99,11 @@ a {
             font-size: $menu-size;
 
             .admin {
-              color: $green-80;
+              color: $green-50;
             }
 
             .logout {
-              color: $red-80;
+              color: $red-40;
             }
           }
         }
@@ -112,7 +112,7 @@ a {
           width: 48px;
           height: 48px;
           img {
-            border: 2px solid set-text-color($blue-100);
+            border: 2px solid set-text-color($blue-90);
             border-radius: 100%;
             width: 48px;
             height: 48px;
@@ -185,7 +185,7 @@ a {
         &.logged {
           align-items: center;
           justify-content: space-between;
-          background: $gray-40;
+          background: $gray-30;
           padding: 0.7rem 2rem;
           border-radius: 5px;
           .text {
@@ -198,11 +198,11 @@ a {
               font-size: $menu-size;
 
               .admin {
-                color: $green-80;
+                color: $green-50;
               }
 
               .logout {
-                color: $red-80;
+                color: $red-40;
               }
             }
           }
@@ -211,7 +211,7 @@ a {
             width: 62px;
             height: 62px;
             img {
-              border: 2px solid set-text-color($blue-100);
+              border: 2px solid set-text-color($blue-90);
               border-radius: 100%;
               width: 62px;
               height: 62px;
@@ -227,7 +227,7 @@ a {
         z-index: 999;
 
         h1 {
-          color: $blue-actif;
+          color: $blue-60;
           margin: 2rem 0;
         }
 
@@ -242,7 +242,7 @@ a {
             cursor: pointer;
 
             &:not(:last-of-type) {
-              border-bottom: 1px solid $gray-100;
+              border-bottom: 1px solid $gray-70;
             }
           }
         }
@@ -254,10 +254,10 @@ a {
   .dropdown-list {
     position: absolute;
     width: 100%;
-    color: set-text-color($blue-100);
-    background: $blue-100;
+    color: set-text-color($blue-90);
+    background: $blue-90;
     padding: 3rem 0;
-    border-top: 1px solid $blue-120;
+    border-top: 1px solid $blue-100;
     z-index: 999;
 
     .container {
@@ -274,8 +274,8 @@ a {
         }
 
         p {
-          color: $blue-80;
-          margin: 0;
+          color: $blue-30;
+          font-size: $menu-size;
         }
       }
 
@@ -293,7 +293,7 @@ a {
 
             p {
               margin: 0.2rem 0 0 0;
-              color: $blue-60;
+              color: $blue-20;
             }
 
             // Logique de tous les menus

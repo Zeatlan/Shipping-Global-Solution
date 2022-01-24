@@ -1,7 +1,7 @@
 .big-block {
   position: relative;
   text-align: center;
-  background-color: $blue-120;
+  background-color: $blue-100;
   border-radius: 25px;
   padding: 4em 1.75em;
   margin-top: 5em;
@@ -36,7 +36,7 @@
 
     p {
       font-size: $h3-size;
-      color: $blue-80;
+      color: $blue-30;
       font-weight: 700;
       line-height: $h3-size + 6;
     }
@@ -79,7 +79,7 @@
 // Join us
 
 .join-us {
-  background-color: $blue-100;
+  background-color: $blue-90;
 
   .container {
     @include display-flex(space-between);
@@ -108,32 +108,9 @@
       }
 
       p {
-        color: $blue-80;
+        color: $blue-30;
         font-size: $menu-size;
       }
     }
-  }
-}
-
-.incroyable-classe {
-  color: white;
-  width: 100%;
-  padding: 50px 0;
-  text-align: center;
-
-  @include xs {
-    background: red;
-  }
-  @include sm {
-    background: blue;
-  }
-  @include md {
-    background: green;
-  }
-  @include lg {
-    background: purple;
-  }
-  @include xl {
-    background: orange;
   }
 }

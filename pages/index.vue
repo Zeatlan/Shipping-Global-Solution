@@ -1,6 +1,18 @@
 <template>
   <div>
     <div class="container">
+      
+      <!-- <div class="wrapper-color">
+        <div 
+          v-for="color in ['blue', 'gray', 'pink', 'red', 'green', 'purple', 'yellow']"
+          :key="color"
+          class="colors">
+          <div 
+            v-for="i in ['100', '90', '80', '70', '60', '50', '40', '30']" 
+            :key="i" 
+          :class="`box ${color}-${i}`"></div>
+        </div>
+      </div> -->
 
       <!-- Presentation block -->
       <div class="big-block">

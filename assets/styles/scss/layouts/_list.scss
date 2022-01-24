@@ -1,6 +1,6 @@
 .list {
   h1 {
-    color: $blue-100;
+    color: $blue-90;
     margin-top: 3rem;
 
     // Media Queries : Small
@@ -39,7 +39,7 @@
       h2 {
         position: relative;
         width: fit-content;
-        color: $blue-100;
+        color: $blue-90;
 
         .line {
           position: absolute;
@@ -48,7 +48,7 @@
           display: block;
           width: 30px;
           height: 3px;
-          background-color: $blue-100;
+          background-color: $blue-90;
         }
 
         // Media Queries : Medium

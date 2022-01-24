@@ -5,7 +5,7 @@
     bottom: 0;
     width: 100%;
     padding: 1.3rem 0;
-    background: $blue-actif;
+    background: $blue-60;
     color: white;
     z-index: 999;
 
@@ -40,7 +40,7 @@
 
   .back-link {
     @include display-flex(space-around);
-    background: $blue-actif;
+    background: $blue-60;
     padding: 1rem;
     margin-top: 4rem;
     width: 250px;
@@ -48,7 +48,7 @@
 
     &:hover {
       color: white;
-      background: $blue-actif-lighter;
+      background: $blue-50;
     }
   }
 
@@ -57,11 +57,11 @@
   }
 
   h1 {
-    color: $blue-actif;
+    color: $blue-60;
   }
 
   p {
-    color: $gray-100;
+    color: $gray-70;
   }
 
   .banner {
@@ -69,7 +69,7 @@
       position: relative;
       width: 450px;
       color: white;
-      background: $red-100;
+      background: $red-60;
       padding: 0.4rem;
       margin: 0.7rem 0;
       overflow: hidden;
@@ -88,7 +88,7 @@
         right: -30px;
         width: 90px;
         height: 50px;
-        background: $gray-40;
+        background: $gray-20;
         transform: rotate(50deg);
 
         // Media Queries : Extra Small
@@ -98,7 +98,7 @@
       }
 
       &.blue {
-        background: $blue-actif;
+        background: $blue-60;
       }
     }
 
@@ -136,7 +136,7 @@
       @include center-div;
       @include carre(124px);
       border-radius: 100px;
-      border: 3px solid $gray-40;
+      border: 3px solid $gray-30;
 
       // Media Queries : small
       @include sm {
@@ -168,25 +168,25 @@
     .avatar-input {
       border-radius: 5px;
       padding: 1em 0.75em;
-      background: $blue-actif;
+      background: $blue-60;
       color: white;
       border: 0;
       cursor: pointer;
       @include transition-ease;
 
       &:hover {
-        background: $blue-actif-lighter;
+        background: $blue-50;
       }
     }
 
     button {
-      color: $gray-100;
+      color: $gray-70;
     }
   }
 
   h3 {
     color: white;
-    background: $blue-actif;
+    background: $blue-60;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     margin-top: 0;
@@ -208,7 +208,7 @@
       text-align: right;
 
       .red {
-        background: $red-100;
+        background: $red-60;
       }
     }
 
@@ -246,7 +246,7 @@
 
         svg {
           cursor: pointer;
-          color: $gray-100;
+          color: $gray-70;
         }
       }
 
@@ -259,7 +259,7 @@
       .user-action-card {
         @include display-flex(space-between);
         margin: 0.4rem 1rem;
-        background: $gray-40;
+        background: $gray-10;
         border-radius: 5px;
         padding: 0.7rem;
 
@@ -281,7 +281,7 @@
 
         &__details {
           a {
-            color: $blue-actif;
+            color: $blue-60;
             font-size: $h3-size;
           }
         }
@@ -293,15 +293,15 @@
             margin: 0 0.3rem;
           }
           .promote {
-            color: $green-100;
+            color: $green-70;
           }
 
           .demote {
-            color: $blue-100;
+            color: $blue-90;
           }
 
           .kick {
-            color: $red-100;
+            color: $red-60;
           }
         }
       }
@@ -316,7 +316,7 @@
       border-collapse: collapse;
       @include center-div;
       th {
-        color: $gray-100;
+        color: $gray-70;
         text-align: left;
 
         &:first-of-type {
@@ -332,7 +332,7 @@
       }
 
       tr {
-        background: $gray-40;
+        background: $gray-30;
         margin: 10rem 0;
         border-bottom: 5px solid $gray-20;
 
@@ -350,19 +350,19 @@
             svg {
               cursor: pointer;
               color: white;
-              background-color: $red-100;
+              background-color: $red-60;
               border-radius: 100px;
               padding: 0.3rem;
               @include transition-ease;
 
               &:hover {
-                background-color: $red-80;
+                background-color: $red-40;
               }
 
               &:first-of-type {
-                background-color: $green-100;
+                background-color: $green-70;
                 &:hover {
-                  background-color: $green-80;
+                  background-color: $green-50;
                 }
               }
             }
@@ -375,7 +375,7 @@
           }
 
           a {
-            color: $blue-100;
+            color: $blue-90;
             font-size: $menu-size;
           }
         }

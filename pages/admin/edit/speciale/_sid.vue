@@ -151,6 +151,7 @@ export default {
 
       if(object.id === 'endDate') {
         const thisTime = new Date(object.text);
+        object.error = false;
         if(thisTime.getTime() < this.beginDate.getTime()) {
           object.error = true;
         }
@@ -203,31 +204,31 @@ export default {
       await this.buildObject(); 
 
       // Add mission
-      this.$fire.firestore.collection('missions-speciales').doc(this.slug.sid).update(this.mission).then(async (newDoc) => {
-        if(this.logo.url !== this.mission.logo){
-          let img = await this.URLtoImage(require(`@/assets/img/avatar/default.jpg`));
+      const docRef = this.$fire.firestore.collection('missions-speciales').doc(this.slug.sid);
+      await docRef.set(this.mission);
 
-          if(this.logo.file)
-            img = this.logo.file;
+      // If we changed the logo
+      if(this.logo.url !== this.mission.logo){
+        let img = await this.URLtoImage(require(`@/assets/img/avatar/default.jpg`));
+
+        if(this.logo.file)
+          img = this.logo.file;
           
+        // Put in storage
+        const snapStorage = await this.$fire.storage.ref().child(`missions/speciales/${docRef.id}/logo.jpg`).put(img);
+        const downloadURL = await snapStorage.ref.getDownloadURL();
 
-          // Put in storage
-          this.$fire.storage.ref().child(`missions/speciales/${newDoc.id}/logo.jpg`).put(img).then(snapshot => {
-            snapshot.ref.getDownloadURL().then(downloadURL => {
-              this.$fire.firestore.collection('missions-speciales').doc(newDoc.id).update({
-                logo: downloadURL
-              })
-            })
-          })
-        }
+        this.mission.logo = downloadURL;
+
+        docRef.update(this.mission);
+      }
 
 
-        this.$store.dispatch('sendNotif', {
-          type: 'success',
-          message: 'Mission spéciale éditée avec succès.'
-        });
-        this.$router.push('/admin/speciales');
+      this.$store.dispatch('sendNotif', {
+        type: 'success',
+        message: 'Mission spéciale éditée avec succès.'
       });
+      this.$router.push('/admin/speciales');
     },
     async buildObject() {
       this.mission.name = this.$refs.missionName.object.text;

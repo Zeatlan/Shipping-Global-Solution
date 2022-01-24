@@ -23,6 +23,7 @@
           :key="m.username"
           :rank="index+1"
           :member="m"
+          v-on="$listeners"
         />
       </tbody>
 

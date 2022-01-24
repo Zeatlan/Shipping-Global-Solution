@@ -16,18 +16,16 @@
             </div>
 
             <div class="partner-card__detail">
-              <p>Créé le {{ new Date(entreprise.createdAt).toLocaleDateString('fr-FR', {
+              <p>
+                Créé le {{ new Date(entreprise.createdAt).toLocaleDateString('fr-FR', {
                   month: 'long',
                   year: 'numeric',
                   day: 'numeric'
-                }) }}</p>          
-                
-                <nuxt-link v-if="creators[index]" :to="`/user/${creators[index].id}`">
-                  <div class="img-pp" :style="`background: url('${creators[index].avatar}') no-repeat center/cover;`" />
-                  {{ creators[index].username }} 
-                </nuxt-link>
+                }) }}
+              </p>
 
-               </div>
+              <UserLink :user="entreprise.creator" size="medium" @cell-hovered="cellHovered" />
+            </div>
           </div>
         </div>
         <div v-else class="listing">
@@ -136,19 +134,30 @@
         </div>
       </div>
     </div>
+
+    <UserTooltip 
+      v-for="entreprise in entreprises"
+      :key="entreprise.id"
+      :ref="entreprise.creator.id"
+      :user="entreprise.creator"
+    />
   </div>
 </template>
 
 <script>
+import UserLink from '../../components/user/UserLink.vue';
 import Button from '@/components/Button.vue';
+import UserTooltip from '~/components/user/UserTooltip.vue';
+
 export default {
   components: {
     Button,
-  },
+    UserLink,
+    UserTooltip
+},
   data() {
     return {
       entreprises: [],
-      creators: [],
       searchName: '',
       searchFonda: '',
       // Pagination settings
@@ -210,26 +219,54 @@ export default {
 
       query.limit(10).get().then(snapshot => {
         this.entreprises.splice(0);
-        this.creators.splice(0);
           
         snapshot.docs.forEach(doc => {
           this.dataSearch(doc);
         });
       });
     },
-    dataSearch(doc) {
+    async dataSearch(doc) { 
+      const creator = await this.$fire.firestore.collection('users').doc(doc.data().createdBy.id).get();
+
       const data = {
         ...doc.data(),
-        id: doc.id
+        id: doc.id,
+        creator: {
+          ...creator.data(),
+          id: creator.id
+        }
       }
-      this.entreprises.push(data);
 
-      this.$fire.firestore.collection('users').where('username', '==', doc.data().createdBy).get().then(user => {
-        this.creators.push({
-          ...user.docs[0].data(),
-          id: user.docs[0].id
+      this.entreprises.push(data);
+    },
+    cellHovered({ hovered, user, el }) {
+      if(window.innerWidth < 740) return;
+      
+      // -------------------------------------------------------------------------------------
+      // Take Card Element
+      let cardElement = this.$refs[user.id].$el;
+      if(Array.isArray(this.$refs[user.id])) cardElement = this.$refs[user.id][0].$el; 
+
+      // Take element bounding + Body bounding ( for responsive positionning )
+      const screenElement = el.getBoundingClientRect();
+      const bodyRect = document.body.getBoundingClientRect();
+
+      // Calculate value for positionning + responsiveness
+      const leftV = (screenElement.left - bodyRect.left) - 130;
+      const topV = (screenElement.top - bodyRect.top) - 130;
+      // -------------------------------------------------------------------------------------
+
+      if(hovered){
+        this.$gsap.set(cardElement, {
+          display: 'block',
+          left: leftV,
+          top: topV
         });
-      });
+      }else {
+        this.$gsap.set(cardElement, {
+          display: 'none',
+        });
+      }
     }
   }
 }

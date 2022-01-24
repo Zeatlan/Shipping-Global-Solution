@@ -1,4 +1,4 @@
-$colors: $blue-actif, $purple-100, $red-100, $green-100, $pink-100;
+$colors: $blue-60, $purple-60, $red-60, $green-70, $pink-60;
 $colorsName: blue, purple, red, green, pink;
 
 .stat-card {
@@ -23,7 +23,7 @@ $colorsName: blue, purple, red, green, pink;
     margin-left: 1rem;
 
     p {
-      color: $gray-100;
+      color: $gray-70;
       font-weight: 700;
       margin: 0.7rem 0 0 0;
     }

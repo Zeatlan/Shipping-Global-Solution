@@ -6,7 +6,7 @@ header.left-pan {
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
-  background: $blue-actif;
+  background: $blue-60;
   width: 7vw;
   overflow: hidden;
   transition: all 0.3s ease-in-out;
@@ -53,15 +53,15 @@ header.left-pan {
       }
 
       &:hover {
-        background: $gray-40;
+        background: $gray-20;
 
         span {
-          color: $blue-actif;
+          color: $blue-60;
         }
 
         a {
           svg {
-            color: $blue-actif;
+            color: $blue-60;
           }
         }
       }

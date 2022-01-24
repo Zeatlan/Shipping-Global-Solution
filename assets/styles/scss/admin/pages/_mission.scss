@@ -1,7 +1,7 @@
 #contract {
   .wrapper {
     h1 {
-      color: $blue-actif;
+      color: $blue-60;
     }
 
     .wrapper-body {
@@ -32,7 +32,7 @@
 
 .admin-form {
   p.error {
-    color: $red-100;
+    color: $red-60;
   }
 
   .form {
@@ -54,7 +54,7 @@
     .wrapper {
       margin: 15px;
       p.center {
-        color: $gray-100;
+        color: $gray-70;
         text-align: center;
         font-size: $menu-size;
         font-weight: 700;
@@ -68,7 +68,7 @@
 
     h2 {
       color: white;
-      background: $blue-actif;
+      background: $blue-60;
       padding: 5px;
       margin-top: 0;
       border-top-left-radius: 5px;
@@ -92,14 +92,14 @@
         max-width: 100%;
         padding: 15px;
         resize: none;
-        border: 1px solid $gray-100;
+        border: 1px solid $gray-70;
       }
 
       input {
         &[type='text'],
         &[type='datetime-local'],
         &[type='number'] {
-          border: 1px solid $gray-100;
+          border: 1px solid $gray-70;
         }
       }
 
@@ -108,11 +108,11 @@
           &[type='text'],
           &[type='datetime-local'],
           &[type='number'] {
-            border: 1px solid $red-100;
+            border: 1px solid $red-60;
           }
         }
         textarea {
-          border: 1px solid $red-100;
+          border: 1px solid $red-60;
         }
       }
     }
@@ -124,7 +124,7 @@
       flex-direction: column;
       width: 1fr;
       height: 200px;
-      border: 1px solid $gray-100;
+      border: 1px solid $gray-70;
       border-radius: 5px;
       margin: 15px auto;
       background-repeat: no-repeat;
@@ -144,17 +144,17 @@
       }
 
       p {
-        color: $gray-100;
+        color: $gray-70;
         font-size: $menu-size;
         margin: 5px 0;
         &:last-of-type {
           font-size: $body-size;
           margin-bottom: 15px;
-          color: $gray-90;
+          color: $gray-20;
         }
 
         &.error {
-          color: $red-100;
+          color: $red-60;
           background: white;
           padding: 5px;
           border-radius: 5px;
@@ -172,13 +172,14 @@
   }
 
   .showcase-selected {
-    background: $purple-60;
-    border: 1px solid $purple-100;
+    background: $purple-50;
+    border: 1px solid $purple-20;
     border-radius: 5px;
     padding: 15px;
 
     p {
-      color: $purple-120;
+      color: #fff;
+      margin-bottom: 0.7rem;
     }
 
     .items {
@@ -188,16 +189,16 @@
 
       span.dest-span {
         text-align: center;
-        background: $purple-80;
+        background: $purple-60;
         color: white;
         padding: 10px 0;
         border-radius: 10px;
         cursor: pointer;
-        border: 1px solid $purple-100;
+        border: 1px solid $purple-60;
         transition: all 0.3s ease-in-out;
 
         &:hover {
-          background: $purple-100;
+          background: $purple-60;
         }
       }
     }
@@ -218,7 +219,7 @@
 
     .block {
       p {
-        color: $gray-100;
+        color: $gray-70;
       }
 
       input {

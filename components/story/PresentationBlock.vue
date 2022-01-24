@@ -6,7 +6,7 @@
         <h1 class="biggest">{{ title }}</h1>
         <p><slot /></p>
 
-        <Button :primary="false" :arrow="true">Nos rejoindre</Button>
+        <Button :primary="false" :arrow="true" @click.native="$router.push('/register')">Nous rejoindre</Button>
       </div>
 
       <div class="presentation-block__images">

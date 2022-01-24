@@ -63,13 +63,13 @@
           :key="iMarchandise"
           class="marchandise">
           
-          <div class="title__header">
+          <div v-if="marchandise.length" class="title__header">
             <Font-awesome-icon :icon="['fas', 'truck-loading']" />
             <span>Remorque: </span>
             {{ iMarchandise }}
           </div>
 
-          <div class="marchandise__body">
+          <div v-if="marchandise.length" class="marchandise__body">
               <span v-for="(item, itemIndex) in items[iMarchandise]" 
                 :key="itemIndex">
                 {{ item.name }}

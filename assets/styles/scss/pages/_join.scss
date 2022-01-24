@@ -28,7 +28,7 @@
         left: -46px;
         height: 150%;
         width: 200px;
-        background-color: $blue-actif;
+        background-color: $blue-60;
         transform: rotate(20deg);
         z-index: 1;
 
@@ -57,12 +57,12 @@
       margin-left: 1.2rem;
       padding: 1.2rem 1.2rem 1.2rem 0;
       h1 {
-        color: $blue-100;
+        color: $blue-90;
         margin: 0 0 0.7rem 0;
       }
 
       p {
-        color: $gray-100;
+        color: $gray-70;
         margin: 0.7rem 0;
       }
 
@@ -98,8 +98,8 @@
               position: absolute;
               right: 10px;
               bottom: 10px;
-              border: 1px solid $green-120;
-              background: $green-100;
+              border: 1px solid $green-80;
+              background: $green-70;
               padding: 0.3rem;
               border-radius: 10px;
               color: white;
@@ -133,7 +133,7 @@
           margin-top: 50px;
         }
         p {
-          color: $gray-100;
+          color: $gray-70;
         }
         h1,
         span {
@@ -164,8 +164,8 @@
           text-align: left;
           margin: 1.3rem;
           padding: 0.7rem;
-          background: $gray-20;
-          border: 1px solid $gray-100;
+          background: $gray-10;
+          border: 1px solid $gray-70;
           border-radius: 5px;
         }
       }
@@ -180,12 +180,12 @@
     cursor: not-allowed;
     &:hover {
       background: transparent;
-      color: $red-100;
+      color: $red-60;
     }
   }
 
   h2 {
-    color: $blue-100;
+    color: $blue-90;
     font-size: $h2-size;
     text-align: center;
   }
@@ -201,7 +201,7 @@
 
     p,
     li {
-      color: $gray-100;
+      color: $gray-70;
     }
 
     ul {
@@ -213,13 +213,13 @@
     }
 
     label {
-      color: $gray-100;
+      color: $gray-70;
       font-size: $menu-size;
       margin: 0.7rem 0.7rem;
     }
 
     .error {
-      color: $red-100;
+      color: $red-60;
       margin: 0.3rem 0.7rem;
     }
 
@@ -240,11 +240,11 @@
 
     button.back {
       background: transparent;
-      border: 1px solid $gray-100;
-      color: $gray-100;
+      border: 1px solid $gray-70;
+      color: $gray-70;
 
       &:hover {
-        background-color: $red-100;
+        background-color: $red-60;
         color: white;
       }
     }
@@ -256,8 +256,8 @@
 
     .suggestion {
       margin: 0 0.7rem;
-      border: 1px solid $gray-100;
-      box-shadow: 5px 5px 5px $gray-80;
+      border: 1px solid $gray-70;
+      box-shadow: 5px 5px 5px $gray-50;
       border-radius: 5px;
 
       p {
@@ -278,7 +278,7 @@
 
         &:hover {
           color: white;
-          background: $blue-actif;
+          background: $blue-60;
         }
       }
     }
@@ -290,24 +290,25 @@
 
       span.selected {
         @include display-flex;
-        background: $green-80;
+        background: $green-50;
         border-radius: 100px;
-        border: 1px solid $green-120;
+        border: 1px solid $green-80;
         padding: 0.5rem;
         cursor: pointer;
         @include transition-ease;
 
         &:hover {
-          background: $red-80;
-          border-color: $red-120;
+          background: $red-40;
+          border-color: $red-70;
         }
       }
     }
 
     &.form-success {
-      background: $green-100;
+      background: $green-50;
+      border: 1px solid $green-60;
       width: 100%;
-      padding: 0;
+      padding-top: 1rem;
 
       h2 {
         color: white;
@@ -315,7 +316,7 @@
       p {
         width: 75%;
         margin: 0 auto;
-        color: $gray-40;
+        color: white;
         font-size: $menu-size;
         text-align: center;
       }
@@ -324,12 +325,12 @@
         margin: 15px auto;
         &.success {
           background: white;
-          color: $green-100;
+          color: $green-60;
           font-weight: 700;
           font-size: $menu-size;
 
           &:hover {
-            background: $green-120;
+            background: $green-60;
             color: white;
           }
         }

@@ -146,7 +146,7 @@ export default {
         return this.convertToUTC(nextWeek);
       }
 
-      return this.convertToUTC(today); // TODO: Use store fucntion 'convertToUTC'
+      return this.convertToUTC(today);
     },
     updateLogo(file) {
       this.logo.file = file;
@@ -164,7 +164,6 @@ export default {
       this.nbErrors = 0;
 
       for(const ref in this.$refs) {
-        console.log("speciale ref");
         if(this.$refs[ref].$el.className === 'input-row' || this.$refs[ref].$el.className === 'input-row error')
           await this.$refs[ref].checkInputError();
         else
@@ -182,29 +181,25 @@ export default {
       await this.buildObject(); 
 
       // Add mission
-      this.$fire.firestore.collection('missions-speciales').add(this.mission).then(async (newDoc) => {
-        let img = await this.URLtoImage(require(`@/assets/img/avatar/default.jpg`));
+      const newDoc = await this.$fire.firestore.collection('missions-speciales').add(this.mission);
+      let img = await this.URLtoImage(require(`@/assets/img/avatar/default.jpg`));
 
-        if(this.logo.file)
-          img = this.logo.file;
+      if(this.logo.file)
+        img = this.logo.file;
         
+      // Put in storage
+      const snapStorage = await this.$fire.storage.ref().child(`missions/speciales/${newDoc.id}/logo.jpg`).put(img);
+      const downloadURL = await snapStorage.ref.getDownloadURL();
 
-        // Put in storage
-        this.$fire.storage.ref().child(`missions/speciales/${newDoc.id}/logo.jpg`).put(img).then(snapshot => {
-          snapshot.ref.getDownloadURL().then(downloadURL => {
-            this.$fire.firestore.collection('missions-speciales').doc(newDoc.id).update({
-              logo: downloadURL
-            })
-          })
-        })
+      this.mission.logo = downloadURL;
 
+      this.$fire.firestore.collection('missions-speciales').doc(newDoc.id).update(this.mission);
 
-        this.$store.dispatch('sendNotif', {
-          type: 'success',
-          message: 'Mission spéciale ajoutée avec succès.'
-        });
-        this.$router.push('/admin/speciales');
+      this.$store.dispatch('sendNotif', {
+        type: 'success',
+        message: 'Mission spéciale ajoutée avec succès.'
       });
+      this.$router.push('/admin/speciales');
     },
     async buildObject() {
       this.mission.name = this.$refs.missionName.object.text;
@@ -218,6 +213,8 @@ export default {
       this.mission.createdBy = await this.$fire.firestore.collection('users').doc(this.$fire.auth.currentUser.uid);
 
       this.mission.logo = null;
+      
+      console.log(this.mission);
 
       // Depart and Arrive will be filled in 'addObjectEntries' when SpecialFormSelect.confirmChange() is called
     },

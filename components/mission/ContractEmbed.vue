@@ -1,10 +1,10 @@
 <template>
   <div class="contract-embed" :class="state">
 
-    <nuxt-link v-if="edition" class="top-button contract-edit" :to="`/admin/edit/contract/${missionId}`">
+    <nuxt-link v-if="edition" class="top-button edit" :to="`/admin/edit/contract/${missionId}`">
       <Font-awesome-icon :icon="['fas', 'tools']" />
     </nuxt-link>
-    <div v-if="edition" class="top-button contract-delete" @click="deleteMission">
+    <div v-if="edition" class="top-button delete" @click="deleteMission">
       <Font-awesome-icon :icon="['fas', 'trash-alt']" />
     </div>
 

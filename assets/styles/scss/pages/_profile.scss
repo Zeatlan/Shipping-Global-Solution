@@ -26,7 +26,7 @@
   }
 
   .user-info {
-    @include display-grid(repeat(4, 1fr), auto, 2rem);
+    @include display-grid(148px repeat(3, 1fr), auto, 2rem);
     padding-top: 1rem;
 
     // Media Queries : Medium
@@ -94,16 +94,15 @@
       }
 
       h1 {
-        color: $blue-100;
-        margin: 0 0 0.4rem 0;
+        color: $blue-70;
       }
       h2 {
-        color: $blue-90;
+        color: $gray-60;
         margin: 0 0 0.4rem 0;
 
         sup {
           color: white;
-          background: $gray-90;
+          background: $gray-20;
           font-size: 12px;
           font-weight: 500;
           padding: 0.1rem 0.2rem;
@@ -135,13 +134,13 @@
       }
 
       span.ets {
-        background-color: $blue-60;
-        color: $blue-100;
+        background-color: $blue-20;
+        color: $blue-90;
       }
 
       span.fs {
-        background-color: $green-100;
-        color: $gray-40;
+        background-color: $green-70;
+        color: $gray-30;
       }
     }
 
@@ -203,7 +202,7 @@
       padding: 20px;
 
       h2 {
-        color: $blue-90;
+        color: $blue-80;
       }
     }
 
@@ -237,7 +236,7 @@
         header,
         .row {
           display: flex;
-          color: $gray-100;
+          color: $gray-70;
           margin: 15px 0;
         }
 
@@ -256,15 +255,15 @@
               color: white;
             }
             &.first {
-              background-color: $yellow-100;
+              background-color: $yellow-60;
             }
 
             &.second {
-              background-color: $blue-80;
+              background-color: $blue-40;
             }
 
             &.third {
-              background-color: $red-80;
+              background-color: $red-40;
             }
           }
 
@@ -295,14 +294,6 @@
 
       &__header {
         @include display-flex(space-between);
-
-        select {
-          border: 0;
-          background-color: $gray-40;
-          color: $gray-100;
-          padding: 0.4rem;
-          border-radius: 5px;
-        }
       }
 
       &__body {
@@ -312,7 +303,7 @@
       }
 
       &__info {
-        color: $gray-100;
+        color: $gray-70;
         font-size: $menu-size;
         text-align: center;
       }

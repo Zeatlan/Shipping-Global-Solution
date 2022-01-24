@@ -1,8 +1,8 @@
 $roles: (
-  'super-admin': $purple-100,
-  'admin': $red-100,
-  'mod': $blue-100,
-  'dev': $green-100,
+  'super-admin': $purple-60,
+  'admin': $red-60,
+  'mod': $blue-90,
+  'dev': $green-70,
 );
 
 #team {
@@ -131,7 +131,7 @@ $roles: (
           }
 
           svg {
-            color: $gray-100;
+            color: $gray-70;
             margin: 0 0.3rem;
           }
         }

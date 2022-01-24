@@ -1,46 +1,35 @@
 #header-user {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include display-flex(space-between);
   background-color: white;
-  border-bottom: 1px solid $gray-80;
-  padding: 5px 15px;
+  border-bottom: 1px solid $gray-50;
+  padding: 1rem;
 
   .user {
-    display: flex;
-    align-items: center;
+    @include display-flex(flex-start);
 
     img.avatar {
-      width: 48px;
-      height: 48px;
+      @include carre(48px);
       border-radius: 50px;
     }
 
     .text {
-      margin-left: 10px;
-
-      h2,
-      p {
-        margin: 0;
-      }
+      margin-left: 0.7rem;
 
       h2 {
-        color: $blue-100;
+        color: $blue-80;
       }
 
       p {
-        display: flex;
-        align-items: center;
-        color: $gray-100;
+        @include display-flex(flex-start);
+        color: $gray-80;
 
         span {
-          display: flex;
-          align-items: center;
-          background: $blue-actif;
+          @include display-flex(flex-start);
+          background: $blue-60;
           border-radius: 10px;
-          padding: 3px 5px;
+          padding: 0.4rem 0.3rem;
           color: white;
-          margin-left: 2px;
+          margin-left: 0.1rem;
           gap: 5px;
         }
       }
@@ -48,36 +37,22 @@
   }
 
   .actions {
-    display: flex;
-    align-items: center;
+    @include display-flex(flex-start);
 
     input {
-      border: 0;
-      background: $gray-60;
-      border-radius: 5px;
-      padding: 5px 10px;
-      transition: all 0.3s ease-in-out;
-
-      &:active,
-      &:focus {
-        outline: none !important;
-        border: 1px solid $gray-100;
-      }
+      background: $gray-20;
     }
 
     button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: $blue-actif;
+      @include display-flex;
+      background: $blue-60;
       color: white;
       border-radius: 50px;
-      width: 32px;
-      height: 32px;
-      margin-left: 5px;
+      @include carre(32px);
+      margin-left: 0.3rem;
 
       &:hover {
-        background: $blue-actif-lighter;
+        background: $blue-50;
       }
     }
   }

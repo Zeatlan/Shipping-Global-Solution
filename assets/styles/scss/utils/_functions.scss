@@ -1,6 +1,6 @@
 @function set-text-color($color) {
   @if (lightness($color) > 60%) {
-    @return $gray-100;
+    @return $gray-70;
   } @else {
     @return #fff;
   }
@@ -8,7 +8,7 @@
 
 @function set-link-color($color) {
   @if (lightness($color) > 40%) {
-    @return $blue-actif;
+    @return $blue-60;
   } @else {
     @return #fff;
   }

@@ -5,7 +5,6 @@
       text-align: center;
     }
     .wrapper-body {
-      width: 65%;
       margin: 0 auto;
 
       table {
@@ -20,16 +19,16 @@
             transition: all 0.3s ease-in-out;
           }
           .fa-check {
-            color: $green-100;
+            color: $green-70;
 
             &:hover {
-              color: $green-80;
+              color: $green-50;
             }
           }
           .fa-times {
-            color: $red-100;
+            color: $red-60;
             &:hover {
-              color: $red-80;
+              color: $red-40;
             }
           }
         }

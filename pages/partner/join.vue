@@ -51,7 +51,7 @@
               <Button v-if="step==0" class="start" @click.native="begin">Débuter mon inscription</Button>
             </span>
             <span v-else>
-            <Button :primary="false" color="red" class="unauthorized">Vous devez être au pôle emploi pour créer une entreprise</Button>
+              <Button :primary="false" color="red" class="unauthorized">Vous devez être au pôle emploi pour créer une entreprise</Button>
             </span>
           </div>
         </div>
@@ -297,9 +297,9 @@ export default {
     }
   },
   async created() {
-    const getEnt = await this.$fire.firestore.collection('users').doc(this.$fire.auth.currentUser.uid).get();
+    const getAuthor = await this.$fire.firestore.collection('users').doc(this.$fire.auth.currentUser.uid).get();
 
-    this.creator = getEnt.data();
+    this.creator = getAuthor.data();
   },
   methods: {
     begin() {
@@ -398,7 +398,7 @@ export default {
         this.newDoc = await this.$fire.firestore.collection('entreprises').add({
           acronyme: this.acronyme,
           createdAt: this.createdAt,
-          createdBy: this.$cookies.get('user-name'),
+          createdBy: this.$fire.firestore.collection('users').doc(this.$cookies.get('user-id')),
           discord: '',
           isEurotruckEntreprise: (this.game === 'Eurotruck Simulator 2'),
           name: this.nameEntreprise,
@@ -446,12 +446,19 @@ export default {
         const author = await this.$fire.firestore.collection('users').doc(this.$cookies.get('user-id')).get();
 
         const data = author.data();
+
+        // Decrement actual entreprise
+        const oldPartner = await this.$fire.firestore.collection('entreprises').doc(data.entreprise._id.id).get();
+
+        const oldData = oldPartner.data();
+        oldData.members--;
         
         data.entreprise._id = this.$fire.firestore.collection('entreprises').doc(this.newDoc.id);
         data.entreprise.rank = 0;
         data.entreprise.joinedAt = new Date();
 
         author.ref.set(data);
+        oldPartner.ref.set(oldData);
 
         this.isLoading = false;
       }
@@ -511,10 +518,11 @@ export default {
       if(index > -1) this.members.splice(index, 1);
     },
     finish(location, newWindow = false) {
+      console.log(this.newDoc);
       if(newWindow){
         window.open(location);
       }else{
-        this.$router.push('/partner/' + this.newDoc.name.replace('%20', '-'));
+        this.$router.push('/partner/' + this.newDoc.name.split(' ').join('-'));
       }
     },
   }

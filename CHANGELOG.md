@@ -2,6 +2,28 @@
 
 Ce document stipulera de toutes les modifications effectuées.
 
+# 1.0.3 • 25/01/2022
+
+### **Ajouts**
+
+- Ajout d'une petite carte qui apparaît au survol d'un lien vers un profil ( en détaillant les infos d'un utilisateur ).
+- Ajout d'un lien vers la page de classement depuis notre profil ( La box qui montre notre position dans le classement ).
+
+### **Modifications**
+
+- Refactoring des couleurs pour une meilleure harmonie. ✨
+- Mis à jour du créateur de l'entreprise, ce n'est plus un simple pseudo mais bien un utilisateur (avec un avatar, un lien vers le profil affiché sur la page de l'entreprise).
+
+### **Fixs**
+
+- Réglage du menu (sur la partie supérieure de l'administration) qui dépassait légèrement sur la droite de l'écran.
+- Fix du créateur de l'entreprise dans la liste des entreprises.
+- Fix lien du classement qui menait à l'entreprise.
+- Fix du compteur de membre des entreprises (le problème venait que je ne décrémentais pas le nombre de membre quand l'on créait une nouvelle entreprise ...).
+- Ajustement des missions spéciales : Nous n'affichons que les remorques qui seront utilisées dans la mission.
+- Fix `mission spéciale`, les champs se duppliquaient et donnaient un rendu catastrophique.
+- Fix `mission spéciale` (Oui encore), le résumé de la mission retourne désormais à la ligne comme nous l'avions tapé.
+
 # 1.0.2 • 23/01/2022
 
 ### **Ajouts**

@@ -3,7 +3,7 @@
   @include display-flex(flex-start);
   flex: 2 1 auto;
   column-gap: 2rem;
-  border: 1px solid $blue-80;
+  border: 1px solid $blue-40;
   border-radius: 5px;
   overflow: hidden;
 
@@ -13,7 +13,7 @@
     left: -15px;
     height: 130%;
     width: 80px;
-    background-color: $blue-actif;
+    background-color: $blue-60;
     transform: rotate(15deg);
     z-index: 1;
   }
@@ -40,7 +40,7 @@
   }
 
   &__title {
-    color: $gray-100;
+    color: $gray-70;
     font-size: $menu-size;
     margin-bottom: 0.4rem;
   }
@@ -54,7 +54,7 @@
       color: set-link-color(#fff);
 
       &:hover {
-        color: $blue-actif-lighter;
+        color: $blue-50;
       }
     }
   }

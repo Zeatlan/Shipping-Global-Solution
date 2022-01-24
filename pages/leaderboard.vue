@@ -19,7 +19,7 @@
         <Tabs :is-leaderboard="true">
           <Tab title="Eurotruck Simulator 2">
             <Ladder :members="members" :is-contract-desc="descContract" :is-speciale-desc="descSpeciale"
-            @order-by-contract="orderByContract" @order-by-speciale="orderBySpeciale"/> 
+            @order-by-contract="orderByContract" @order-by-speciale="orderBySpeciale" @cell-hovered="cellHovered"/> 
           </Tab>
           <Tab title="Farming Simulator 22">
             <div class="placeholder white-box">
@@ -28,6 +28,8 @@
           </Tab>
         </Tabs>
     </div>
+
+      <UserTooltip v-for="user in members" :key="user.id"  :ref="user.id" :user="user" />
   </div>
 </template>
 
@@ -35,18 +37,24 @@
 import Tabs from '@/components/mission/Tabs.vue'
 import Tab from '@/components/mission/Tab.vue'
 import Ladder from '@/components/leaderboard/Ladder.vue'
+import UserTooltip from '@/components/user/UserTooltip.vue'
 
 export default {
   components: {
     Tabs,
     Tab,
     Ladder,
+    UserTooltip
   },
   data() {
     return {
       members: [],
       descContract: false,
       descSpeciale: false,
+      isLoading: false,
+      eof: false,
+      lastDoc: null,
+      batchSize: 10,
     }
   },
   async mounted() {
@@ -144,6 +152,35 @@ export default {
       });
 
       this.lastDoc = await this.$fire.firestore.collection('users').doc(this.members.at(-1).id).get();
+    },
+    cellHovered({ hovered, user, el }) {
+      if(window.innerWidth < 740) return;
+
+      // -------------------------------------------------------------------------------------
+      // Take Card Element
+      let cardElement = this.$refs[user.id].$el;
+      if(Array.isArray(this.$refs[user.id])) cardElement = this.$refs[user.id][0].$el; 
+
+      // Take element bounding + Body bounding ( for responsive positionning )
+      const screenElement = el.getBoundingClientRect();
+      const bodyRect = document.body.getBoundingClientRect();
+
+      // Calculate value for positionning + responsiveness
+      const leftV = (screenElement.left - bodyRect.left) - 130;
+      const topV = (screenElement.top - bodyRect.top) - 130;
+      // -------------------------------------------------------------------------------------
+
+      if(hovered){
+        this.$gsap.set(cardElement, {
+          display: 'block',
+          left: leftV,
+          top: topV
+        });
+      }else {
+        this.$gsap.set(cardElement, {
+          display: 'none',
+        });
+      }
     }
   }
 }

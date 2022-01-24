@@ -1,7 +1,7 @@
 #edit-user {
   .back-link {
     @include display-flex(space-around);
-    background: $blue-actif;
+    background: $blue-60;
     padding: 1rem;
     margin-top: 5rem;
     width: 150px;
@@ -9,19 +9,19 @@
 
     &:hover {
       color: white;
-      background: $blue-actif-lighter;
+      background: $blue-50;
     }
   }
 
   h1,
   h2,
   h3 {
-    color: $blue-actif;
+    color: $blue-60;
   }
 
   p {
     font-size: $menu-size;
-    color: $gray-100;
+    color: $gray-70;
   }
 
   .pres {
@@ -100,7 +100,7 @@
 
       p.alert {
         span {
-          background-color: $red-100;
+          background-color: $red-60;
           padding: 0.2rem;
           border-radius: 5px;
           color: white;
@@ -122,7 +122,7 @@
         text-align: right;
 
         .red {
-          background: $red-100;
+          background: $red-60;
         }
       }
 
@@ -149,19 +149,19 @@
         .avatar-input {
           border-radius: 5px;
           padding: 1em 0.75em;
-          background: $blue-actif;
+          background: $blue-60;
           color: white;
           border: 0;
           cursor: pointer;
           @include transition-ease;
 
           &:hover {
-            background: $blue-actif-lighter;
+            background: $blue-50;
           }
         }
 
         button {
-          color: $gray-100;
+          color: $gray-70;
           width: 150px;
         }
       }
@@ -181,7 +181,7 @@
           font-size: $menu-size;
 
           &.fa-discord {
-            color: $blue-actif;
+            color: $blue-60;
           }
         }
       }
@@ -206,11 +206,11 @@
       }
 
       button {
-        background: $red-100;
+        background: $red-60;
 
         &.disabled {
           background: transparent;
-          border: 1px solid $gray-100;
+          border: 1px solid $gray-70;
           padding: 1.2rem;
         }
       }

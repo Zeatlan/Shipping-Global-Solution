@@ -57,7 +57,7 @@
     margin-bottom: 60px;
 
     h1 {
-      color: $blue-actif;
+      color: $blue-60;
     }
 
     button {
@@ -107,7 +107,7 @@
       flex: 2;
 
       h3 {
-        color: $blue-actif-lighter;
+        color: $blue-50;
         font-weight: 700;
       }
 
@@ -118,7 +118,7 @@
       }
 
       p {
-        color: $gray-40;
+        color: $gray-30;
         font-size: $menu-size;
         margin: 1.2rem 0 3rem 0;
       }
@@ -131,8 +131,8 @@
         font-size: $h3-size;
         font-weight: 700;
         padding: 10px 20px;
-        color: $blue-actif-lighter;
-        border-color: $blue-actif-lighter;
+        color: $blue-50;
+        border-color: $blue-50;
       }
     }
 
@@ -157,7 +157,7 @@
           right: 0;
           top: 20%;
           width: 400px;
-          border: 2px solid $blue-actif;
+          border: 2px solid $blue-60;
           border-radius: 5px;
 
           // Media Queries : Extra small
@@ -188,11 +188,11 @@
 
       .presentation-block__text {
         h1 {
-          color: $blue-actif;
+          color: $blue-60;
         }
 
         p {
-          color: $gray-100;
+          color: $gray-70;
         }
 
         button {
@@ -200,12 +200,12 @@
           justify-content: space-between;
           width: 250px;
           color: white;
-          background: $blue-actif-lighter;
+          background: $blue-50;
           margin-left: auto;
 
           &:hover {
             background: transparent;
-            color: $blue-actif-lighter;
+            color: $blue-50;
           }
         }
       }

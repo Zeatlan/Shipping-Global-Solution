@@ -18,13 +18,13 @@
       margin-left: 1rem;
 
       h3 {
-        color: $blue-actif;
+        color: $blue-60;
         margin: 0 0 0.3rem 0;
       }
 
       p {
         margin: 0.3rem 0 0 0;
-        color: $gray-100;
+        color: $gray-70;
       }
     }
   }
@@ -34,12 +34,12 @@
 
     svg,
     a {
-      color: $gray-100;
+      color: $gray-70;
     }
 
     .fa-crown {
       cursor: auto;
-      color: $yellow-100;
+      color: $yellow-60;
     }
   }
 }

@@ -8,7 +8,7 @@
 
     li {
       background: white;
-      color: $blue-actif;
+      color: $blue-60;
       padding: 10px;
       border-radius: 5px;
       font-size: $menu-size;
@@ -16,18 +16,18 @@
       transition: all 0.3s ease-in-out;
 
       &.tabs__selected {
-        background: $blue-actif;
+        background: $blue-60;
         color: white;
       }
 
       &:hover {
-        background: $blue-actif;
+        background: $blue-60;
         color: white;
       }
 
       &.disabled {
         background: white;
-        color: $gray-80;
+        color: $gray-50;
         cursor: wait;
       }
     }

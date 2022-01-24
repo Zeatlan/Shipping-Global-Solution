@@ -16,7 +16,7 @@ body {
   padding: 0;
   font-family: $body-font;
   font-size: $body-size;
-  background-color: $gray-40;
+  background-color: $gray-20;
   height: 100%;
 }
 
@@ -49,7 +49,7 @@ a {
   @include transition-ease;
 
   &:hover {
-    color: $blue-80;
+    color: $blue-40;
   }
 }
 
@@ -88,6 +88,10 @@ h3 {
   font-size: $menu-size;
 }
 
+.small {
+  font-size: $small-size;
+}
+
 // Container
 .container {
   max-width: 1050px;
@@ -110,12 +114,50 @@ h3 {
   }
 }
 
+.wrapper-color {
+  margin: 3rem 0;
+}
+
+.colors {
+  @include display-grid(repeat(10, 64px), auto, 0);
+
+  .box {
+    @include carre(64px);
+    $light: 100;
+
+    @for $i from 2 through 10 {
+      $light: $light - 10;
+      &.blue-#{$i*10} {
+        background: hsl(221, 77, $light);
+      }
+      &.gray-#{$i*10} {
+        background: hsl(0, 1, $light);
+      }
+      &.pink-#{$i*10} {
+        background: hsl(317, 58, $light);
+      }
+      &.red-#{$i*10} {
+        background: hsl(341, 77, $light);
+      }
+      &.green-#{$i*10} {
+        background: hsl(133, 59, $light);
+      }
+      &.yellow-#{$i*10} {
+        background: hsl(68, 52, $light);
+      }
+      &.purple-#{$i*10} {
+        background: hsl(281, 77, $light);
+      }
+    }
+  }
+}
+
 .white-box {
   background: white;
   border-radius: 5px;
 
   h2 {
-    color: $blue-actif;
+    color: $blue-60;
   }
 }
 .nothing-inside {
@@ -123,22 +165,22 @@ h3 {
   text-align: center;
   svg {
     font-size: $biggest-size;
-    background: $gray-100;
-    border: 2px solid $gray-100;
+    background: $gray-70;
+    border: 2px solid $gray-70;
     border-radius: 50px;
     path {
-      color: $gray-40;
+      color: $gray-20;
     }
   }
   h1 {
-    color: $gray-100 !important;
+    color: $gray-70 !important;
     font-weight: 500;
 
     a {
-      color: $blue-90;
+      color: $blue-70;
 
       &:hover {
-        color: $blue-actif;
+        color: $pink-70;
       }
     }
   }
@@ -146,22 +188,22 @@ h3 {
 
 .placeholder {
   padding: 3rem;
-  color: $gray-100;
+  color: $gray-70;
   text-align: center;
   font-size: $menu-size;
 
   span {
-    background: $purple-100;
+    background: $purple-60;
     color: #fff;
     border-radius: 3px;
     padding: 0.3rem;
   }
 
   a {
-    color: $blue-actif;
+    color: $blue-60;
 
     &:hover {
-      color: $pink-100;
+      color: $pink-60;
     }
   }
 }
@@ -171,12 +213,12 @@ h3 {
   margin: 30px 0;
 
   h1 {
-    color: $red-100 !important;
+    color: $red-60 !important;
     margin: 0;
   }
 
   p {
-    color: $gray-100 !important;
+    color: $gray-70 !important;
   }
 }
 

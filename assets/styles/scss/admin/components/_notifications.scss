@@ -20,6 +20,7 @@
     font-size: $menu-size;
     border-radius: 5px;
     margin: 0.3rem 0;
+    padding: 0.7rem 0;
 
     // Media Queries : Extra Small
     @include xs {
@@ -34,19 +35,19 @@
     }
 
     &.green {
-      background: $green-100;
+      background: $green-70;
     }
 
     &.red {
-      background: $red-100;
+      background: $red-60;
     }
 
     &.blue {
-      background: $blue-actif;
+      background: $blue-60;
     }
 
     &.purple {
-      background: $purple-100;
+      background: $purple-60;
     }
 
     &__icon {
@@ -59,20 +60,20 @@
       svg {
         width: 24px;
         height: 24px;
-        color: $green-100;
+        color: $green-70;
         border-radius: 100%;
         font-size: $h2-size;
 
         &.red {
-          color: $red-100;
+          color: $red-60;
         }
 
         &.blue {
-          color: $blue-100;
+          color: $blue-60;
         }
 
         &.purple {
-          color: $purple-100;
+          color: $purple-60;
         }
       }
     }

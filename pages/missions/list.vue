@@ -25,12 +25,6 @@
               Il semblerait qu'il n'y ait pas encore de <span>mission contrat</span> à afficher.
             </div>
           </Tab>
-          <!-- Liste des missions farming -->
-          <Tab title="Missions Farming">
-            <div class="placeholder white-box">
-              <p>Les <span>missions farming</span> ne sont pas disponibles pour cette démo.</p>
-            </div>
-          </Tab>
         </Tabs>
 
         <div class="white-box filter">

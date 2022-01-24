@@ -18,7 +18,9 @@
                 <PuSkeleton width="256px" height="48px"/>
               </div>
 
-              <p v-if="entreprise.createdBy">Par <strong>{{ entreprise.createdBy }}</strong></p>
+              <p v-if="creator" class="creator" >
+                Par <UserLink :user="creator" @cell-hovered="cellHovered" />
+              </p> 
               <span v-else> <PuSkeleton width="128px" height="24px" /></span>
 
               <p v-if="entreprise.createdAt">Depuis le {{ new Date(entreprise.createdAt).toLocaleDateString('fr-FR', {
@@ -46,16 +48,15 @@
           <div class="stats__number white-box">
             <div class="stats__number-detail">
               <p>Missions spéciales</p>
-              <h2>{{ countCompletedSpeciale }}</h2>
+              <h2>{{ countSpecialMissions }}</h2>
             </div>
             <div class="stats__number-detail">
               <p>Missions contrats</p>
-              <h2>{{ countCompletedContract }}</h2>
+              <h2>{{ countContractMissions }}</h2>
             </div>
             <div class="stats__number-detail">
               <p>Membres</p>
-              <h2 v-if="memberlist">{{ memberlist.length }}</h2>
-              <PuSkeleton v-else width="36px" height="42px" />
+              <h2>{{ memberlist.length }}</h2>
             </div>
           </div>
 
@@ -63,8 +64,8 @@
             <p>Administration</p>
             <div v-if="entrepriseAdmins.length > 0" class="stats__admin-list">
               <div v-for="(admin, index) in entrepriseAdmins" :key="index" class="stats__admin-detail">
-                <div v-if="admin.avatar" class="img-pp" :style="`background: url('${admin.avatar}') no-repeat center/cover;`" />
-                <h3><nuxt-link :to="`/user/${admin.id}`">{{ admin.username }}</nuxt-link></h3>
+
+                <UserLink :user="admin" size="xxxl" is-card @cell-hovered="cellHovered" />
               </div>
             </div>
 
@@ -100,12 +101,12 @@
                 <img src="@/assets/img/icons/truckersmp.png" width="48" />
               </a>
             </div>
-            <div v-if="!entreprise.discord && !entreprise.trucksbook && loading" class="stats__links-detail">
+            <div v-if="!entreprise.discord && !entreprise.trucksbook && isLoading" class="stats__links-detail">
               <PuSkeleton circle width="48px" height="48px" />
               <PuSkeleton circle width="48px" height="48px" />
               <PuSkeleton circle width="48px" height="48px" />
             </div>
-            <div v-else-if="!entreprise.discord && !entreprise.trucksbook && !loading"  class="stats__links-detail">
+            <div v-else-if="!entreprise.discord && !entreprise.trucksbook && !isLoading"  class="stats__links-detail">
               Aucun lien trouvé :(
             </div>
             
@@ -119,164 +120,110 @@
             </div>
 
             <p v-if="entreprise.story" style="white-space: pre-wrap;">{{ entreprise.story }}</p>
-            <div v-else>
+            <div v-else-if="!entreprise.story && isLoading">
               <span>
                 <PuSkeleton v-for="index in 24" :key="index" :width="textSize[getRandomSizeText()]" height="16px" />
               </span>
             </div>
+            <p v-else-if="!entreprise.story && !isLoading"></p>
           </div>
 
-          <div v-if="memberlist.length > 0" class="info__memberlist white-box">
+          <div class="info__memberlist white-box">
             <p>Liste des membres</p>
 
-            <div v-for="(member, index) in memberlist" :key="index" class="info__member-card">
-              <div class="user">
-                <div class="img-pp" :style="`background: url('${member.avatar === 'default' || member.avatar === null ? require(`@/assets/img/avatar/default.jpg`) : member.avatar}') no-repeat center/cover;`" />
-                <nuxt-link :to="`/user/${member.id}`">{{ member.username }}</nuxt-link>
-              </div>
-              <p>{{ ranks[index] }}</p>
-            </div>
-          </div>
-
-          <div v-else class="info__memberlist white-box">
-            <p>Liste des membres</p>
-
-            <div v-for="index in 6" :key="index" class="info__member-card">
-              <div class="user">
-                <PuSkeleton circle width="24px" height="24px" />
-                <PuSkeleton width="64px" height="16px" />
-              </div>
-
-              <span><PuSkeleton width="48px" height="16px" /></span>
-            </div>
+            <Memberlist 
+              v-if="entRef"
+              ref="memberlist"
+              :partner-ref="entRef" 
+              @increment-contract="countCompletedContract" 
+              @increment-speciale="countCompletedSpeciale"
+              @get-memberlist="getMemberlist"
+              @cell-hovered="cellHovered"
+            />
           </div>
       </div>
+    </div>
+
+    <div v-if="memberlist.length > 0 && creator">
+      <UserTooltip v-for="member in memberlist" :key="member.username" :ref="member.id" :user="member" />
+      <UserTooltip :ref="creator.id" :user="creator" />
     </div>
   </div>
 </template>
 
 <script>
 import Button from '@/components/Button.vue';
+import UserTooltip from '@/components/user/UserTooltip.vue';
+import Memberlist from '@/components/partner/Memberlist';
+import UserLink from '~/components/user/UserLink.vue';
 
 export default {
   components: {
-   Button,
-  },
+    Button,
+    UserTooltip,
+    Memberlist,
+    UserLink
+},
   data(){
     return {
       slug: this.$route.params,
       entreprise: {},
-      entrepriseAdmins: [],
+      entRef: null,
       memberlist: [],
-      ranks: [],
+      entrepriseAdmins: [],
       userRank: 4,
       askedJoin: false,
       textSize: ['24px', '48px', '64px', '124px'],
       countSpecialMissions: 0,
       countContractMissions: 0,
-      loading: true,
+      isLoading: true,
       actualUser: null,
+      creator: null,
     }
   },
-  computed: {
-    countCompletedContract() {
-      this.memberlist.forEach(member => {
-        member.contractMissions.forEach(mission => {
-          if(mission.isCompleted) this.countContractMissions++;
-        })
-      })
-
-      return this.countContractMissions;
-    },
-    countCompletedSpeciale() {
-      this.memberlist.forEach(member => {
-        member.specialMissions.forEach(mission => {
-          this.countSpecialMissions += mission.completedArrive.length + mission.completedDepart.length;
-        })
-      })
-
-      return this.countSpecialMissions;
-    }
-  },
-  created() {
-    setTimeout(() => {
-      this.loading = false;
-    }, 10000);
-  },
-  mounted() {
+  async created() {
     const partnerName = this.slug.partner.split('-').join(' ');
-
     const actualUserDocRef = this.$fire.firestore.collection('users').doc(this.$cookies.get('user-id'));
 
-    this.$fire.firestore.collection('entreprises').where('name', '==', partnerName).get().then(snapshot => {
-      const data = {
-        ...snapshot.docs[0].data(),
-        id: snapshot.docs[0].id
-      };
-      this.entreprise = data;
+    // Get entreprise
+    const snapEntreprise = await this.$fire.firestore.collection('entreprises').where('name', '==', partnerName).get();
+    this.entreprise = { ...snapEntreprise.docs[0].data(), id: snapEntreprise.docs[0].id };
 
-      const entRef = snapshot.docs[0].ref;
+    // Partner's doc ref
+    this.entRef = snapEntreprise.docs[0].ref;
 
+    // Get current user data
+    if(this.$fire.auth.currentUser){
+      const snapActualUser = await this.$fire.firestore.collection('users').doc(this.$fire.auth.currentUser.uid).get();
+      if(snapActualUser.data().entreprise._id.id === this.entreprise.id)
+        this.userRank = snapActualUser.data().entreprise.rank;
+    }
+    
+    // Get creator
+    const snapCreator = await this.$fire.firestore.collection('users').doc(this.entreprise.createdBy.id).get();
+    this.creator = { ...snapCreator.data(), id: snapCreator.id };
 
-      // Get user data
-      if(this.$fire.auth.currentUser){
-        this.$fire.firestore.collection('users').doc(this.$fire.auth.currentUser.uid).get().then(user => {
-          if(user.data().entreprise._id.id === this.entreprise.id) {
-            this.userRank = user.data().entreprise.rank;
-          }
-        });
-      }
+    // Get Admin's info
+    const snapAdmin = await this.$fire.firestore.collection('users').where('entreprise._id', '==', this.entRef).where('entreprise.rank', 'in', [0, 1]).limit(3).get();
 
-      // Récupérer info des admins
-      this.$fire.firestore.collection('users')
-        .where('entreprise._id', '==', entRef)
-        .where('entreprise.rank', 'in', [0, 1])
-        .limit(3)
-        .get()
-        .then(snapgang => {
-          snapgang.docs.forEach(doc => {
-            this.entrepriseAdmins.push({
-              ...doc.data(),
-              id: doc.id
-            })
-          })
-        })
+    snapAdmin.docs.forEach(doc => {
+      this.entrepriseAdmins.push({ ...doc.data(), id: doc.id });
+    })
 
-      
-      // Récupérer liste des membres
-      this.$fire.firestore.collection('users')
-        .where('entreprise._id', '==', entRef)
-        .orderBy('entreprise.rank')
-        .get()
-        .then(snapbang => {
-          snapbang.docs.forEach(doc => {
-            this.memberlist.push({
-              ...doc.data(),
-              id: doc.id 
-            })
-          })
+    // Check if member already postulated
+    const snapJoinRequest = await this.$fire.firestore.collection('join-request').where('user', '==', actualUserDocRef).where('entreprise._id', '==', this.entRef).get();
+    if(snapJoinRequest.docs.length > 0) this.askedJoin = true;
 
-          this.memberlist[0].entreprise._id.get().then(s => {
-            this.memberlist.forEach(member => {
-              this.ranks.push(s.data().ranks[member.entreprise.rank].name);
-            });
-          })
-        })
-
-        // Vérifier si le membre a déjà postulé
-        this.$fire.firestore.collection('join-request')
-          .where('user', '==', actualUserDocRef)
-          .where('entreprise', '==', entRef)
-          .get()
-          .then((snap) => {
-            if(snap.docs.length > 0) this.askedJoin = true;
-          })
-
-        actualUserDocRef.get().then((snap) => {
-          this.actualUser = snap.data();
-        }) 
-
-    });
+    // Get Actual user
+    // TODO Use store
+    const snapActualUser = await actualUserDocRef.get()
+    this.actualUser = snapActualUser.data();
+  },
+  mounted() {
+    
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 10000);
 
   },
   methods: {
@@ -324,6 +271,44 @@ export default {
         });
 
       });
+    },
+    countCompletedContract({ count }) {
+      this.countContractMissions = count;
+    },
+    countCompletedSpeciale({ count }) {
+      this.countCompletedSpeciale = count;
+    },
+    getMemberlist({memberlist}) {
+      this.memberlist = memberlist;
+    },
+    cellHovered({ hovered, user, el }) {
+      if(window.innerWidth < 740) return;
+
+      // -------------------------------------------------------------------------------------
+      // Take Card Element
+      let cardElement = this.$refs[user.id].$el;
+      if(Array.isArray(this.$refs[user.id])) cardElement = this.$refs[user.id][0].$el; 
+
+      // Take element bounding + Body bounding ( for responsive positionning )
+      const screenElement = el.getBoundingClientRect();
+      const bodyRect = document.body.getBoundingClientRect();
+
+      // Calculate value for positionning + responsiveness
+      const leftV = (screenElement.left - bodyRect.left) - 130;
+      const topV = (screenElement.top - bodyRect.top) - 130;
+      // -------------------------------------------------------------------------------------
+
+      if(hovered){
+        this.$gsap.set(cardElement, {
+          display: 'block',
+          left: leftV,
+          top: topV
+        });
+      }else {
+        this.$gsap.set(cardElement, {
+          display: 'none',
+        });
+      }
     }
   }
 }

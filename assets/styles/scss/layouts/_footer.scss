@@ -1,6 +1,6 @@
 footer {
   position: relative;
-  background-color: $blue-120;
+  background-color: $blue-100;
   padding: 50px 0;
   margin-top: auto;
   z-index: 1;
@@ -21,7 +21,7 @@ footer {
       li {
         padding: 0.4rem;
         margin: 0.4rem 0;
-        color: $blue-60;
+        color: $blue-20;
       }
     }
 
@@ -36,7 +36,7 @@ footer {
 
     .contact {
       h2 {
-        color: set-text-color($blue-120);
+        color: set-text-color($blue-100);
       }
 
       li {
@@ -53,7 +53,7 @@ footer {
 
     .menu {
       h2 {
-        color: set-text-color($blue-120);
+        color: set-text-color($blue-100);
       }
 
       // Media queries : Small
@@ -72,11 +72,11 @@ footer {
       .links {
         @include display-flex(space-between);
         font-size: $h2-size;
-        color: set-text-color($blue-120);
+        color: set-text-color($blue-100);
       }
 
       p {
-        color: $blue-60;
+        color: $blue-20;
       }
 
       // Media queries : Small

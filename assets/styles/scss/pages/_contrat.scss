@@ -17,7 +17,7 @@
       left: 0;
       right: 0;
       margin: 0 auto;
-      color: $blue-actif;
+      color: $blue-60;
       background: white;
       width: 400px;
       text-align: center;
@@ -27,7 +27,7 @@
 
     &__description {
       margin: 3.5rem 0;
-      color: $gray-100;
+      color: $gray-70;
       text-align: center;
       font-size: $menu-size;
     }
@@ -58,21 +58,21 @@
 
         &__title {
           margin: 10px;
-          color: $gray-100;
+          color: $gray-70;
         }
 
         &__description {
           overflow-wrap: break-word;
           margin: 5px;
-          color: $blue-actif;
+          color: $blue-60;
         }
 
         h3.tab-mission__title {
-          color: $blue-actif;
+          color: $blue-60;
         }
 
         p.tab-mission__description {
-          color: $gray-100;
+          color: $gray-70;
         }
       }
 
@@ -85,17 +85,17 @@
       }
 
       .green-mission {
-        border: 1px solid $green-100;
+        border: 1px solid $green-70;
 
         .tab-mission__description {
-          color: $green-100;
+          color: $green-70;
         }
       }
       .red-mission {
-        border: 1px solid $red-100;
+        border: 1px solid $red-60;
 
         .tab-mission__description {
-          color: $red-100;
+          color: $red-60;
         }
       }
 
@@ -112,7 +112,7 @@
 
         &__warehouse {
           svg {
-            color: $blue-actif;
+            color: $blue-60;
           }
         }
       }
@@ -120,14 +120,14 @@
       .km {
         @include display-flex(top, center, column);
         p {
-          color: $gray-100;
+          color: $gray-70;
           font-size: $menu-size;
           font-weight: 700;
         }
         span.line {
           width: 100%;
           height: 2px;
-          background: $gray-100;
+          background: $gray-70;
         }
       }
     }
@@ -154,12 +154,12 @@
       }
 
       &__title {
-        color: $gray-100;
+        color: $gray-70;
         text-align: center;
       }
 
       &__percent {
-        color: $green-100;
+        color: $green-70;
         text-align: center;
       }
 
@@ -179,7 +179,7 @@
 
         a {
           margin-left: 5px;
-          color: $blue-100;
+          color: $blue-90;
         }
       }
 
@@ -213,7 +213,7 @@
 
     .input-row {
       label {
-        color: $gray-100;
+        color: $gray-70;
       }
 
       @include display-grid(auto, 1fr 1fr);
@@ -221,22 +221,22 @@
 
       input,
       select {
-        border: 1px solid $gray-100;
+        border: 1px solid $gray-70;
         border-radius: 5px;
         padding: 0.3rem 0.5rem;
       }
 
       &.error {
         input {
-          border: 1px solid $red-100;
+          border: 1px solid $red-60;
         }
       }
     }
 
     p.error {
       color: white;
-      background: $red-80;
-      border: 1px solid $red-120;
+      background: $red-40;
+      border: 1px solid $red-70;
       border-radius: 5px;
       padding: 0.5rem;
     }

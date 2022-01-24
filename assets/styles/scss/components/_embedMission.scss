@@ -5,54 +5,14 @@
   row-gap: 1.5rem;
   padding: 0.7rem 1rem;
   border-radius: 5px;
-  border: 2px solid $blue-actif;
+  border: 2px solid $blue-60;
 
   & ~ .failed {
-    border-color: $red-100;
+    border-color: $red-60;
   }
 
   & ~ .success {
-    border-color: $green-100;
-  }
-
-  .top-button {
-    @include display-flex;
-    position: absolute;
-    top: -18px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width: 36px;
-    height: 36px;
-    font-size: $menu-size;
-    color: $blue-actif;
-    border: 2px solid $blue-actif;
-    border-radius: 50px;
-    background: $gray-40;
-    @include transition-ease;
-
-    &.contract {
-      &-edit {
-        right: 75px;
-
-        &:hover {
-          color: white;
-          background: $blue-actif;
-        }
-      }
-
-      &-delete {
-        cursor: pointer;
-        color: $red-100;
-        border-color: $red-100;
-        left: 75px;
-
-        &:hover {
-          color: white;
-          background: $red-100;
-        }
-      }
-    }
+    border-color: $green-70;
   }
 
   &__header {
@@ -60,13 +20,13 @@
     width: 100%;
 
     h2 {
-      color: $blue-80;
+      color: $blue-40;
       margin: 0;
     }
 
     span {
       font-size: $menu-size;
-      color: $green-100;
+      color: $green-70;
     }
   }
 
@@ -92,7 +52,7 @@
 
       &,
       span.warehouse {
-        color: $gray-100;
+        color: $gray-70;
       }
     }
 
@@ -106,7 +66,7 @@
     @include display-flex(center, center, column);
 
     p.km {
-      color: $blue-90;
+      color: $blue-80;
       font-weight: 700;
     }
 
@@ -117,7 +77,7 @@
       margin-top: 0.3rem;
 
       &.in-progess {
-        background-color: $yellow-100;
+        background-color: $yellow-60;
       }
 
       &::-webkit-progress-bar {
@@ -126,35 +86,35 @@
       }
 
       &::-webkit-progress-value {
-        background-color: $blue-actif;
+        background-color: $blue-60;
       }
       &.in-progress::-webkit-progress-value {
-        background-color: $yellow-100;
+        background-color: $yellow-60;
       }
       &.success::-webkit-progress-value {
-        background-color: $green-100;
+        background-color: $green-70;
       }
       &.failed::-webkit-progress-value {
-        background-color: $red-100;
+        background-color: $red-60;
       }
 
       &::-moz-progress-bar {
-        background-color: $blue-actif;
+        background-color: $blue-60;
       }
       &.in-progress::-moz-progress-bar {
-        background-color: $yellow-100;
+        background-color: $yellow-60;
       }
       &.success::-moz-progress-bar {
-        background-color: $green-100;
+        background-color: $green-70;
       }
       &.failed::-moz-progress-bar {
-        background-color: $red-100;
+        background-color: $red-60;
       }
     }
   }
 
   &__date {
-    color: $blue-90;
+    color: $blue-80;
     text-align: center;
     font-weight: 700;
 
@@ -174,23 +134,23 @@
     min-height: 30px;
     line-height: 30px;
     color: #fff;
-    background-color: $blue-actif;
+    background-color: $blue-60;
     border-radius: 50px;
     text-align: center;
     padding: 0.4rem;
     @include center-div;
 
     &:hover {
-      background-color: $blue-actif-lighter;
-      color: $blue-60;
+      background-color: $blue-50;
+      color: $blue-20;
     }
 
     &.failed {
-      background-color: $red-100;
+      background-color: $red-60;
     }
 
     &.success {
-      background-color: $green-100;
+      background-color: $green-70;
     }
   }
 }
@@ -200,47 +160,8 @@
   position: relative;
   @include display-flex(space-between);
   width: fit-content;
-  border: 2px solid $blue-actif;
+  border: 2px solid $blue-60;
   width: 100%;
-
-  .top-button {
-    position: absolute;
-    @include display-flex;
-    top: -18px;
-    left: 0;
-    right: 0;
-    @include center-div;
-    width: 36px;
-    height: 36px;
-    font-size: $menu-size;
-    color: $blue-actif;
-    border: 2px solid $blue-actif;
-    border-radius: 50px;
-    background: $gray-40;
-    @include transition-ease;
-
-    &.speciale {
-      &-edit {
-        right: 75px;
-
-        &:hover {
-          color: white;
-          background: $blue-actif;
-        }
-      }
-      &-delete {
-        cursor: pointer;
-        color: $red-100;
-        border-color: $red-100;
-        left: 75px;
-
-        &:hover {
-          color: white;
-          background: $red-100;
-        }
-      }
-    }
-  }
 
   &__logo {
     flex: 1;
@@ -262,24 +183,24 @@
     @include display-flex(space-between);
 
     h2 {
-      color: $blue-actif;
+      color: $blue-60;
       font-weight: 700;
       margin: 0;
     }
 
     p {
-      color: set-text-color($gray-40);
+      color: set-text-color($gray-30);
     }
   }
 
   &__intro {
-    color: set-text-color($gray-40);
+    color: set-text-color($gray-30);
     margin: 1rem 0;
   }
 
   &__date {
     @include display-flex(space-between, top);
-    color: $blue-90;
+    color: $blue-80;
 
     span.white-box {
       padding: 0.4rem;
@@ -295,23 +216,64 @@
     min-height: 30px;
     line-height: 30px;
     color: #fff;
-    background-color: $blue-actif;
+    background-color: $blue-60;
     border-radius: 50px;
     text-align: center;
     padding: 0.4rem;
     @include center-div;
 
     &:hover {
-      background-color: $blue-actif-lighter;
-      color: $blue-60;
+      background-color: $blue-50;
+      color: $blue-20;
     }
 
     &.failed {
-      background-color: $red-100;
+      background-color: $red-60;
     }
 
     &.success {
-      background-color: $green-100;
+      background-color: $green-70;
+    }
+  }
+}
+
+// Top Button
+.contract-embed,
+.speciale-embed {
+  & > .top-button {
+    position: absolute;
+    @include display-flex;
+    top: -18px;
+    left: 0;
+    right: 0;
+    @include center-div;
+    width: 36px;
+    height: 36px;
+    font-size: $menu-size;
+    color: $blue-60;
+    border: 2px solid $blue-60;
+    border-radius: 50px;
+    background: $gray-20;
+    @include transition-ease;
+
+    &.edit {
+      right: 75px;
+
+      &:hover {
+        color: white;
+        background: $blue-60;
+      }
+    }
+    &.delete {
+      cursor: pointer;
+      color: $red-60;
+      border-color: $red-60;
+      left: 75px;
+
+      &:hover {
+        color: white;
+        background: $red-60;
+      }
     }
   }
 }

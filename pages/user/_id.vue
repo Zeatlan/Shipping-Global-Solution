@@ -65,11 +65,29 @@
             <h2>Informations générales</h2>
 
             <div class="general-info__stats">
-              <InfoCard :icon="require('@/assets/img/icons/calendar.png')" title="Création du compte" :body="createdAt" />
-              <InfoCard :icon="require('@/assets/img/icons/crown.png')" title="Classement missions" :body="ranked" />
-              <InfoCard :icon="require('@/assets/img/icons/distance.png')" title="Kilomètres parcourus" :body="user.totalKm" />
-              <InfoCard :icon="require('@/assets/img/icons/pushcart.png')" title="Livraisons effectuées" :body="totalMissions" />
-              <InfoCard :icon="userEntreprise.avatar" class="partner-card" is-div title="Entreprise" :body="userEntreprise.name" />
+              <InfoCard :icon="require('@/assets/img/icons/calendar.png')" title="Création du compte">
+                <h3 class="info-card__body">{{ createdAt }}</h3>
+              </InfoCard>
+
+              <InfoCard :icon="require('@/assets/img/icons/crown.png')" title="Classement missions">
+                <nuxt-link to="/leaderboard">
+                  <h3 v-if="userRanking > 1" class="info-card__body">{{ userRanking }}<sup>ème</sup> sur {{ totalUser }}</h3>
+                  <h3 v-else class="info-card__body">{{ userRanking }}<sup>er</sup> sur {{ totalUser }}</h3>
+                </nuxt-link>
+              </InfoCard>
+
+
+              <InfoCard :icon="require('@/assets/img/icons/distance.png')" title="Kilomètres parcourus">
+                <h3 class="info-card__body">{{ user.totalKm }}</h3>
+              </InfoCard>
+              <InfoCard :icon="require('@/assets/img/icons/pushcart.png')" title="Livraisons effectuées">
+                <h3 class="info-card__body">{{ totalMissions }}</h3>
+              </InfoCard>
+              <InfoCard v-if="userEntreprise.name" is-div :icon="userEntreprise.avatar" class="partner-card" title="Entreprise">
+                <h3 class="info-card__body">
+                  <nuxt-link :to="`/partner/${userEntreprise.name.split(' ').join('-')}`">{{ userEntreprise.name }}</nuxt-link>
+                </h3>
+              </InfoCard>
             </div>
           </div>
 
@@ -119,6 +137,7 @@ import Button from '@/components/Button.vue';
 import ContractEmbed from '@/components/mission/ContractEmbed';
 import SpecialeEmbed from '@/components/mission/SpecialeEmbed';
 import InfoCard from '@/components/user/InfoCard';
+
 export default {
   components: {
     Button,
@@ -140,13 +159,6 @@ export default {
       totalUser: 0,
     }
   },
-  computed: {
-    ranked() {
-      const suffix = (this.userRanking === 1) ? 'er' : 'ème';
-
-      return this.userRanking + suffix + " sur " + this.totalUser;
-    }
-  },
   created() {
     this.getUserInfo();
   },
@@ -162,7 +174,7 @@ export default {
       try {
         await this.$fire.firestore.collection('users').doc(this.slug.id).get().then((snapshot) => {
 
-          this.user = snapshot.data();
+          this.user = {...snapshot.data(), id: snapshot.id};
           this.userId = snapshot.id;
 
           // Récupérer la date de création du compte
