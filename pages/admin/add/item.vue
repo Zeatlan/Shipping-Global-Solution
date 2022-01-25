@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="admin-form">
     <div class="wrapper">
       <h1>Ajout d'un nouvel item</h1>
       <div class="wrapper-body">
 
-        <div class="white-box form">
+        <div class="white-box form-one">
           <!-- Nom de l'item -->
           <Input
             ref="itemName"
@@ -23,7 +23,10 @@
           />
         </div>
 
-        <Button @click.native="addItem">Ajouter l'item</Button>
+        <div class="confirm-button">
+          <Button @click.native="addItem">Ajouter l'item</Button>
+        </div>
+
       </div>
     </div>
   </div>

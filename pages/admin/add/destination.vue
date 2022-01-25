@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="admin-form">
     <div class="wrapper">
       <h1>Ajout d'une nouvelle entreprise locale</h1>
       <div class="wrapper-body">
 
-        <div class="white-box form">
+        <div class="white-box form-one">
           <!-- Nom de l'entreprise -->
           <Input
             ref="entName"
@@ -13,7 +13,7 @@
             @has-error="checkError"
           />
 
-          <!-- Nom de l'entreprise -->
+          <!-- Villes de l'entreprise -->
           <Input
             ref="cities"
             title="Villes où elle se situe (Les séparer par des ',')"
@@ -23,7 +23,9 @@
           />
         </div>
 
-        <Button @click.native="addEntreprise">Ajouter l'entreprise locale</Button>
+        <div class="confirm-button">
+          <Button @click.native="addEntreprise">Ajouter l'entreprise locale</Button>
+        </div>
       </div>
     </div>
   </div>
@@ -68,7 +70,7 @@ export default{
 
       if(!this.error){
         this.entreprise.name = this.$refs.entName.object.text;
-        this.entreprise.locations = this.$refs.cities.object.text.split(/[ ,]+/).filter(function(el) {return el.length !== 0});
+        this.entreprise.locations = this.$refs.cities.object.text.split(/[ ,]+/).filter((el) => el.length !== 0);
       }
 
       if(this.entreprise.locations.length === 0) {

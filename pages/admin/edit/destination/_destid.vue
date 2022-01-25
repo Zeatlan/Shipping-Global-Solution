@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="admin-form">
     <div class="wrapper">
       <h1>Edition de {{ entreprise.name }}</h1>
       <div class="wrapper-body">
 
-        <div class="white-box form">
+        <div class="white-box form-one">
           <!-- Nom de l'entreprise -->
           <Input
             v-if="entreprise.name"
@@ -25,7 +25,10 @@
           />
         </div>
 
-        <Button @click.native="editEntreprise">Editer l'entreprise locale</Button>
+
+        <div class="confirm-button">
+          <Button @click.native="editEntreprise">Editer l'entreprise locale</Button>
+        </div>
       </div>
     </div>
   </div>

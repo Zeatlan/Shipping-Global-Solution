@@ -1,5 +1,5 @@
 <template>
-  <header class="left-pan" @mouseenter="hovering" @mouseleave="notHovering">
+  <header class="left-pan">
     <h1 v-show="isHovering" ref="acronyme">S.G.S</h1>
     <h2 v-show="!isHovering" ref="truck"><Font-awesome-icon :icon="['fas', 'truck-moving']" /></h2>
 
@@ -57,9 +57,14 @@
     </nav>
 
     <div class="actions">
-      <nuxt-link to="/">
+      <nuxt-link to="/" class="action">
         Retour sur le site
       </nuxt-link>
+
+      <div class="action display-menu" @click="switchMenu">
+        <span v-show="!isHovering"> > </span>
+        <span v-show="isHovering"> &lt; </span>
+      </div>
     </div>
   </header>
 </template>
@@ -70,21 +75,28 @@ export default {
   data() {
     return {
       isHovering: false,
-      tl: this.$gsap.timeline(),
+      container: null,
     }
   },
+  mounted() {
+    this.container = document.querySelector('.container-admin');
+  },
   methods: {
-    hovering() {
-      this.tl.restart();
-      
-      this.isHovering = true;
-      this.tl.to(this.$el, 0.1, {
-        width: '12vw',
-      })
+    switchMenu() {
+      this.isHovering = !this.isHovering;
+
+      if(this.isHovering) this.display();
+      else this.hide();
     },
-    notHovering() {
-      this.tl.reverse()
-      this.isHovering = false;
+    display() {
+      this.$gsap.to(this.$el, 0.1, {
+        width: '12vw',
+      });
+    },
+    hide() {
+      this.$gsap.to(this.$el, 0.1, {
+        width: '4vw',
+      })
     }
   }
 }

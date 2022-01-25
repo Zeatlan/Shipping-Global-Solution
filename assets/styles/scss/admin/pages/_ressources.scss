@@ -1,8 +1,15 @@
 #ressources {
   .list {
-    display: grid;
-    grid-template-columns: repeat(3, 350px);
+    @include display-grid(repeat(3, 350px), auto, 1em);
     justify-content: space-between;
-    gap: 1em;
+
+    @include sm {
+      grid-template-columns: 1fr;
+
+      .card {
+        @include center-div;
+        width: 100%;
+      }
+    }
   }
 }

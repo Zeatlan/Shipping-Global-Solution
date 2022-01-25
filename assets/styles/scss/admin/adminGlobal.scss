@@ -13,6 +13,7 @@ a {
     border-radius: 5px;
     padding: 15px;
     color: white;
+    @include center-div;
 
     &:hover {
       background: $blue-50;
@@ -20,14 +21,37 @@ a {
   }
 }
 
+.centered-button {
+  button {
+    width: 300px;
+  }
+  margin: 15px 0;
+  text-align: center;
+}
+
+#admin {
+  @include display-grid(min-content 1fr);
+
+  // Media Queries : Small
+  @include sm {
+    @include display-grid(1fr);
+  }
+}
+
 .container-admin {
-  min-width: 93vw;
-  margin: 0 0 0 7vw !important;
+  min-width: 100%;
 }
 
 .wrapper {
   position: relative;
-  margin: 1rem 3rem;
+  margin: 1rem;
+
+  // Media Queries: Sm
+  @include sm {
+    margin-top: 8rem;
+    margin-left: 0;
+    margin-right: 0;
+  }
 
   h1 {
     color: $blue-60;

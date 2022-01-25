@@ -2,8 +2,10 @@
   <div id="list-entreprises" class="listing-admin">
     <div class="wrapper">
       <h1>Liste des items transportable</h1>
-      <Button @click.native="$router.push('/admin/add/item')">Ajouter un item</Button>
-      <div class="wrapper-body container">
+      <div class="centered-button">
+        <Button @click.native="$router.push('/admin/add/item')">Ajouter un item</Button>
+      </div>
+      <div class="wrapper-body container table">
         
         <table v-show="items.length > 0" class="white-box">
           <thead>
@@ -15,7 +17,7 @@
             <tr v-for="item in items" :key="item.name"> 
               <td>{{ item.name }}</td>
               <td>{{ item.price }}</td>
-              <td>
+              <td class="actions">
                 <nuxt-link :to="`/admin/edit/item/${item.id}`"><Font-awesome-icon :icon="['fas', 'tools']" /></nuxt-link>
                 <Font-awesome-icon :icon="['fas', 'trash-alt']" @click="deleteItem($event, item)" />
               </td>

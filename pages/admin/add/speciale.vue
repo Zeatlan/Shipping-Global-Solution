@@ -89,7 +89,7 @@
         </div>
 
 
-        <div class="add-mission">
+        <div class="confirm-button">
           <Button class="add-mission" @click.native="addMission">Ajouter la mission spéciale</Button>
         </div>
 

@@ -1,5 +1,5 @@
 <template>
-  <div id="edit-entreprise">
+  <div id="edit-entreprise" class="admin-form">
     <div class="submit-upload">
       <div class="container">
         <p>

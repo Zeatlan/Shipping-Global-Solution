@@ -4,47 +4,49 @@
       <div class="wrapper-body container">
         <h1>Liste des entreprises partenaires</h1>
 
-        <table class="white-box">
-          <thead>
-            <th>Logo</th>
-            <th>Nom</th>
-            <th>Nombre de membres</th>
-            <th>Créé le</th>
-            <th>Entreprise valide ?</th>
-            <th>Actions</th>
-          </thead>
-          <tbody>
-            <tr v-for="partner in partners" :key="partner.id">
-              <td><img :src="partner.avatar" :alt="`Logo de ${partner.name}`" width="48" /></td>
-              <td>{{ partner.name }}</td>
-              <td>{{ partner.members }}</td>
-              <td>{{ createdTime(partner) }}</td>
-              <td class="is-valid" :class="{'valid': partner.isApproved}">
-                <Font-awesome-icon v-if="partner.isApproved" :icon="['fas', 'check']" />
-                <Font-awesome-icon v-else :icon="['fas', 'times']" />
-              </td>
-              <td class="actions">
-                <nuxt-link v-if="partner.id !== '0'" 
-                  :to="`/admin/edit/partner/${partner.id}/`">
+        <div class="table">
+          <table class="white-box">
+            <thead>
+              <th>Logo</th>
+              <th>Nom</th>
+              <th>Nombre de membres</th>
+              <th>Créé le</th>
+              <th>Entreprise valide ?</th>
+              <th>Actions</th>
+            </thead>
+            <tbody>
+              <tr v-for="partner in partners" :key="partner.id">
+                <td><img :src="partner.avatar" :alt="`Logo de ${partner.name}`" width="48" /></td>
+                <td>{{ partner.name }}</td>
+                <td>{{ partner.members }}</td>
+                <td>{{ createdTime(partner) }}</td>
+                <td class="is-valid" :class="{'valid': partner.isApproved}">
+                  <Font-awesome-icon v-if="partner.isApproved" :icon="['fas', 'check']" />
+                  <Font-awesome-icon v-else :icon="['fas', 'times']" />
+                </td>
+                <td class="actions">
+                  <nuxt-link v-if="partner.id !== '0'" 
+                    :to="`/admin/edit/partner/${partner.id}/`">
 
-                  <Font-awesome-icon :icon="['fas', 'cog']" />
-                </nuxt-link>
-                <!-- Only Super admin can edit "Pole Emploi" -->
-                <nuxt-link v-else-if="['Développeur', 'Super Administrateur'].includes($cookies.get('user-rank'))" 
-                  :to="`/admin/edit/partner/${partner.id}/`">
+                    <Font-awesome-icon :icon="['fas', 'cog']" />
+                  </nuxt-link>
+                  <!-- Only Super admin can edit "Pole Emploi" -->
+                  <nuxt-link v-else-if="['Développeur', 'Super Administrateur'].includes($cookies.get('user-rank'))" 
+                    :to="`/admin/edit/partner/${partner.id}/`">
 
-                  <Font-awesome-icon :icon="['fas', 'cog']" />
-                </nuxt-link>
+                    <Font-awesome-icon :icon="['fas', 'cog']" />
+                  </nuxt-link>
 
-                <Font-awesome-icon 
-                  v-if="partner.id !== '0' && ['Développeur', 'Super Administrateur'].includes($cookies.get('user-rank'))"
-                  :icon="['fas', 'trash-alt']" 
-                  @click="deletePartner($event, partner)" 
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  <Font-awesome-icon 
+                    v-if="partner.id !== '0' && ['Développeur', 'Super Administrateur'].includes($cookies.get('user-rank'))"
+                    :icon="['fas', 'trash-alt']" 
+                    @click="deletePartner($event, partner)" 
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

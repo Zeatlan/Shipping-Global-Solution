@@ -1,0 +1,43 @@
+.hamburger-menu {
+  &.admin {
+    display: none;
+    @include carre(1.5rem);
+    cursor: pointer;
+    grid-area: burger;
+
+    @include sm {
+      @include display-flex(space-between, top, column);
+    }
+
+    .bar {
+      height: 3px;
+      background: $gray-80;
+      border-radius: 5px;
+      margin: 0.1rem 0;
+      transform-origin: left;
+      @include transition-ease;
+    }
+
+    &.active .top {
+      transform: rotate(45deg);
+    }
+
+    &.active .middle {
+      opacity: 0;
+    }
+
+    &.active .bottom {
+      transform: rotate(-45deg);
+    }
+  }
+}
+
+.black-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  min-width: 100%;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+}

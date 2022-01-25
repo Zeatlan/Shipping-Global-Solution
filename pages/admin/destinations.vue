@@ -2,8 +2,11 @@
   <div id="list-entreprises" class="listing-admin">
     <div class="wrapper">
       <h1>Liste des entreprises locales</h1>
-      <Button @click.native="$router.push('/admin/add/destination')">Ajouter une entreprise locale</Button>
-      <div class="wrapper-body container">
+      <div class="centered-button">
+        <Button @click.native="$router.push('/admin/add/destination')">Ajouter une entreprise locale</Button>
+      </div>
+
+      <div class="wrapper-body container table">
         
         <table v-show="destinations.length > 0" class="white-box">
           <thead>
@@ -17,7 +20,7 @@
               <td>
                 {{ dest.locations.join(', ') }}
               </td>
-              <td>
+              <td class="actions">
                 <nuxt-link :to="`/admin/edit/destination/${dest.id}`"><Font-awesome-icon :icon="['fas', 'tools']" /></nuxt-link>
                 <Font-awesome-icon :icon="['fas', 'trash-alt']" @click="deleteEntreprise($event, dest)" />
               </td>

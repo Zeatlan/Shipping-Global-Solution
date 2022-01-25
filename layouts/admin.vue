@@ -1,6 +1,7 @@
 <template>
   <div id="admin">
     <Menu />
+
     <transition-group
       name="list"
       tag="div"
@@ -14,6 +15,7 @@
       </Notification>
 
     </transition-group>
+    
     <div class="container-admin"> 
       <Header-user />
       <Nuxt />

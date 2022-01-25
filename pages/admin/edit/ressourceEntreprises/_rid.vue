@@ -4,7 +4,7 @@
       <h1 v-if="entreprise.name">Édition de {{ entreprise.name }}</h1>
       <div class="wrapper-body">
 
-        <div class="form">
+        <div class="form-one white-box">
           <!-- Nom de l'entreprise -->
           <Input 
             v-if="entreprise.name"
@@ -30,14 +30,17 @@
           <Input
             v-for="inputCountry in inputCountries"
             :key="inputCountry.country.name"
-            ref="country"
+            ref="cities"
             :title="`${inputCountry.country.name} (séparer les villes par une virgule)`"
-            :value="{id: `country ${inputCountry.country.id}`, text: arrayToString(inputCountry.data || '')}"
+            :value="{id: `cities ${inputCountry.country.id}`, text: arrayToString(inputCountry.data || '')}"
             @has-error="checkError"
           />
 
         </div>
-        <Button @click.native="editEntreprise">Editer l'entreprise</Button>
+
+        <div class="confirm-button">
+          <Button @click.native="editEntreprise">Modifier l'entreprise</Button>
+        </div>
       </div> 
     </div>
   </div>
@@ -100,7 +103,7 @@ export default {
 
         cities.forEach(city => {
           array.push(city);
-        })
+        });
 
         this.entreprise.locations[countryId[1]] = array;
       }else {
@@ -114,7 +117,8 @@ export default {
       this.countries.splice(idx, 1);
     },
     pushArray({id, select }) {
-      const idx = this.inputCountries.findIndex(e => e.country.name === select.country.name);
+      const idx = this.inputCountries.findIndex(e => e.country.name === select.name);
+      delete this.entreprise.locations[select.id];
       this.inputCountries.splice(idx, 1);
       this.countries.push(select);
     },
@@ -144,7 +148,6 @@ export default {
 
       const queryVerif = await this.$fire.firestore.collection('destinations').where('name', '==', this.entreprise.name).get();
 
-
       if(!queryVerif.empty){
         if(queryVerif.docs[0].id !== this.slug.rid){
           return this.$store.dispatch('sendNotif', {
@@ -161,7 +164,7 @@ export default {
         message: `${this.entreprise.name} a été mis à jour.`
       });
 
-      this.$router.push('/admin/ressourceEntreprises');
+      this.$router.push('/admin/ressourceEntreprises'); 
     }
   }
 }

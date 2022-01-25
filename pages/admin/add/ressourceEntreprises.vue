@@ -34,7 +34,10 @@
           />
 
         </div>
-        <Button @click.native="addEntreprise">Ajouter l'entreprise</Button>
+
+        <div class="confirm-button">
+          <Button @click.native="addEntreprise">Ajouter l'entreprise</Button>
+        </div>
       </div>
     </div>
   </div>

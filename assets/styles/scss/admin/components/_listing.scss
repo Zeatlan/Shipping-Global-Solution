@@ -3,15 +3,41 @@
     text-align: center;
     color: $blue-90;
   }
+
+  .table {
+    overflow-x: auto;
+  }
   table {
     width: 100%;
-    margin: 0 auto;
+    @include center-div;
     text-align: center;
     border-collapse: collapse;
 
+    tr {
+      @include transition-ease;
+
+      &:hover {
+        background: $blue-20;
+      }
+    }
+
+    td {
+      padding: 0.5rem;
+    }
+
+    // Media Queries: Sm
+    @include sm {
+      overflow-x: scroll;
+      white-space: nowrap;
+    }
+
     th {
-      padding: 15px 0;
+      padding: 1rem 0;
       color: $gray-70;
+      // Media Queries: Sm
+      @include sm {
+        padding: 1rem;
+      }
     }
 
     a {
@@ -33,8 +59,13 @@
       }
     }
 
-    .actions {
+    & > tbody > tr > .actions {
       text-align: center;
+
+      @include sm {
+        display: flex;
+        justify-content: space-evenly;
+      }
 
       svg {
         color: $gray-70;
@@ -45,6 +76,10 @@
         color: $red-60;
         cursor: pointer;
       }
+    }
+
+    & > tbody > tr > .locations {
+      text-align: left;
     }
   }
 }

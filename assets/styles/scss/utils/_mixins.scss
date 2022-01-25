@@ -1,5 +1,5 @@
 @mixin transition-ease {
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
 }
 
 @mixin display-flex($x: center, $y: center, $direction: row) {

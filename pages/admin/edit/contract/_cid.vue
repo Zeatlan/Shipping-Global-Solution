@@ -2,7 +2,10 @@
   <div id="add-contract" class="admin-form">
     <div class="wrapper">
       <h1>Édition de la mission contrat "{{ mission.name }}"</h1>
-      <nuxt-link class="return-link" to="/admin/contracts">Retour à la liste des missions contrats.</nuxt-link>
+      <div class="confirm-button">
+        <nuxt-link class="return-link" to="/admin/contracts">Retour à la liste des missions contrats.</nuxt-link>
+      </div>
+
       <div class="wrapper-body">
 
         <div class="form">
@@ -226,8 +229,8 @@
           <!-- Fin KM -->
         </div>
 
-        <div class="add-mission">
-          <Button @click.native="editMission">Éditer cette mission</Button>
+        <div class="confirm-button">
+          <Button @click.native="editMission">Modifier cette mission</Button>
         </div>
       </div>
     </div>

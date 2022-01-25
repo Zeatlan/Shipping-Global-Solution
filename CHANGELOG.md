@@ -2,12 +2,17 @@
 
 Ce document stipulera de toutes les modifications effectuées.
 
-# 1.0.4
+# 1.1.0
+
+### **Ajouts**
+- Version mobile de l'administration.
 
 ### **Fixs**
 
-- Ranking dans la box de l'utilisateur.
-
+- Ranking dans la box de l'utilisateur ( qui apparaît au survol d'un lien ).
+- Fix de la partie `ressources` => `destinations` (L'édition ne fonctionnait pas bien).
+- Fix de la redirection vers la page de son entreprise après la création de celle-ci.
+- `Administration` réglage du menu (Désormais il faut cliquer sur un bouton pour tout afficher, ça pouvait être énervant de devoir passer sa souris au dessus en boucle...)
 # 1.0.3.1 25/01/2022
 
 #### **Fixs**

@@ -522,7 +522,7 @@ export default {
       if(newWindow){
         window.open(location);
       }else{
-        this.$router.push('/partner/' + this.newDoc.name.split(' ').join('-'));
+        this.$router.push('/partner/' + this.nameEntreprise.split(' ').join('-'));
       }
     },
   }

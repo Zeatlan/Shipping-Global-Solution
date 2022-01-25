@@ -7,31 +7,33 @@
           <!-- Approbation missions spéciales -->
           <Tab title="Missions spéciales">
         
-            <table v-if="speciales.length > 0" class="white-box">
-              <thead>
-                <th>Nom de la mission</th>
-                <th>Pseudo trucksbook</th>
-                <th>Lien</th>
-                <th>Kilomètre</th>
-                <th>Départ / Arrivé</th>
-                <th>Date de complétion</th>
-                <th>Actions</th>
-              </thead>
-                <tbody>
-                <tr v-for="(s, idx) in speciales" :key="idx">
-                  <td>{{ s.mission }}</td>
-                  <td>{{ s.user }}</td>
-                  <td><a :href="s.link" target="_blank">{{ s.link }}</a></td>
-                  <td>{{ s.km }} km</td>
-                  <td>{{ s.direction }}</td>
-                  <td>{{ s.completedAt.toDate().toLocaleDateString('fr-FR', { month: 'numeric', year: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit'}).replace(',', ' à').replace(':', 'h') }}</td>
-                  <td class="actions">
-                    <Font-awesome-icon :icon="['fas', 'check']" @click="approve($event, s, true)" />
-                    <Font-awesome-icon :icon="['fas', 'times']" @click="disapprove($event, s, 'speciale-form')" />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div v-if="speciales.length > 0" class="table">
+              <table class="white-box">
+                <thead>
+                  <th>Nom de la mission</th>
+                  <th>Pseudo trucksbook</th>
+                  <th>Lien</th>
+                  <th>Kilomètre</th>
+                  <th>Départ / Arrivé</th>
+                  <th>Date de complétion</th>
+                  <th>Actions</th>
+                </thead>
+                  <tbody>
+                  <tr v-for="(s, idx) in speciales" :key="idx">
+                    <td>{{ s.mission }}</td>
+                    <td>{{ s.user }}</td>
+                    <td><a :href="s.link" target="_blank">{{ s.link }}</a></td>
+                    <td>{{ s.km }} km</td>
+                    <td>{{ s.direction }}</td>
+                    <td>{{ s.completedAt.toDate().toLocaleDateString('fr-FR', { month: 'numeric', year: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit'}).replace(',', ' à').replace(':', 'h') }}</td>
+                    <td class="actions">
+                      <Font-awesome-icon :icon="['fas', 'check']" @click="approve($event, s, true)" />
+                      <Font-awesome-icon :icon="['fas', 'times']" @click="disapprove($event, s, 'speciale-form')" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
             <div v-else class="placeholder white-box">
               Aucun formulaire n'a été trouvé, attendez que des membres complètent leurs missions spéciales.
@@ -41,28 +43,29 @@
 
           <!-- Approbation missions contrats -->
           <Tab title="Missions contrats">
-        
-            <table v-if="contracts.length > 0" class="white-box">
-              <thead>
-                <th>Nom de la mission</th>
-                <th>Pseudo trucksbook</th>
-                <th>Lien</th>
-                <th>Date de complétion</th>
-                <th>Actions</th>
-              </thead>
-              <tbody>
-                <tr v-for="(c, idx) in contracts" :key="idx">
-                  <td>{{ c.mission }}</td>
-                  <td>{{ c.user }}</td>
-                  <td><a :href="c.link" target="_blank">{{ c.link }}</a></td>
-                  <td>{{ c.completedAt.toDate().toLocaleDateString('fr-FR', { month: 'numeric', year: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit'}).replace(',', ' à').replace(':', 'h') }}</td>
-                  <td class="actions">
-                    <Font-awesome-icon :icon="['fas', 'check']" @click="approve($event, c, false)" />
-                    <Font-awesome-icon :icon="['fas', 'times']" @click="disapprove($event, c, 'contract-form')" />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div v-if="contracts.length > 0" class="table">
+              <table class="white-box">
+                <thead>
+                  <th>Nom de la mission</th>
+                  <th>Pseudo trucksbook</th>
+                  <th>Lien</th>
+                  <th>Date de complétion</th>
+                  <th>Actions</th>
+                </thead>
+                <tbody>
+                  <tr v-for="(c, idx) in contracts" :key="idx">
+                    <td>{{ c.mission }}</td>
+                    <td>{{ c.user }}</td>
+                    <td><a :href="c.link" target="_blank">{{ c.link }}</a></td>
+                    <td>{{ c.completedAt.toDate().toLocaleDateString('fr-FR', { month: 'numeric', year: 'numeric', day: 'numeric', hour: '2-digit', minute:'2-digit'}).replace(',', ' à').replace(':', 'h') }}</td>
+                    <td class="actions">
+                      <Font-awesome-icon :icon="['fas', 'check']" @click="approve($event, c, false)" />
+                      <Font-awesome-icon :icon="['fas', 'times']" @click="disapprove($event, c, 'contract-form')" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
             <div v-else class="placeholder white-box">
               Aucun formulaire n'a été trouvé, attendez que des membres complètent leurs missions contrats.

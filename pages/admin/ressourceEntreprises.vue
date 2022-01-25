@@ -2,9 +2,12 @@
   <div id="list-entreprises" class="listing-admin">
     <div class="wrapper">
       <h1>Liste des destinations</h1>
-      <Button @click.native="$router.push('/admin/add/ressourceEntreprises')">Ajouter une destination</Button>
-      <div class="wrapper-body container">
-        
+
+      <div class="centered-button">
+        <Button @click.native="$router.push('/admin/add/ressourceEntreprises')">Ajouter une destination</Button>
+      </div>
+
+      <div class="wrapper-body container table">
         <table v-show="destinations.length > 0" class="white-box">
           <thead>
             <th>Nom</th>
@@ -14,13 +17,13 @@
           <tbody>
             <tr v-for="dest in destinations" :key="dest.name"> 
               <td>{{ dest.name }}</td>
-              <td>
+              <td class="locations">
                 <div v-for="(city, flag) in dest.locations" :key="flag">
                   <img :src="`https://flagcdn.com/16x12/${flag.toLowerCase()}.png`" />
                   <span v-for="name in city" :key="name"> {{ name }} </span>
                 </div>
               </td>
-              <td>
+              <td class="actions">
                 <nuxt-link :to="`/admin/edit/ressourceEntreprises/${dest.id}`"><Font-awesome-icon :icon="['fas', 'tools']" /></nuxt-link>
                 <Font-awesome-icon :icon="['fas', 'trash-alt']" @click="deleteDestination($event, dest)" />
               </td>

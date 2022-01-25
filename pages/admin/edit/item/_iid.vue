@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="admin-form">
     <div v-if="item" class="wrapper">
       <h1>Edition de {{ item.name }}</h1>
       <div class="wrapper-body">
 
-        <div class="white-box form">
+        <div class="white-box form-one">
           <!-- Nom de l'item -->
           <Input
             v-if="item.name"
@@ -25,7 +25,10 @@
           />
         </div>
 
-        <Button @click.native="editItem">Editer l'item</Button>
+        <div class="confirm-button">
+          <Button @click.native="editItem">Modifier l'item</Button>
+        </div>
+
       </div>
     </div>
   </div>

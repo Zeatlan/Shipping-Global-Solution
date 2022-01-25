@@ -99,10 +99,12 @@
             @increment-error="incrementError"
             @store-object="addObjectEntries" />
 
+
         </div>
 
-        <Button class="add-mission" @click.native="editMission">Editer la mission spéciale</Button>
-
+        <div class="confirm-button">
+          <Button class="add-mission" @click.native="editMission">Modifier la mission spéciale</Button>
+        </div>
       </div>
     </div>
   </div>
