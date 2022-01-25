@@ -64,6 +64,10 @@
             color: $blue-60;
             font-weight: 700;
 
+            svg {
+              font-size: $small-size;
+            }
+
             a {
               color: $blue-40;
 
