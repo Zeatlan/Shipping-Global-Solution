@@ -2,6 +2,12 @@
 
 Ce document stipulera de toutes les modifications effectuées.
 
+# 1.0.4
+
+### **Fixs**
+
+- Ranking dans la box de l'utilisateur.
+
 # 1.0.3.1 25/01/2022
 
 #### **Fixs**

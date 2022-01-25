@@ -64,7 +64,7 @@ export default {
     this.entreprise = { ...snap.data(), id: snap.id };
 
     // Get leaderboard
-    const snapLadder = await this.$fire.firestore.collection('users').orderBy('totalKm', 'desc').get();
+    const snapLadder = await this.$fire.firestore.collection('users').where('isPlayingEurotruck', '==', true).orderBy('totalKm', 'desc').get();
     snapLadder.docs.forEach(userDoc => {
       if(userDoc.id === this.user.id) {
         this.userRanking = snapLadder.docs.findIndex(el => el.id === userDoc.id) + 1;
