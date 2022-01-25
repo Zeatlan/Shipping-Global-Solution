@@ -29,4 +29,6 @@
 @mixin carre($value) {
   width: $value;
   height: $value;
+  min-width: $value;
+  min-height: $value;
 }

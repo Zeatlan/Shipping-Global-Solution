@@ -13,22 +13,19 @@
 
         <div class="user-overlay-tags">
           <div class="user-overlay-tag">
-            Inscrit: <span class="tag tag-joined">{{ convertDateHorizontalBar(user.createdAt) }} <Font-awesome-icon :icon="['fas', 'birthday-cake']" /></span>
+            Inscrit: <span class="tag tag-joined"><Font-awesome-icon :icon="['fas', 'birthday-cake']" /> {{ convertDateHorizontalBar(user.createdAt) }}</span>
           </div>
           <div class="user-overlay-tag">
-            Km parcouru: <span class="tag">{{ user.totalKm }} <Font-awesome-icon :icon="['fas', 'truck-moving']" /></span>
+            Km parcouru: <span class="tag"><Font-awesome-icon :icon="['fas', 'truck-moving']" /> {{ user.totalKm }}</span>
           </div>
           <div class="user-overlay-tag">
-            Contrats: <span class="tag">{{ user.contractMissions.length }} <Font-awesome-icon :icon="['fas', 'file-signature']" /></span>
+            Contrats: <span class="tag"><Font-awesome-icon :icon="['fas', 'file-signature']" /> {{ user.contractMissions.length }}</span>
           </div>
           <div class="user-overlay-tag">
-            Speciales: <span class="tag">{{ user.specialMissions.length }} <Font-awesome-icon :icon="['fas', 'marker']" /></span>
+            Speciales: <span class="tag"><Font-awesome-icon :icon="['fas', 'marker']" /> {{ user.specialMissions.length }}</span>
           </div>
-          <div class="user-overlay-tag">
+          <div class="user-overlay-tag user-overlay-tag__entreprise">
             Ent.: <span v-if="entreprise" class="tag"><nuxt-link :to="`/partner/${entreprise.name.split(' ').join('-')}`">{{ cutEntrepriseName }}</nuxt-link></span>
-          </div>
-          <div class="user-overlay-tag">
-            Discord: <span class="tag tag-discord">{{ user.discord || '' }}</span>
           </div>
         </div>
       </div>
@@ -58,7 +55,7 @@ export default {
   },
   computed: {
     cutEntrepriseName() {
-      return this.entreprise.name.length > 14 ? this.entreprise.name.substring(0, 14) + '..' : this.entreprise.name;
+      return this.entreprise.name.length > 25 ? this.entreprise.name.substring(0, 25) + '..' : this.entreprise.name;
     }
   },
   async mounted() {
