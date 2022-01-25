@@ -32,16 +32,19 @@
               <nuxt-link :to="`/user/${$cookies.get('user-id')}`" @click.native="redirect(`/user/${$cookies.get('user-id')}`)" 
                 ><font-awesome-icon :icon="['fas', 'user']"
               /></nuxt-link>
+
               <nuxt-link to="/user/edit/" @click.native="redirect(`/user/edit/`)"
                 ><font-awesome-icon :icon="['fas', 'users-cog']"
               /></nuxt-link>
+
               <nuxt-link
                 v-if="$cookies.get('user-rank') !== 'Membre'"
                 to="/admin/dashboard/"
                 class="admin"
                 ><font-awesome-icon :icon="['fas', 'tools']"
               /></nuxt-link>
-              <nuxt-link to="/" class="logout" @click.native="logout"
+
+              <nuxt-link to="/" class="logout" @click.native="$emit('logout')"
                 ><font-awesome-icon :icon="['fas', 'sign-out-alt']"
               /></nuxt-link>
             </div>

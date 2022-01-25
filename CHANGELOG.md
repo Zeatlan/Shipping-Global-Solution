@@ -2,9 +2,16 @@
 
 Ce document stipulera de toutes les modifications effectuées.
 
-# 1.1.0
+# 1.1.1 26/01/2022
+
+### **Fixs**
+
+- Fix du bouton de déconnexion sur le menu mobile.
+
+# 1.1.0 26/01/2022
 
 ### **Ajouts**
+
 - Version mobile de l'administration.
 
 ### **Fixs**
@@ -13,6 +20,7 @@ Ce document stipulera de toutes les modifications effectuées.
 - Fix de la partie `ressources` => `destinations` (L'édition ne fonctionnait pas bien).
 - Fix de la redirection vers la page de son entreprise après la création de celle-ci.
 - `Administration` réglage du menu (Désormais il faut cliquer sur un bouton pour tout afficher, ça pouvait être énervant de devoir passer sa souris au dessus en boucle...)
+
 # 1.0.3.1 25/01/2022
 
 #### **Fixs**

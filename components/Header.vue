@@ -90,7 +90,7 @@
         </div>
 
         <!-- Mobile menu -->
-        <Burger :is-logged-in="isLoggedIn" :avatar="avatar" />
+        <Burger :is-logged-in="isLoggedIn" :avatar="avatar" @logout="logout" />
       </div>
     </nav>
 
