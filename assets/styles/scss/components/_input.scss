@@ -25,3 +25,26 @@ select {
   padding: 0.4rem;
   border-radius: 5px;
 }
+
+.input-checkbox {
+  @include display-flex(space-between);
+  width: fit-content;
+  margin: 1rem 0;
+  cursor: pointer;
+  @include transition-ease;
+  padding: 0.4rem;
+  border-radius: 10px;
+
+  & > label {
+    min-width: 50px;
+  }
+
+  & > input {
+    border: 0;
+    outline: 1px solid $blue-20;
+  }
+
+  &:hover {
+    background: $blue-20;
+  }
+}

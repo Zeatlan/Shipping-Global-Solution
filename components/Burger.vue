@@ -66,9 +66,9 @@
           <li @click="redirect('/story')">Notre histoire</li>
           <li @click="redirect('/team')">Notre équipe</li>
           <li @click="redirect('/missions/list/?tab=0')">Liste des missions</li>
-          <li @click="redirect('/partner/join/')">Devenez partenaire</li>
+          <li v-if="$cookies.get('user-name')" @click="redirect('/partner/join/')">Devenez partenaire</li>
           <li @click="redirect('/partner/list')">Liste des partenaires</li>
-          <li @click="redirect('/leaderboard')">Classement</li>
+          <li v-if="$cookies.get('user-name')" @click="redirect('/leaderboard')">Classement</li>
         </ul>
       </div>
       

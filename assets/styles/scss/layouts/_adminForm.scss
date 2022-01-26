@@ -19,7 +19,12 @@
   }
 
   p.error {
-    color: $red-60;
+    color: #fff;
+    background: $red-40;
+    border: 1px solid $red-50;
+    text-align: center;
+    padding: 0.4rem;
+    border-radius: 5px;
   }
 
   .form {
@@ -44,8 +49,8 @@
     width: 100%;
     margin: 0 auto;
 
-    .wrapper {
-      margin: 15px;
+    & > .container {
+      margin: 1rem;
       p.center {
         color: $gray-70;
         text-align: center;
@@ -84,20 +89,6 @@
       @include sm {
         grid-template-columns: auto;
         gap: 0;
-      }
-
-      input,
-      textarea,
-      select {
-        border-radius: 5px;
-        padding: 5px 15px;
-      }
-
-      textarea {
-        max-width: 100%;
-        padding: 15px;
-        resize: none;
-        border: 1px solid $gray-70;
       }
 
       input {

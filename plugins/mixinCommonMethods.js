@@ -28,7 +28,7 @@ if(!Vue.__global_mixin__) {
       convertDateHorizontalBar(date) {
         const dateFormatted = new Date(date.seconds * 1000);
         return dateFormatted.getDate() +  '/' +  (dateFormatted.getMonth()+1) + '/' + dateFormatted.getFullYear();
-      }
+      },
     },
   })
 }

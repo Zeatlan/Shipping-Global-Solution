@@ -1,5 +1,5 @@
 <template>
-<div class="white-box">
+<div class="white-box form">
     <h2>{{ state }}</h2>
 
     <div class="wrapper">
@@ -35,9 +35,9 @@
       <p class="center">Sélections du type de transport</p>
       
       <!-- Libre -->
-      <div style="display:flex;align-items: center;margin: 15px 0;">
-        <label for="libre">Libre</label>
-        <input id="libre" v-model="libre" type="checkbox" name="libre">
+      <div class="input-checkbox">
+        <label :for="`${stateData}-libre`">Libre</label>
+        <input :id="`${stateData}-libre`" v-model="libre" type="checkbox" name="libre">
       </div>
       <MultipleSelect
         v-show="libre"
@@ -53,9 +53,9 @@
       />
       
       <!-- Benne -->
-      <div style="display:flex;align-items: center;margin: 15px 0;">
-        <label for="benne">Benne</label>
-        <input id="benne" v-model="benne" type="checkbox" name="benne">
+      <div class="input-checkbox">
+        <label :for="`${stateData}-benne`">Benne</label>
+        <input :id="`${stateData}-benne`" v-model="benne" type="checkbox" name="benne">
       </div>
       <MultipleSelect
         v-show="benne"
@@ -71,9 +71,9 @@
       />
 
       <!-- Citerne -->
-      <div style="display:flex;align-items: center;margin: 15px 0;">
-        <label for="citerne">Citerne</label>
-        <input id="citerne" v-model="citerne" type="checkbox" name="citerne">
+      <div class="input-checkbox">
+        <label :for="`${stateData}-citerne`">Citerne</label>
+        <input :id="`${stateData}-citerne`" v-model="citerne" type="checkbox" name="citerne">
       </div>
       <MultipleSelect
         v-show="citerne"
@@ -232,19 +232,25 @@ export default {
         this.$emit('increment-error');
       }
     },
+    isInArray(item, array) {
+      const idx = array.findIndex(el => el.id === item.id);
+
+      if(idx > -1) return true;
+      return false;
+    },
     displaySelected({ array, id, error }) {
       array.forEach(arr => {
-
-        if(id === `itemsLibre${this.stateData}`)
-          this.selectedItems.libre.push(arr.ref);
+        if(id === `itemsLibre${this.stateData}`){
+          if(!this.isInArray(arr, this.selectedItems.libre)) this.selectedItems.libre.push(arr.ref);
+        }
         if(id === `itemsBenne${this.stateData}`)
-          this.selectedItems.benne.push(arr.ref);
+          if(!this.isInArray(arr, this.selectedItems.benne)) this.selectedItems.benne.push(arr.ref);
         if(id === `itemsCiterne${this.stateData}`)
-          this.selectedItems.citerne.push(arr.ref);
+          if(!this.isInArray(arr, this.selectedItems.citerne)) this.selectedItems.citerne.push(arr.ref);
         if(id === `destinations${this.stateData}`)
-          this.selectedDestinations.push(arr.ref);
+          if(!this.isInArray(arr, this.selectedDestinations)) this.selectedDestinations.push(arr.ref);
         if(id === `entreprises${this.stateData}`)
-          this.selectedEntreprises.push(arr.ref);
+          if(!this.isInArray(arr, this.selectedEntreprises)) this.selectedEntreprises.push(arr.ref);
       });
 
       if(error)
@@ -259,7 +265,6 @@ export default {
         this.itemsDefault.splice(idx, 1);
     },
     pushArray({id, select }) {
-
       if(id === `destinations${this.stateData}`)
         this.destinations.push(select);
       if(id === `entreprises${this.stateData}`)
@@ -277,23 +282,21 @@ export default {
           await this.$refs[ref].checkInputError();
       }
 
-      if(this.selectedItems.benne.length === 0 && this.selectedItems.libre.length === 0 && this.selectedItems.citerne.length === 0){
-        this.$emit('increment-error');
-        this.error = true;
-      }
-
       const minState = this.stateData.toLowerCase();
+      let mission = {};
 
-        const mission = {
-          [minState]: {
-            destinations: this.selectedDestinations,
-            entreprises: this.selectedEntreprises,
-            marchandises: this.selectedItems,
-            membersAchieved: [],
-            totalCompletion: parseInt(this.$refs[`totalCompletion${this.stateData}`].object.text)
-          }
-        };
-        this.$emit('store-object', mission);
+      mission = {
+        [minState]: {
+          destinations: this.selectedDestinations,
+          entreprises: this.selectedEntreprises,
+          marchandises: this.selectedItems,
+          membersAchieved: [],
+          totalCompletion: parseInt(this.$refs[`totalCompletion${this.stateData}`].object.text)
+        }
+      };
+
+    
+      this.$emit('store-object', mission);
 
     }
   }

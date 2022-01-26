@@ -34,6 +34,7 @@
           <div class="banner__img-input">
             <label for="banner">Téléchargez une nouvelle bannière</label>
             <input
+              ref="banner"
               type="file"
               accept="image/jpeg, image/gif image/png"
               name="banner"
@@ -54,6 +55,7 @@
           <label for="avatar" class="avatar-input">Télécharger un logo</label>
           <input
             id="avatar"
+            ref="avatar"
             type="file"
             accept="image/jpeg, image/gif image/png"
             style="visibility: hidden"
@@ -190,11 +192,13 @@
 
 <script>
 import UserActionCard from '@/components/partner/UserActionCard.vue';
+import partnerPreviewUpload from '@/mixins/partnerPreviewUpload';
 
 export default {
   components: {
     UserActionCard
   },
+  mixins: [partnerPreviewUpload],
   layout: 'admin',
   data() {
     return {
@@ -305,25 +309,6 @@ export default {
         'i'
       ) // fragment locator
       return !!pattern.test(str)
-    },
-    // Avoir un aperçu des changements de bannière - avatar
-    previewUpload(evt, type) {
-      if (evt.target.files.length === 0) return
-
-      if (type === 'banner') this.bannerFile = evt.target.files[0]
-      else this.avatarFile = evt.target.files[0]
-
-      if (evt.target.files[0].size > 2097152) {
-        this.$store.dispatch('sendNotif', {type: 'error', message: `Fichier trop volumineux (2Mb max) !`})
-        this.bannerFile = null
-        this.avatarFile = null
-        return
-      }
-
-      if (type === 'banner')
-        this.entreprise.banner = URL.createObjectURL(this.bannerFile)
-      else this.entreprise.avatar = URL.createObjectURL(this.avatarFile)
-      this.submitUpload = true
     },
     // Mettre l'image par défaut en avatar
     deleteAvatar() {

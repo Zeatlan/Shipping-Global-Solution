@@ -19,13 +19,13 @@
 
       <div class="body">
         <div class="missions-details">
-          <TabMission v-if="mission.remorque" title="Remorque">{{ mission.remorque }}</TabMission>
+          <TabMission v-if="mission.remorque" title="Remorque" class="tools">{{ mission.remorque }}</TabMission>
           <TabMission v-else title="Remorque"><PuSkeleton width="150px" height="36px" /></TabMission>
 
-          <TabMission v-if="mission.cargaison" title="Cargaison">{{ mission.cargaison }}</TabMission>
+          <TabMission v-if="mission.cargaison" title="Cargaison" class="tools">{{ mission.cargaison }}</TabMission>
           <TabMission v-else title="Cargaison"><PuSkeleton width="150px" height="36px" /></TabMission>
 
-          <TabMission v-if="mission.trucky" title="Trucky">{{ mission.trucky }}</TabMission>
+          <TabMission v-if="mission.trucky" title="Trucky" class="tools">{{ mission.trucky }}</TabMission>
           <TabMission v-else title="Trucky"><PuSkeleton width="150px" height="36px" /></TabMission>
 
 

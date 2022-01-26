@@ -5,13 +5,13 @@
 
       <div class="wrapper-body">
 
-        <div class="form">
+        <div class="form-one">
 
           <!-- Information générale -->
-          <div class="white-box general">
+          <div class="white-box">
             <h2>Informations générales</h2>
 
-            <div class="wrapper">
+            <div class="container">
               <!-- Logo -->
               <div class="preview-logo">
                 <div :style="`background-image: url('${logo.url}');`" class="logo" alt="Logo mission spéciale" />
@@ -138,7 +138,8 @@ export default {
     },
     formatDate(addOneWeek = false) {
       // 13/01/2022, 18:08
-      const today = new Date().toLocaleDateString('fr-FR', { hour: 'numeric', minute: 'numeric'});
+      const today = new Date();
+      today.setHours(today.getHours() + 1);
     
       if(addOneWeek){
         const todayy = new Date();
@@ -146,7 +147,7 @@ export default {
         return this.convertToUTC(nextWeek);
       }
 
-      return this.convertToUTC(today);
+      return this.convertToUTC(today.toLocaleDateString('fr-FR', { hour: 'numeric', minute: 'numeric'}));
     },
     updateLogo(file) {
       this.logo.file = file;
@@ -213,12 +214,11 @@ export default {
       this.mission.createdBy = await this.$fire.firestore.collection('users').doc(this.$fire.auth.currentUser.uid);
 
       this.mission.logo = null;
-      
-      console.log(this.mission);
 
       // Depart and Arrive will be filled in 'addObjectEntries' when SpecialFormSelect.confirmChange() is called
     },
     addObjectEntries(object) {
+      console.log(object);
       this.mission[Object.keys(object)[0]] = object[Object.keys(object)[0]]
     }
   }

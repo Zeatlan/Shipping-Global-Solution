@@ -221,11 +221,12 @@ a {
         }
       }
 
-      .menu {
+      & > .menu {
         @include display-grid(1fr, auto, 1rem);
         @include center-div;
-        width: 75%;
+        width: 100%;
         z-index: 999;
+        margin: 0;
 
         h1 {
           color: $blue-60;

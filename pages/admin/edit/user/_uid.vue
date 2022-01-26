@@ -11,7 +11,7 @@
           
             <div class="banner__img-input">
               <label for="banner">Téléchargez une nouvelle bannière</label>
-              <input type="file" accept="image/jpeg, image/gif image/png" name="banner" @change="previewUpload($event, 'banner')">
+              <input ref="banner" type="file" accept="image/jpeg, image/gif image/png" name="banner" @change="previewUpload($event, 'banner')">
             </div>
           </div>
         </div>
@@ -27,7 +27,7 @@
               <div class="data__input-options">
                 <div>
                   <label for="avatar" class="avatar-input">Télécharger une image</label>
-                  <input id="avatar" type="file" accept="image/jpeg, image/gif image/png" style="visibility:hidden;" @change="previewUpload($event, 'avatar')">
+                  <input id="avatar" ref="avatar" type="file" accept="image/jpeg, image/gif image/png" style="visibility:hidden;" @change="previewUpload($event, 'avatar')">
                 </div>
                 <Button :primary="false" @click.native="deleteAvatar">Supprimer</Button>
               </div>
@@ -145,8 +145,10 @@
   </div>
 </template>
 
-<script>
+<script>import userPreviewUpload from '@/mixins/userPreviewUpload';
+
 export default {
+  mixins: [userPreviewUpload],
   layout: 'admin',
   data() {
     return {
@@ -222,26 +224,6 @@ export default {
         '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
         '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
       return !!pattern.test(str);
-    },
-    // Avoir un aperçu des changements de bannière - avatar
-    previewUpload(evt, type) {
-      if(evt.target.files.length === 0) return;
-
-      if(type === 'banner') this.bannerFile = evt.target.files[0];
-      else this.avatarFile = evt.target.files[0];
-
-
-      if(evt.target.files[0].size > 2097152) {
-        this.$store.dispatch('sendNotif', {type: 'error', message:`Fichier trop volumineux (2Mb max) !`})
-        this.bannerFile = null;
-        this.avatarFile = null;
-        return;
-      }
-
-      if(type === 'banner') this.user.banner = URL.createObjectURL(this.bannerFile);
-      else this.user.avatar = URL.createObjectURL(this.avatarFile);
-
-      this.needToBeSaved = true;
     },
     // Mettre l'image par défaut en avatar
     deleteAvatar() {

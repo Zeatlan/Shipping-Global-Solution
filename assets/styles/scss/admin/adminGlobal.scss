@@ -57,9 +57,7 @@ a {
     color: $blue-60;
   }
 
-  .error {
-    width: 50%;
-    text-align: center;
+  & > .error {
     padding: 1.2rem;
     @include center-div;
 

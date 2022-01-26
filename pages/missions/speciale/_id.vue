@@ -50,6 +50,10 @@
           </div>
 
           <div v-if="Object.keys(mission).length > 0 && $cookies.get('user-id')" class="story__actions">
+            <span>
+              <Button :primary="false" color="blue" @click.native="$refs.contestantlist.openBox()">Liste des participants</Button>
+            </span>
+
             <span v-if="$cookies.get('user-id')">
               <Button v-if="!$cookies.get('user-valid')" class="disabled">Valider votre compte pour participer</Button>
 
@@ -60,7 +64,10 @@
               </div>
             </span>
           </div>
-          <div v-else class="story__actions">
+          <div v-else-if="Object.keys(mission).length === 0 && $cookies.get('user-id')" class="story__actions">       
+            <button>
+              <PuSkeleton width="124px" height="16px" />
+            </button>
             <button>
               <PuSkeleton width="124px" height="16px" />
             </button>
@@ -153,6 +160,18 @@
       />
     </LightBox>
 
+    <!-- Show All contestants -->
+    <LightBox
+      ref="contestantlist"
+      title="Liste des participants"
+    >
+      <MemberBadge
+        v-for="contestant in contestantlist"
+        :key="contestant.username"
+        :user="contestant"
+      />
+    </LightBox>
+
     <!-- Show form validation -->
     <LightBox
       ref="form"
@@ -216,6 +235,7 @@ export default {
       docRef: null,
       lightboxTitle: "Liste des complétions",
       contestants: [],
+      contestantlist: [],
       everythingCompleted: false,
       direction: 'depart'
     }
@@ -254,10 +274,26 @@ export default {
     this.docRef.get().then((doc) => {
       this.mission = doc.data()
 
+      // If mission finished
       if(this.mission.depart.membersAchieved.length === this.mission.depart.totalCompletion)
         if(this.mission.arrive.membersAchieved.length === this.mission.arrive.totalCompletion)
           this.everythingCompleted = true;
 
+      // Get contestants list
+      this.$fire.firestore
+        .collection('users')
+        .where('specialMissions', '!=', [])
+        .get()
+        .then(snaplist => {
+          const filter = snaplist.docs.filter(doc => doc.data().specialMissions.some(sm => sm._mission.id === this.slug.id));
+
+          filter.forEach(doc => {
+            this.contestantlist.push({ ...doc.data(), id: doc.id})
+          })
+        })
+
+
+      // Actual user
       this.$fire.firestore
         .collection('users')
         .doc(this.$store.state.user.uid)
@@ -270,32 +306,23 @@ export default {
     })
   },
   methods: {
-    register() {
-      this.$fire.firestore
-        .collection('users')
-        .doc(this.$store.state.user.uid)
-        .get()
-        .then((user) => {
-          const data = user.data()
-          data.specialMissions.push({
-            _mission: this.docRef,
-            completedDepart: [],
-            completedArrive: [],
-          })
+    async register() {
+      const user = await this.$fire.firestore.collection('users').doc(this.$store.state.user.uid).get()
+      const data = user.data()
+      data.specialMissions.push({
+        _mission: this.docRef,
+        completedDepart: [],
+        completedArrive: [],
+      })
 
-          this.$fire.firestore
-            .collection('users')
-            .doc(this.$store.state.user.uid)
-            .set(data)
-            .then(() => {
-              this.isCompeting = true
+      await user.ref.set(data);
+      this.isCompeting = true;
+      this.contestantlist.push({ ...data, id: user.id })
 
-              this.$store.dispatch('sendNotif', {
-                type: 'success',
-                message: 'Vous vous êtes inscrit pour cette mission spéciale.'
-              });
-            })
-        })
+      this.$store.dispatch('sendNotif', {
+        type: 'success',
+        message: 'Vous vous êtes inscrit pour cette mission spéciale.'
+      });
     },
     changeLightbox(state) {
       this.contestants = [];

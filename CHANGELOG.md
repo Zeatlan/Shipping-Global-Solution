@@ -4,9 +4,27 @@ Ce document stipulera de toutes les modifications effectuées.
 
 # 1.1.1 26/01/2022
 
+### **Ajouts**
+
+- Ajout d'une liste des participants pour les `missions spéciales`.
+
+### **Modifications**
+
+- Ajout d'une heure à la date de début par défaut pour éviter les erreurs intempestives.
+
 ### **Fixs**
 
 - Fix du bouton de déconnexion sur le menu mobile.
+- Fix de la page `mission contrat` qui pouvait se casser si le nom d'une remorque ou autre était trop long.
+- Fix du `menu mobile` qui pouvait casser.
+- Fix des `upload d'images` ( Où pour certains nous pouvions envoyer n'importe quel type d'image ).
+- Fix Ajout des `missions spéciales`, les champs ne se dupliquent désormais plus.
+- Fix du menu mobile (qui affichait des liens qui n'étaient pas disponibles pour les invités).
+- Fix de la page `mission spéciale` les "skeleton" des boutons s'affichaient en boucle quand nous ne sommes pas enregistré ce qui perturbait l'aspect visuel de la page.
+
+### **Suppressions**
+
+- Il n'est désormais plus obligatoire d'ajouter des marchandises pour les missions spéciales.
 
 # 1.1.0 26/01/2022
 
