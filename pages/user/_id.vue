@@ -8,20 +8,21 @@
         <div v-if="user.banner" class="banner" :style="`background: url('${user.banner}') no-repeat center/cover;`">
           <Button v-if="$cookies.get('user-id') === slug.id && user.isValid" @click.native="$router.push('/user/edit/')">Modifier le profil</Button>
         </div>
-        <PuSkeleton v-else width="100%" height="200px" />
+        <PuSkeleton v-else-if="!user.banner && isDataLoading" width="100%" height="200px" />
 
         <!-- User informations -->
         <div class="user-info">
           <div class="user-info__pp">
             <div v-if="user.avatar" class="img-pp" :style="`background: url('${user.avatar}') no-repeat center/cover;`"/>
-            <PuSkeleton v-else circle width="128px" height="128px"/>
+            <PuSkeleton v-else-if="!user.avatar && isDataLoading" circle width="128px" height="128px"/>
           </div>
 
           <div class="user-info__detail">
             <h1 v-if="user.username">{{ user.username }}</h1>
-            <PuSkeleton v-else width="148px" height="38px" />
+            <PuSkeleton v-else-if="!user.username && isDataLoading" width="148px" height="38px" />
+
             <h2 v-if="user.rank">{{ user.rank }} <sup v-if="!user.isValid">Non validé</sup></h2>
-            <PuSkeleton v-else width="148px" height="38px" />
+            <PuSkeleton v-else-if="!user.rank && isDataLoading" width="148px" height="38px" />
           </div>
 
           <div v-if="user.isPlayingEurotruck || user.isPlayingFarming" class="user-info__games">
@@ -29,9 +30,11 @@
             <span v-if="user.isPlayingFarming" class="tag fs">Farming</span>
           </div>
 
-          <div v-else class=-user-info__games>
+          <div v-else-if="user.isPlayingEurotruck === undefined && user.isPlayingFarming === undefined && !isDataLoading" class=-user-info__games>
             <PuSkeleton width="164px" height="32px" />
           </div>
+
+          <div v-else-if="user.isPlayingEurotruck === undefined && user.isPlayingFarming === undefined && isDataLoading" class=-user-info__games><PuSkeleton width="164px" height="32px" /></div>
 
           <div class="user-info__social">
             <!-- Discord -->
@@ -157,9 +160,12 @@ export default {
       totalMissions: 0,
       userRanking: 0,
       totalUser: 0,
+      isDataLoading: true,
     }
   },
   created() {
+    setTimeout(() => { this.isDataLoading = false; }, 7000);
+
     this.getUserInfo();
   },
   methods: {

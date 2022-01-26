@@ -29,6 +29,16 @@ if(!Vue.__global_mixin__) {
         const dateFormatted = new Date(date.seconds * 1000);
         return dateFormatted.getDate() +  '/' +  (dateFormatted.getMonth()+1) + '/' + dateFormatted.getFullYear();
       },
+      // Validation de l'URL
+      validURL(str) {
+        const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+          '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+          '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+          '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        return !!pattern.test(str);
+      },
     },
   })
 }

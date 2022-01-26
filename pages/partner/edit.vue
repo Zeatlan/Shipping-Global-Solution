@@ -1,5 +1,6 @@
 <template>
   <div id="edit-entreprise">
+    
     <div class="submit-upload">
       <div class="container">
         <p>
@@ -15,6 +16,7 @@
         >
       </div>
     </div>
+
     <div class="container">
       <nuxt-link :to="`/partner/${entreprise.name}`" class="back-link"
         ><font-awesome-icon :icon="['fas', 'arrow-left']" /> Retour à la page de

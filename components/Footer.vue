@@ -40,7 +40,9 @@
           </a>
         </div>
 
-        <p>Copyright © 2022, tous droits réservés</p>
+        <p>
+        <a href="https://loading.io/icon" target="_blank" style="font-size: 10px;">Icône de chargement offerte par "Loading.io"</a>
+        Copyright © 2022, tous droits réservés</p>
       </div>
     </div>
   </footer>

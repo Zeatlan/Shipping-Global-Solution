@@ -81,6 +81,15 @@ export default {
         return;
       }
 
+      // Not a jpg - webp - png
+      if(evt.target.files[0].type !== 'image/jpeg' && evt.target.files[0].type !== 'image/webp' && evt.target.files[0].type !== 'image/png') {
+        this.$store.dispatch('sendNotif', {
+          type: 'error',
+          message: 'Ce format de fichier n\'est pas autorisé !'
+        });
+        return;
+      }
+
       this.$emit('change-banner', file);
 
     },

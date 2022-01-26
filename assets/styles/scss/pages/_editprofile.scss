@@ -19,7 +19,7 @@
     color: $blue-60;
   }
 
-  p {
+  & > p {
     font-size: $menu-size;
     color: $gray-70;
   }

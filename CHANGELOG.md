@@ -2,6 +2,20 @@
 
 Ce document stipulera de toutes les modifications effectuées.
 
+# 1.2.0 ??/01/2022
+
+### **Ajouts**
+
+- Petite icône de chargement quand les données sont en train de charger.
+
+  ### **Modifications**
+
+- Réajustement de la page d'édition de profil pour être + "propre" (fini les 300 boutons à cliquer sur la page).
+
+### **Fix**
+
+- Fix du chargement de la page d'édition de profil.
+
 # 1.1.1 26/01/2022
 
 ### **Ajouts**

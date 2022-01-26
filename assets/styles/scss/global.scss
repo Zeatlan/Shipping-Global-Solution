@@ -152,6 +152,12 @@ h3 {
   }
 }
 
+.centered {
+  width: 100%;
+  @include display-flex;
+  height: 300px;
+}
+
 .white-box {
   background: white;
   border-radius: 5px;
@@ -204,6 +210,44 @@ h3 {
 
     &:hover {
       color: $pink-60;
+    }
+  }
+}
+
+.loading-form {
+  opacity: 0.7;
+  user-select: none;
+}
+
+.submit-upload {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 1.3rem 0;
+  background: $blue-60;
+  color: white;
+  z-index: 999;
+
+  &.displayed {
+    display: block;
+  }
+
+  .container {
+    @include display-flex(space-between);
+
+    & > p {
+      color: white;
+      font-size: $menu-size;
+      margin: auto 0;
+    }
+
+    .loading-btn {
+      cursor: not-allowed;
+      &:hover {
+        background: transparent;
+        color: white;
+      }
     }
   }
 }
