@@ -183,7 +183,6 @@ export default {
   },
   async created() {
     const partnerName = this.slug.partner.split('-').join(' ');
-    const actualUserDocRef = this.$fire.firestore.collection('users').doc(this.$cookies.get('user-id'));
 
     // Get entreprise
     const snapEntreprise = await this.$fire.firestore.collection('entreprises').where('name', '==', partnerName).get();
@@ -194,9 +193,17 @@ export default {
 
     // Get current user data
     if(this.$fire.auth.currentUser){
-      const snapActualUser = await this.$fire.firestore.collection('users').doc(this.$fire.auth.currentUser.uid).get();
+      const actualUserDocRef = this.$fire.firestore.collection('users').doc(this.$fire.auth.currentUser.uid);
+      const snapActualUser = await actualUserDocRef.get();
+
+      this.actualUser = snapActualUser.data();
+      
       if(snapActualUser.data().entreprise._id.id === this.entreprise.id)
         this.userRank = snapActualUser.data().entreprise.rank;
+
+      // Check if member already postulated
+      const snapJoinRequest = await this.$fire.firestore.collection('join-request').where('user', '==', actualUserDocRef).where('entreprise._id', '==', this.entRef).get();
+      if(snapJoinRequest.docs.length > 0) this.askedJoin = true;
     }
     
     // Get creator
@@ -209,15 +216,6 @@ export default {
     snapAdmin.docs.forEach(doc => {
       this.entrepriseAdmins.push({ ...doc.data(), id: doc.id });
     })
-
-    // Check if member already postulated
-    const snapJoinRequest = await this.$fire.firestore.collection('join-request').where('user', '==', actualUserDocRef).where('entreprise._id', '==', this.entRef).get();
-    if(snapJoinRequest.docs.length > 0) this.askedJoin = true;
-
-    // Get Actual user
-    // TODO Use store
-    const snapActualUser = await actualUserDocRef.get()
-    this.actualUser = snapActualUser.data();
   },
   mounted() {
     

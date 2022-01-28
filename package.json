@@ -29,6 +29,7 @@
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.14.1",
     "nuxt": "^2.15.7",
+    "vue-advanced-cropper": "^1.10.0",
     "vue-loading-skeleton": "^1.1.9"
   },
   "devDependencies": {

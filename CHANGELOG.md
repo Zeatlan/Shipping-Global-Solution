@@ -7,8 +7,10 @@ Ce document stipulera de toutes les modifications effectuées.
 ### **Ajouts**
 
 - Petite icône de chargement quand les données sont en train de charger.
+- Ajout d'une redirection quand l'on a fini d'éditer une `entreprise`.
+- Il est désormais possible de redimensionner l'image que l'on envoie en guise de photo de profil / bannière (vous pouvez aussi la cadrer comme bon vous semble).
 
-  ### **Modifications**
+### **Modifications**
 
 - Réajustement de la page d'édition de profil pour être + "propre" (fini les 300 boutons à cliquer sur la page).
 

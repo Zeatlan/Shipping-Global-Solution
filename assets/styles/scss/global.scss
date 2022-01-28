@@ -158,6 +158,67 @@ h3 {
   height: 300px;
 }
 
+.black-mask-global {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  background: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+}
+
+.file-cropper {
+  grid-column: 1 / span 2;
+
+  &__title {
+    text-align: center;
+    padding: 1rem 0;
+  }
+
+  .file {
+    &-bg {
+      width: 400px;
+    }
+
+    &-img {
+      opacity: 0.7;
+    }
+
+    &-boundaries {
+      width: fit-content;
+    }
+  }
+
+  .cropper-banner,
+  .cropper-avatar {
+    cursor: grab;
+  }
+
+  .cropper-banner {
+    height: 200px;
+
+    & > img {
+      height: 200px;
+    }
+  }
+
+  .cropper-avatar {
+    height: 300px;
+    overflow: hidden;
+
+    & > img {
+      height: 300px;
+    }
+  }
+
+  & > .buttons__action {
+    @include display-flex;
+    column-gap: 3rem;
+    padding: 1rem 0;
+  }
+}
+
 .white-box {
   background: white;
   border-radius: 5px;
@@ -215,8 +276,9 @@ h3 {
 }
 
 .loading-form {
-  opacity: 0.7;
+  opacity: 0.5;
   user-select: none;
+  cursor: not-allowed;
 }
 
 .submit-upload {

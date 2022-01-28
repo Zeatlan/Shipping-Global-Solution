@@ -14,6 +14,14 @@ export default {
       loading: false,
       loadingPassword: false,
       error: false,
+      banner: {
+        isResizing: false,
+        cache: '',
+      },
+      avatar: {
+        isResizing: false,
+        cache: ''
+      }
     }
   },
   watch: {
@@ -119,10 +127,20 @@ export default {
         return;
       }
 
+      if(type === 'banner'){
+        this.banner.cache = this.user.banner;
+        this.banner.isResizing = true;
+      }else{
+        this.avatar.cache = this.user.avatar;
+        this.avatar.isResizing = true;
+      } 
+
       if(type === 'banner') this.user.banner = URL.createObjectURL(this.bannerFile);
       else this.user.avatar = URL.createObjectURL(this.avatarFile);
 
-      this.needToBeSaved = true;
+      this.loading = true;
+
+      // this.needToBeSaved = true;
     },
     // Mettre l'image par défaut en avatar
     deleteAvatar() {
@@ -130,6 +148,56 @@ export default {
       this.user.avatar = require('@/assets/img/avatar/default.jpg');
 
       this.needToBeSaved = true;
+    },
+    // Resize image
+    changeImage() {
+      if(this.banner.isResizing) {
+        const { canvas } = this.$refs.cropperBanner.getResult();
+        this.user.banner = canvas.toDataURL();
+
+        if(canvas) {
+          const form = new FormData();
+
+          canvas.toBlob(blob => {
+            form.append('file', blob);
+
+            this.bannerFile = blob;
+
+            this.loading = false;
+            this.banner.isResizing = false;
+            this.needToBeSaved = true;
+          })
+        } 
+      }
+
+      if(this.avatar.isResizing) {
+        const { canvas } = this.$refs.cropperAvatar.getResult();
+        this.user.avatar = canvas.toDataURL();
+
+        if(canvas) {
+          const form = new FormData();
+
+          canvas.toBlob(blob => {
+            form.append('file', blob);
+
+            this.avatarFile = blob;
+
+            this.loading = false;
+            this.avatar.isResizing = false;
+            this.needToBeSaved = true;
+          })
+        } 
+      }
+    },
+    cancelResize(type) {
+      if(type === 'banner'){
+        this.user.banner = this.banner.cache;
+        this.banner.isResizing = false;
+      }else {
+        this.user.avatar = this.avatar.cache;
+        this.avatar.isResizing = false;
+      }
+      this.loading = false;
     },
     // Check error for username
     async checkUsername() {
@@ -263,7 +331,7 @@ export default {
     },
     // Changer les jeux joués
     changeGame() {
-      this.needToBeSaved = true;
+      if(!this.loading) this.needToBeSaved = true;
     },
     // Upload Banner & Logo
     async uploadFiles() {

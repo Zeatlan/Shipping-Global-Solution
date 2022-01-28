@@ -5,9 +5,10 @@
         <h1>Édition de {{ user.username }}</h1>
 
         <!-- Edit banner -->
-        <h2>Bannière</h2>
+        <h2 v-show="!banner.isResizing">Bannière</h2>
+        <h2 v-show="banner.isResizing">Aperçu</h2>
         <div class="banner" :class="{'loading-form': loading}">
-          <div v-if="user" class="banner__img" :style="`background: url('${user.banner}') no-repeat center/cover;`">
+          <div v-if="user" v-show="!banner.isResizing" class="banner__img" :style="`background: url('${user.banner}') no-repeat center/cover;`">
           
             <div class="banner__img-input">
               <label for="banner">Téléchargez une nouvelle bannière</label>
@@ -16,73 +17,105 @@
           </div>
         </div>
 
-        <!-- Others datas -->
-        <div class="data" :class="{'loading-form': loading}">
-          <!-- Picture profile -->
-          <div class="data__input white-box">
-            <h3>Photo de profil</h3>
+      <!-- Crop Image -->
+      <div v-show="banner.isResizing" class="white-box file-cropper">
+        <h3 class="file-cropper__title">Bougez l'image pour la recadrer</h3>
+        <Cropper ref="cropperBanner" class="cropper-banner"
+          :src="user.banner"
+          :stencil-props="{ 
+            handlers: {},
+            movable: false,
+            scalable: false,
+          }"
+          :stencil-size="{
+            width: 1050,
+            height: 200
+          }"
+          :resize-image="{
+            adjustStencil: false
+          }"
+          image-restriction="stencil"
+        ></Cropper>
 
-            <div class="data__input-row">
-              <div v-if="user" class="data__input-avatar" :style="`background: url('${user.avatar}') no-repeat center/cover;`"></div>
-              <div class="data__input-options">
-                <div>
-                  <label for="avatar" class="avatar-input">Télécharger une image</label>
-                  <input id="avatar" ref="avatar" type="file" accept="image/jpeg, image/gif image/png" style="visibility:hidden;" @change="previewUpload($event, 'avatar')">
-                </div>
-                <Button :primary="false" @click.native="deleteAvatar">Supprimer</Button>
+        <div class="buttons__action">
+          <Button @click.native="changeImage">Terminer l'édition</Button>
+          <Button :primary="false" color="red" @click.native="cancelResize('banner')">Annuler l'édition</Button>
+        </div>
+      </div>
+
+        <!-- Others datas -->
+        <div class="data">
+
+        <!-- Crop Image -->
+        <div v-show="avatar.isResizing" class="data__input white-box file-cropper">
+          <h3 class="file-cropper__title">Bougez l'image pour la recadrer</h3>
+          <Cropper ref="cropperAvatar" class="cropper-avatar"
+            :src="user.avatar"	
+            :stencil-component="$options.components.CircleStencil"
+            :auto-zoom="true"
+            background-class="file-bg"
+            image-class="file-img"
+            boundaries-class="file-boundaries"
+            :transition="true"
+          ></Cropper>
+
+          <div class="buttons__action">
+            <Button @click.native="changeImage">Terminer l'édition</Button>
+            <Button :primary="false" color="red" @click.native="cancelResize('avatar')">Annuler l'édition</Button>
+          </div>
+        </div>
+
+        <!-- Picture profile -->
+        <div v-show="!avatar.isResizing" class="data__input white-box" :class="{'loading-form' : loading}">
+          <h3>Photo de profil</h3>
+
+          <div class="data__input-row">
+            <div v-if="user" class="data__input-avatar" :style="`background: url('${user.avatar}') no-repeat center/cover;`"></div>
+            <div v-show="!loading" class="data__input-options">
+              <div>
+                <label for="avatar" class="avatar-input">Télécharger une image</label>
+                <input id="avatar" ref="avatar" type="file" accept="image/jpeg, image/gif image/png" style="visibility:hidden;" @change="previewUpload($event, 'avatar')">
               </div>
+              <Button :primary="false" @click.native="deleteAvatar">Supprimer</Button>
             </div>
           </div>
+        </div>
 
           <!-- Username -->
-          <div v-if="user" class="data__input white-box">
+          <div v-show="!avatar.isResizing" v-if="user" class="data__input white-box" :class="{'loading-form' : loading}">
             <h3>Nom d'utilisateur</h3>
-            <input v-model="username" type="text" :placeholder="user.username" />
+            <input v-model="username" type="text" :placeholder="user.username" :readonly="{ 'readonly' : loading}"/>
           </div>
 
           <!-- Password -->
-          <div class="data__input white-box">
+          <div v-show="!avatar.isResizing" class="data__input white-box" :class="{'loading-form' : loading}">
             <h3>Mot de passe</h3>
-            <input v-model="newPassword" type="password" placeholder="Nouveau mot de passe" />
-            <input v-model="newPasswordConfirm" type="password" placeholder="Confirmer le nouveau mot de passe" />
+            <input v-model="newPassword" type="password" placeholder="Nouveau mot de passe" :readonly="{ 'readonly' : loading}" />
+            <input v-model="newPasswordConfirm" type="password" placeholder="Confirmer le nouveau mot de passe" :readonly="{ 'readonly' : loading}" />
 
-            <div class="change-button">
+            <div v-show="!loading" class="change-button">
               <Button v-if="!loadingPassword" class="change-button red" @click.native="changePassword">Modifier le mot de passe</Button>
               <Button v-else class="change-button red">Modification en cours...</Button>
             </div>
           </div>
 
           <!-- Social -->
-          <div v-if="user" class="data__input white-box social">
+          <div v-show="!avatar.isResizing" v-if="user" class="data__input white-box social" :class="{'loading-form' : loading}">
             <h3>Réseaux</h3>
             <div class="icon">
               <font-awesome-icon :icon="['fab', 'discord']" />
             </div>
-            <input v-model="discord" type="text" :placeholder="user.discord || 'Pseudo discord'" />
+            <input v-model="discord" type="text" :placeholder="user.discord || 'Pseudo discord'" :readonly="{ 'readonly' : loading}" />
             
             <div class="icon">
               <font-awesome-icon :icon="['fas', 'truck-moving']" />
             </div>
-            <input v-model="trucksbook" type="text" :placeholder="user.trucksbook || 'Lien trucksbook'" />
+            <input v-model="trucksbook" type="text" :placeholder="user.trucksbook || 'Lien trucksbook'" :readonly="{ 'readonly' : loading}" />
             
             <div class="icon">
               <font-awesome-icon :icon="['fab', 'steam']" />
             </div>
-            <input v-model="steam" type="text" :placeholder="user.steam || 'Pseudo steam'" />
-          </div>
-
-          <!-- Games -->
-          <div v-if="user" class="data__input white-box">
-            <h3>Jeux</h3>
-            <div class="row-select">
-              <input id="eurotruck" v-model="user.isPlayingEurotruck" type="checkbox" name="eurotruck" @change="changeGame">
-              <label for="eurotruck" style="word-wrap:break-word">Eurotruck Simulator 2</label>
-            </div>
-            
-            <div class="row-select">
-              <input id="farming" v-model="user.isPlayingFarming" type="checkbox" name="farming" @change="changeGame"> 
-              <label for="farming" class="labelCheck">Farming Simulator 22</label>
-            </div>
+            <input v-model="steam" type="text" :placeholder="user.steam || 'Pseudo steam'" :readonly="{ 'readonly' : loading}" />
           </div>
 
           <!-- Rank -->
@@ -124,7 +157,7 @@
 
     </div>
 
-    <div v- class="wrapper">
+    <div v-else class="wrapper">
       <h1>Accès refusé</h1>
       <div class="wrapper-body">
         <div class="white-box error">
@@ -147,9 +180,17 @@
   </div>
 </template>
 
-<script>import userEdit from '@/mixins/userEdit';
+<script>
+import { CircleStencil, Cropper } from 'vue-advanced-cropper';
+import userEdit from '@/mixins/userEdit';
+import 'vue-advanced-cropper/dist/style.css';
 
 export default {
+  components: {
+    Cropper,
+    /* eslint-disable */
+    CircleStencil
+  },
   mixins: [userEdit],
   layout: 'admin',
   data() {
@@ -247,8 +288,11 @@ export default {
         return;
       }
 
+      await this.uploadFiles();
+
       try {
-        await this.$fire.firestore.collection('users').doc(this.slug.uid).set(this.user)
+        console.log(this.user)
+        await this.$fire.firestore.collection('users').doc(this.slug.uid).update(this.user)
       }catch(e) {
         this.$store.dispatch('sendNotif', { type: 'error', message: `Un incident s'est produit, si le problème persiste contactez un développeur.` });
         return;

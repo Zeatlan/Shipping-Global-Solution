@@ -192,68 +192,27 @@
 
 <script>
 import UserActionCard from '@/components/partner/UserActionCard.vue';
-import partnerPreviewUpload from '@/mixins/partnerPreviewUpload';
+import partnerEdit from '@/mixins/partnerEdit';
 
 export default {
   components: {
     UserActionCard
   },
-  mixins: [partnerPreviewUpload],
+  mixins: [partnerEdit],
   layout: 'admin',
   data() {
     return {
       slug: this.$route.params,
-      entreprise: {},
-      bannerFile: null,
-      avatarFile: null,
-      acronyme: '',
-      entName: '',
-      discord: '',
-      trucksbook: '',
-      error: true,
-      submitUpload: false,
-      loadingUpload: false,
-      memberlist: [],
       actualPartner: {},
-      searchMember: '',
-      approbationMember: [],
       validate: '',
     }
   },  
-  watch: {
-    submitUpload() {
-      const el = document.querySelector('.submit-upload')
-      if (this.submitUpload) {
-        this.$gsap.set(el, {
-          y: 100,
-          opacity: 0,
-        })
-        el.classList.add('displayed')
-        this.$gsap.to(el, 0.3, {
-          y: 0,
-          opacity: 1,
-        })
-      } else {
-        this.$gsap
-          .to(el, 0.3, {
-            y: 100,
-            opacity: 0,
-          })
-          .then(() => {
-            el.classList.remove('displayed')
-          })
-      }
-    },
-  },
   async created() {
     this.actualPartner = this.$fire.firestore.collection('entreprises').doc(this.slug.pid)
 
     // Collection des informations de l'entreprise
     const entshot = await this.actualPartner.get();
-    this.entreprise = {
-      ...entshot.data(),
-      id: entshot.id,
-    }
+    this.entreprise = {...entshot.data(), id: entshot.id,}
 
     this.validate = this.entreprise.isApproved;
 
@@ -297,208 +256,9 @@ export default {
       })
   },
   methods: {
-    // Validation de l'URL
-    validURL(str) {
-      const pattern = new RegExp(
-        '^(https?:\\/\\/)?' + // protocol
-          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-          '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-          '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-          '(\\#[-a-z\\d_]*)?$',
-        'i'
-      ) // fragment locator
-      return !!pattern.test(str)
-    },
-    // Mettre l'image par défaut en avatar
-    deleteAvatar() {
-      this.avatarFile = 'default'
-      this.entreprise.avatar = require('@/assets/img/avatar/defaultEnt.png')
-    },
-    async confirmChange() {
-      this.loadingUpload = true
-
-      if (this.bannerFile) {
-        await this.$fire.storage
-          .ref()
-          .child(`entreprises/${this.entreprise.id}/banner.jpg`)
-          .put(this.bannerFile)
-
-        await this.$fire.storage
-          .ref()
-          .child(`entreprises/${this.entreprise.id}/banner.jpg`)
-          .getDownloadURL()
-          .then((URL) => {
-            this.entreprise.banner = URL
-          })
-      }
-      if (this.avatarFile && this.avatarFile !== 'default') {
-        await this.$fire.storage
-          .ref()
-          .child(`entreprises/${this.entreprise.id}/avatar.jpg`)
-          .put(this.avatarFile)
-
-        await this.$fire.storage
-          .ref()
-          .child(`entreprises/${this.entreprise.id}/avatar.jpg`)
-          .getDownloadURL()
-          .then((URL) => {
-            this.entreprise.avatar = URL
-          })
-      } else if (this.avatarFile === 'default') {
-        const img = await this.URLtoImage(require(`@/assets/img/avatar/defaultEnt.png`));
-        
-        const snapshot = await this.$fire.storage
-          .ref()
-          .child(`entreprise/${this.entreprise.id}/avatar.jpg`)
-          .put(img)
-
-        this.entreprise.avatar = await snapshot.ref.getDownloadURL()
-      }
-
-      const clone = Object.assign({}, this.entreprise);
-      delete clone.id;
-
-      await this.$fire.firestore
-        .collection('entreprises')
-        .doc(this.entreprise.id)
-        .set(clone)
-      this.submitUpload = this.loadingUpload = false
-    },
-    async saveData() {
-      this.error = false
-
-      // Changement d'acronyme
-      if (this.acronyme.length > 0) {
-        if (this.acronyme.length < 10) {
-          this.entreprise.acronyme = this.acronyme
-        } else {
-          this.$store.dispatch('sendNotif',
-            {type: 'error',
-            message: `L'acronyme est invalide, il lui faut moins de 10 caractères.`}
-          )
-          this.error = true
-        }
-      }
-
-      // Changement de nom
-      if (this.entName.length > 0) {
-        if (this.entName.length >= 5 && this.entName.length <= 40) {
-          await this.$fire.firestore
-            .collection('entreprises')
-            .where('name', '==', this.entName)
-            .get()
-            .then((snap) => {
-              if (snap.docs.length > 0) {
-                this.$store.dispatch('sendNotif',
-                  {type: 'error',
-                  message: `Ce nom d'entreprise existe déjà, réessayez.`}
-                )
-                this.error = true
-              } else {
-                this.entreprise.name = this.entName
-              }
-            })
-        } else {
-          this.$store.dispatch('sendNotif',
-            {type: 'error',
-            message: `Le nom de l'entreprise doit contenir entre 5 et 40 caractères.`}
-          )
-          this.error = true
-        }
-      }
-
-      // Changement du lien Discord
-      if (this.discord.length > 0) {
-        if (!this.validURL(this.discord)) {
-          this.$store.dispatch('sendNotif',
-            {type: 'error',
-            message: `Le lien Discord n'est pas valide, vérifiez son orthographe.`}
-          )
-          this.error = true
-        } else {
-          this.entreprise.discord = this.discord
-        }
-      }
-
-      // Changement du lien eurotruck
-      if (this.trucksbook.length > 0) {
-        if (!this.validURL(this.trucksbook)) {
-          this.$store.dispatch('sendNotif',
-            {type: 'error',
-            message: `Le lien trucksbook n'est pas valide, vérifiez son orthographe.`}
-          )
-          this.error = true
-        } else {
-          await this.$fire.firestore
-            .collection('users')
-            .where('trucksbook', '==', this.trucksbook)
-            .get()
-            .then((snapshot) => {
-              if (snapshot.docs.length > 0) {
-                this.$store.dispatch('sendNotif',
-                  {type: 'error',
-                  message: `Ce lien trucksbook est déjà utilisé.`}
-                )
-                this.error = true
-              } else {
-                this.entreprise.trucksbook = this.trucksbook
-              }
-            })
-        }
-      }
-
-      if (!this.error) {
-        const clone = Object.assign({}, this.entreprise);
-        delete clone.id;
-        
-        this.$fire.firestore
-          .collection('entreprises')
-          .doc(this.entreprise.id)
-          .update(clone)
-          .then(() => {
-            this.$store.dispatch('sendNotif',
-              { message: `Vos informations ont été modifiés dans la base de données.` }
-            )
-            this.entName = ''
-            this.acronyme = ''
-            this.discord = ''
-            this.trucksbook = ''
-          }) 
-      }
-    },
-    search() {
-      this.memberlist = [];
-      this.$fire.firestore
-        .collection('users')
-        .where('entreprise._id', '==', this.actualPartner)
-        .where('username', '>=', this.searchMember)
-        .where('username', '<=', this.searchMember + '\uF8FF')
-        .orderBy('username')
-        .orderBy('entreprise.rank')
-        .get()
-        .then(members => {
-          members.docs.forEach(member => {
-            this.memberlist.push(member.data())
-          })
-        })
-
-    },
-    async reloadMemberlist() {
-      // Collection de la liste des membres
-      await this.$fire.firestore
-        .collection('users')
-        .where('entreprise._id', '==', this.actualPartner)
-        .orderBy('entreprise.rank')
-        .get()
-        .then((members) => {
-          members.docs.forEach((member, index) => {
-            Object.keys(member.data()).forEach(k => {
-              this.$set(this.memberlist, k, member.data()[k])
-            })
-          })
-        })
+    redirect() {
+      this.$router.push(`/admin/partners`);
     }
-  },
+  }
 }
 </script>
