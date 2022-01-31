@@ -81,7 +81,7 @@ export default {
         .replace(',', ' à')
         .replace(':', 'h')
     },
-    deleteMission() {
+    async deleteMission() {
       if (
         window.confirm(
           `Êtes-vous sûr de vouloir supprimer la mission "${this.mission.name}"" ?`
@@ -102,21 +102,24 @@ export default {
           },
         })
 
-        this.$fire.firestore
-          .collection('missions-speciales')
-          .doc(this.missionId)
-          .delete()
+        const users = await this.$fire.firestore.collection('users').get();
+        users.docs.forEach(user => {
+          const data = user.data();
+          const idx = user.data().specialMissions.findIndex(m => m._mission.id === this.missionId);
+
+          if(idx > -1) {
+            data.specialMissions.splice(idx, 1);
+            user.ref.update(data);
+          }
+        });
+
+        this.$fire.firestore.collection('missions-speciales').doc(this.missionId).delete()
 
         // Suppression des images de la mission
-        this.$fire.storage
-          .ref()
-          .child(`missions/speciales/${this.missionId}`)
-          .listAll()
-          .then((files) => {
-            files.items.forEach((item) => {
-              item.delete()
-            })
-          })
+        const files = await this.$fire.storage.ref().child(`missions/speciales/${this.missionId}`).listAll();
+        files.items.forEach((item) => {
+          item.delete()
+        })
 
         this.$store.dispatch('sendNotif', {
           type: 'success',

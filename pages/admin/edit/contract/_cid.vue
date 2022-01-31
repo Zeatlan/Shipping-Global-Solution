@@ -8,7 +8,7 @@
 
       <div class="wrapper-body">
 
-        <div class="form">
+        <div class="form" :class="{ 'loading-form' : loading }">
 
           <!-- Informations générales -->
           <div class="white-box general">
@@ -17,7 +17,8 @@
 
               <!-- Bannière -->
               <div class="banner" :style="`background-image: url('${banner.url}')`">
-                <div class="block">
+                
+                <div v-show="!bannerFile.isResizing" class="block">
                   <p>Choisissez votre bannière</p>
                   <p>(Laissez vide si vous souhaitez garder celle par défaut)</p>
                   <Input
@@ -30,6 +31,34 @@
                     @change-banner="updateBanner($event)"
                   />
                 </div>
+
+              </div>
+
+              <!-- Crop banner -->
+              <div v-show="bannerFile.isResizing" class="data__input white-box file-cropper">
+                <h3 class="file-cropper__title">Bougez l'image pour la recadrer</h3>
+
+                <Cropper ref="cropperBanner" class="cropper-banner"
+                  :src="banner.url"
+                  :stencil-props="{ 
+                    handlers: {},
+                    movable: false,
+                    scalable: false,
+                  }"
+                  :stencil-size="{
+                    width: 1050,
+                    height: 200
+                  }"
+                  :resize-image="{
+                    adjustStencil: false
+                  }"
+                  image-restriction="stencil"
+                ></Cropper>
+
+                <div class="buttons__action">
+                  <Button @click.native="changeImage">Terminer l'édition</Button>
+                  <Button :primary="false" color="red" @click.native="cancelResize">Annuler l'édition</Button>
+                </div>
               </div>
 
               <!-- Nom de la mission -->
@@ -40,6 +69,7 @@
                 :value="{id: 'contractName', text: mission.name}"
                 :id-doc="slug.cid"
                 error-message="Veuillez indiquer un nom à votre mission."
+                :class="{'loading-form' : bannerFile.isResizing}"
                 @has-error="checkError"
               />
 
@@ -51,6 +81,7 @@
                 :value="{id: 'description', text: mission.description}"
                 type="textarea"
                 error-message="Veuillez indiquer une description."
+                :class="{'loading-form' : bannerFile.isResizing}"
                 @has-error="checkError"
               />
 
@@ -62,6 +93,7 @@
                 :value="{id: 'completion', text: mission.completion}"
                 type="number"
                 error-message="Le nombre total de completion ne peut être égal à 0."
+                :class="{'loading-form' : bannerFile.isResizing}"
                 @has-error="checkError"
               />
 
@@ -73,6 +105,7 @@
                 :value="{id: 'beginDate', text: mission.dates.beginning}"
                 error-message="La date de début ne peut pas être définie avant aujourd'hui."
                 type="date"
+                :class="{'loading-form' : bannerFile.isResizing}"
                 @has-error="checkError"
               />
 
@@ -84,6 +117,7 @@
                 :value="{id: 'endDate', text: mission.dates.ending}"
                 error-message="La date de fin ne peut pas être égale ou avant celle du début."
                 type="date"
+                :class="{'loading-form' : bannerFile.isResizing}"
                 @has-error="checkError"
               />
             </div>
@@ -91,7 +125,7 @@
           <!-- Fin informations générales -->
 
           <!-- Depart -->
-          <div v-if="mission.depart" class="white-box depart">
+          <div v-if="mission.depart" class="white-box depart" :class="{'loading-form' : bannerFile.isResizing}">
             <h2>Départ</h2>
 
             <div class="wrapper">
@@ -132,7 +166,7 @@
           <!-- Fin depart -->
 
           <!-- Arrive -->
-          <div v-if="mission.arrive" class="white-box arrive">
+          <div v-if="mission.arrive" class="white-box arrive" :class="{'loading-form' : bannerFile.isResizing}">
             <h2>Arrivé</h2>
 
             <div class="wrapper">
@@ -174,7 +208,7 @@
 
 
           <!-- Informations techniques -->
-          <div class="white-box technique">
+          <div class="white-box technique" :class="{'loading-form' : bannerFile.isResizing}">
             <h2>Informations techniques</h2>
             <div class="wrapper">
               <!-- Remorque -->
@@ -211,7 +245,7 @@
           <!-- Fin Informations techniques -->
 
           <!-- KM -->
-          <div class="white-box km">
+          <div class="white-box km" :class="{'loading-form' : bannerFile.isResizing}">
             <h2>Kilométrage</h2>
 
             <div class="wrapper">
@@ -230,7 +264,8 @@
         </div>
 
         <div class="confirm-button">
-          <Button @click.native="editMission">Modifier cette mission</Button>
+          <Button v-show="!loading" @click.native="editMission">Modifier cette mission</Button>
+          <Button v-show="loading" :primary="false" class="disabled">Enregistrement en cours...</Button>
         </div>
       </div>
     </div>
@@ -238,53 +273,29 @@
 </template>
 
 <script>
-import Input from '@/components/Input.vue';
+import { CircleStencil, Cropper } from 'vue-advanced-cropper';
+import contractEdit from '@/mixins/contractEdit';
+import adminUtils from '@/mixins/adminUtils';
+import 'vue-advanced-cropper/dist/style.css';
 
 export default {
   components: {
-    Input,
+    Cropper,
+    /* eslint-disable */
+    CircleStencil
   },
-  layout: 'admin',
-  async asyncData(context) {
-    const response = await context.app.$axios.$get('https://flagcdn.com/fr/codes.json');
-    return { countries: response };
-  },
+  mixins: [contractEdit, adminUtils],
   data() {
     return {
       slug: this.$route.params,
-      mission: {},
-      beginDate: new Date(),
-      errors: false,
-      nbErrors: 0,
-      banner: {
-        file: null,
-        url: null
-      },
     }
   },
-  mounted() {
-    this.$fire.firestore.collection('missions-contrats').doc(this.slug.cid).get().then(doc => {
-      this.mission = doc.data();
-      this.countryBegin = this.mission.depart.country.flag;
-      this.countryEnd = this.mission.arrive.country.flag;
-      this.banner.url = this.mission.banner;
-    });
+  async created() {
+    const doc = await this.$fire.firestore.collection('missions-contrats').doc(this.slug.cid).get()
+    this.mission = { ...doc.data(), id: doc.id };
+    this.banner.url = this.mission.banner;
   },
   methods: {
-    updateBanner(file) {
-      this.banner.file = file;
-      if(['image/jpeg', 'image/png'].includes(file.type))
-        this.banner.url = URL.createObjectURL(file);
-      else
-        this.$store.dispatch('sendNotif', {
-          type: 'error',
-          message: 'Le fichier doit être en format jpg ou png.'
-        });
-    },
-    formatDate(date, addOneWeek = false) {
-      if(addOneWeek) date.setDate(date.getDate() + 7)
-      return date.toISOString().split('T')[0]
-    },
     checkError(object) {
       
       if(object.id === 'beginDate'){
@@ -305,75 +316,22 @@ export default {
       }
     },
     async editMission() {
+      await this.checkInputs();
 
-      // Reset variables
-      this.nbErrors = 0;
-      this.errors = false;
+      if(this.errors || this.nbErrors > 0) return;
 
-      for(const ref in this.$refs) {
-        await this.$refs[ref].checkInputError();
-      }
+      const docRef = await this.$fire.firestore.collection('missions-contrats').doc(this.slug.cid);
 
-      if(this.errors) {
-        return this.$store.dispatch('sendNotif', { 
-          type: 'error',
-          message: `${this.nbErrors} erreurs ont été trouvées dans votre formulaire, votre requête n'a pas pu aboutir.`
-        })
-      }
-
-      // Add contract mission
-      // Building object
-      this.buildObject();
-
-
-      this.$fire.firestore.collection('missions-contrats').doc(this.slug.cid).update(this.mission).then(() => {
-        if(this.banner.file){
-          // Put in storage
-          this.$fire.storage.ref().child(`missions/contrats/${this.slug.cid}/banner.jpg`).put(this.banner.file).then(snapshot => {
-            snapshot.ref.getDownloadURL().then(downloadURL => {
-              this.$fire.firestore.collection('missions-contrats').doc(this.slug.cid).update({
-                banner: downloadURL
-              })
-            })
-          })
-        }
-        
-        this.$store.dispatch('sendNotif', {
-          type: 'success',
-          message: 'Mission éditée avec succès.'
-        });
-        this.$router.push('/admin/contracts');
+      docRef.update(this.mission);
+      await this.updateFiles(docRef)
+      
+      this.loading = false;
+      this.$store.dispatch('sendNotif', {
+        type: 'success',
+        message: 'Mission éditée avec succès.'
       });
+      this.$router.push('/admin/contracts');
     },
-    buildObject() {
-
-      // Arrivée
-      this.mission.arrive.country.name = this.$refs.cityEnd.object.text
-      this.mission.arrive.warehouse = this.$refs.warehouseEnd.object.text
-
-      // Départ
-      this.mission.depart.country.name = this.$refs.cityBegin.object.text
-      this.mission.depart.warehouse = this.$refs.warehouseBegin.object.text
-
-      // Details livraison
-      this.mission.cargaison = this.$refs.cargaison.object.text
-      this.mission.remorque = this.$refs.remorque.object.text
-      this.mission.trucky = this.$refs.trucky.object.text
-
-      this.mission.completion = this.$refs.completion.object.text;
-
-      // Dates
-      this.mission.createdAt = new Date();
-      this.mission.dates = {
-        beginning: this.$refs.beginDate.object.text,
-        ending: this.$refs.endDate.object.text,
-      }
-
-      this.mission.description = this.$refs.description.object.text;
-      this.mission.km = this.$refs.km.object.text;
-      this.mission.name = this.$refs.missionName.object.text;
-
-    }
   }
 }
 </script>

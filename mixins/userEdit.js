@@ -101,7 +101,6 @@ export default {
 
       let error = false;
 
-
       if(evt.target.files[0].size > 2097152) {
         this.$store.dispatch('sendNotif', {
           type: 'error',
@@ -189,11 +188,12 @@ export default {
         } 
       }
     },
-    cancelResize(type) {
-      if(type === 'banner'){
+    cancelResize() {
+      if(this.banner.isResizing){
         this.user.banner = this.banner.cache;
         this.banner.isResizing = false;
-      }else {
+      }
+      if(this.avatar.isResizing){
         this.user.avatar = this.avatar.cache;
         this.avatar.isResizing = false;
       }

@@ -45,7 +45,7 @@
 
         <div class="buttons__action">
           <Button @click.native="changeImage">Terminer l'édition</Button>
-          <Button :primary="false" color="red" @click.native="cancelResize('banner')">Annuler l'édition</Button>
+          <Button :primary="false" color="red" @click.native="cancelResize">Annuler l'édition</Button>
         </div>
       </div>
 
@@ -67,7 +67,7 @@
 
           <div class="buttons__action">
             <Button @click.native="changeImage">Terminer l'édition</Button>
-            <Button :primary="false" color="red" @click.native="cancelResize('avatar')">Annuler l'édition</Button>
+            <Button :primary="false" color="red" @click.native="cancelResize">Annuler l'édition</Button>
           </div>
         </div>
 

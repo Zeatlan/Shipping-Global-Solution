@@ -5,18 +5,18 @@
 
       <div class="wrapper-body">
 
-        <div class="form">
+        <div class="form-one" :class="{ 'loading-form' : loading }">
 
           <!-- Information générale -->
-          <div class="white-box general">
+          <div class="white-box">
             <h2>Informations générales</h2>
 
-            <div class="wrapper">
+            <div class="container">
               <!-- Logo -->
               <div class="preview-logo">
                 <div :style="`background-image: url('${logo.url}');`" class="logo" alt="Logo mission spéciale" />
 
-                <div class="block">
+                <div v-show="!avatar.isResizing" class="block">
                   <p>Choisissez votre logo</p>
                   <p>(Laissez vide si vous souhaitez garder celle par défaut)</p>
                   <Input
@@ -31,6 +31,26 @@
                 </div>
               </div>
 
+              <!-- Crop Logo -->
+              <div v-show="avatar.isResizing" class="data__input white-box file-cropper">
+                <h3 class="file-cropper__title">Bougez l'image pour la recadrer</h3>
+
+                <Cropper ref="cropperAvatar" class="cropper-avatar"
+                  :src="logo.url"	
+                  :stencil-component="$options.components.CircleStencil"
+                  :auto-zoom="true"
+                  background-class="file-bg"
+                  image-class="file-img"
+                  boundaries-class="file-boundaries"
+                  :transition="true"
+                ></Cropper>
+
+                <div class="buttons__action">
+                  <Button @click.native="changeImage">Terminer l'édition</Button>
+                  <Button :primary="false" color="red" @click.native="cancelResize">Annuler l'édition</Button>
+                </div>
+              </div>
+
               <!-- Nom de la mission -->
               <Input 
                 v-if="mission.name"
@@ -38,6 +58,7 @@
                 title="Nom de la mission"
                 :value="{id: 'name', text: mission.name}"
                 error-message="Veuillez indiquer un nom à votre mission."
+                :class="{'loading-form' : avatar.isResizing}"
                 @has-error="checkError"
               />
 
@@ -48,6 +69,7 @@
                 title="Domaine d'activité"
                 :value="{id: 'job', text: mission.job}"
                 error-message="Veuillez indiquer un domaine d'activité"
+                :class="{'loading-form' : avatar.isResizing}"
                 @has-error="checkError"
               />
 
@@ -59,6 +81,7 @@
                 :value="{id: 'description', text: mission.description}"
                 type="textarea"
                 error-message="Veuillez indiquer une description à votre mission."
+                :class="{'loading-form' : avatar.isResizing}"
                 @has-error="checkError"
               />
 
@@ -70,6 +93,7 @@
                 :value="{id: 'beginDate', text: formatDate(beginDate)}"
                 error-message="La date de début ne peut pas être définie avant aujourd'hui."
                 type="datetime-local"
+                :class="{'loading-form' : avatar.isResizing}"
                 @has-error="checkError"
               />
 
@@ -81,6 +105,7 @@
                 :value="{id: 'endDate', text: formatDate(beginDate, true)}"
                 error-message="La date de fin ne peut pas être égale ou avant celle du début."
                 type="datetime-local"
+                :class="{'loading-form' : avatar.isResizing}"
                 @has-error="checkError"
               />
             </div>
@@ -90,12 +115,14 @@
           <!-- Depart -->
           <Speciale-form-select v-if="mission.depart" ref="depart" state='Départ'
             :edit-array="mission.depart"
+            :class="{'loading-form' : avatar.isResizing}"
             @increment-error="incrementError" 
             @store-object="addObjectEntries" />
 
           <!-- Arrive -->
           <Speciale-form-select v-if="mission.arrive" ref="arrive" state='Arrivé' 
             :edit-array="mission.arrive"
+            :class="{'loading-form' : avatar.isResizing}"
             @increment-error="incrementError"
             @store-object="addObjectEntries" />
 
@@ -103,7 +130,8 @@
         </div>
 
         <div class="confirm-button">
-          <Button class="add-mission" @click.native="editMission">Modifier la mission spéciale</Button>
+          <Button v-show="!loading" @click.native="editMission">Modifier la mission spéciale</Button>
+          <Button v-show="loading" :primary="false" class="disabled">Enregistrement en cours...</Button>
         </div>
       </div>
     </div>
@@ -111,25 +139,21 @@
 </template>
 
 <script>
-import Input from '@/components/Input.vue';
-import SpecialeFormSelect from '@/components/admin/speciale/SpecialeFormSelect.vue';
+import { CircleStencil, Cropper } from 'vue-advanced-cropper';
+import adminUtils from '@/mixins/adminUtils';
+import specialeEdit from '@/mixins/specialeEdit';
+import 'vue-advanced-cropper/dist/style.css';
 
 export default {
   components: {
-    Input,
-    SpecialeFormSelect
+    Cropper,
+    /* eslint-disable */
+    CircleStencil
   },
-  layout: 'admin',
+  mixins: [adminUtils, specialeEdit],
   data() {
     return {
       slug: this.$route.params,
-      logo: {
-        file: null,
-        url: require('@/assets/img/avatar/default.jpg')
-      },
-      errors: false,
-      nbErrors: 0,
-      mission: {},
       beginDate: null,
     }
   },
@@ -141,10 +165,6 @@ export default {
     })
   },
   methods: {
-    incrementError() {
-      this.errors = true;
-      this.nbErrors++;
-    },
     checkError(object) {
       if(object.id === 'beginDate'){
        this.beginDate = new Date(object.text);
@@ -161,34 +181,14 @@ export default {
 
       if(object.error) this.incrementError();
     },
-    formatDate(date, addOneWeek = false) {
-      // 13/01/2022, 18:08
-      const today = new Date(date).toLocaleDateString('fr-FR', { hour: 'numeric', minute: 'numeric'});
-    
-      if(addOneWeek){
-        const todayy = new Date(date);
-        const nextWeek = new Date(todayy.setDate(todayy.getDate() + 7)).toLocaleDateString('fr-FR', { hour: 'numeric', minute: 'numeric'});
-        return this.convertToUTC(nextWeek);
-      }
-
-      return this.convertToUTC(today);
-    },
-    updateLogo(file) {
-      this.logo.file = file;
-      if(['image/jpeg', 'image/png'].includes(file.type)){
-        this.logo.url = URL.createObjectURL(file);
-      }else{
-        this.$store.dispatch('sendNotif', {
-          type: 'error',
-          message: 'Le fichier doit être en format jpg ou png.'
-        });
-      }
-    },
     async editMission() {
       this.errors = false;
       this.nbErrors = 0;
+      this.loading = true;
 
       for(const ref in this.$refs) {
+        if(ref === 'cropperAvatar') continue;
+
         if(this.$refs[ref].$el.className === 'input-row' || this.$refs[ref].$el.className === 'input-row error')
           await this.$refs[ref].checkInputError();
         else
@@ -196,6 +196,7 @@ export default {
       }
 
       if(this.errors) {
+        this.loading = false;
         return this.$store.dispatch('sendNotif', {
           type: 'error',
           message: `${this.nbErrors} erreurs ont été retrouvées dans votre formulaire, merci de les corriger.`
@@ -209,22 +210,8 @@ export default {
       const docRef = this.$fire.firestore.collection('missions-speciales').doc(this.slug.sid);
       await docRef.set(this.mission);
 
-      // If we changed the logo
-      if(this.logo.url !== this.mission.logo){
-        let img = await this.URLtoImage(require(`@/assets/img/avatar/default.jpg`));
-
-        if(this.logo.file)
-          img = this.logo.file;
-          
-        // Put in storage
-        const snapStorage = await this.$fire.storage.ref().child(`missions/speciales/${docRef.id}/logo.jpg`).put(img);
-        const downloadURL = await snapStorage.ref.getDownloadURL();
-
-        this.mission.logo = downloadURL;
-
-        docRef.update(this.mission);
-      }
-
+      await this.updateFiles(docRef);
+      this.loading = false;
 
       this.$store.dispatch('sendNotif', {
         type: 'success',
@@ -232,22 +219,6 @@ export default {
       });
       this.$router.push('/admin/speciales');
     },
-    async buildObject() {
-      this.mission.name = this.$refs.missionName.object.text;
-      this.mission.job = this.$refs.job.object.text;
-      this.mission.isActive = true;
-      this.mission.description = this.$refs.description.object.text;
-
-      this.mission.begin = new Date(this.$refs.beginDate.object.text);
-      this.mission.end = new Date(this.$refs.endDate.object.text);
-      this.mission.createdAt = new Date();
-      this.mission.createdBy = await this.$fire.firestore.collection('users').doc(this.$fire.auth.currentUser.uid);
-
-      // Depart and Arrive will be filled in 'addObjectEntries' when SpecialFormSelect.confirmChange() is called
-    },
-    addObjectEntries(object) {
-      this.mission[Object.keys(object)[0]] = object[Object.keys(object)[0]]
-    }
   }
 }
 </script>

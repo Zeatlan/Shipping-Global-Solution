@@ -1,5 +1,4 @@
 #edit-entreprise {
-
   // Input avatar
   #avatar {
     width: 0 !important;
@@ -28,7 +27,7 @@
     color: $blue-60;
   }
 
-  p {
+  & > p {
     color: $gray-70;
   }
 

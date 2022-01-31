@@ -35,12 +35,8 @@
           <div class="banner__title-box" />
         </div>
 
-        <div
-          v-if="entreprise.banner"
-          class="banner__img"
-          :style="`background: url('${entreprise.banner}') no-repeat center/cover;`"
-        >
-          <div class="banner__img-input">
+        <div v-if="entreprise.banner" v-show="!banner.isResizing" class="banner__img" :class="{'loading-form' : loadingUpload }" :style="`background: url('${entreprise.banner}') no-repeat center/cover;`">
+          <div v-show="!loadingUpload" class="banner__img-input">
             <label for="banner">Téléchargez une nouvelle bannière</label>
             <input
               ref="banner"
@@ -52,14 +48,10 @@
           </div>
 
           <!-- Logo -->
-          <div
-            v-if="entreprise.avatar"
-            class="banner__logo"
-            :style="`background: url('${entreprise.avatar}') no-repeat center/cover;`"
-          />
+          <div v-if="entreprise.avatar" v-show="!avatar.isResizing" class="banner__logo" :style="`background: url('${entreprise.avatar}') no-repeat center/cover;`" />
         </div>
       </div>
-      <div class="data__input-options">
+      <div v-show="!loadingUpload && !banner.isResizing && !avatar.isResizing" class="data__input-options">
         <div>
           <label for="avatar" class="avatar-input">Télécharger un logo</label>
           <input
@@ -76,7 +68,45 @@
         >
       </div>
 
-      <div class="data">
+      <!-- Cropping -->
+      <div v-show="avatar.isResizing || banner.isResizing" class="file-cropper white-box">
+        <h3 class="file-cropper__title">Bougez l'image pour la recadrer</h3>
+        <!-- Banner Cropping -->
+        <Cropper v-show="banner.isResizing" ref="cropperBanner" class="cropper-banner"
+          :src="entreprise.banner"
+          :stencil-props="{ 
+            handlers: {},
+            movable: false,
+            scalable: false,
+          }"
+          :stencil-size="{
+            width: 1050,
+            height: 200
+          }"
+          :resize-image="{
+            adjustStencil: false
+          }"
+          image-restriction="stencil"
+        ></Cropper>
+
+        <!-- Avatar Cropping -->
+        <Cropper v-show="avatar.isResizing" ref="cropperAvatar" class="cropper-avatar"
+          :src="entreprise.avatar"	
+          :stencil-component="$options.components.CircleStencil"
+          :auto-zoom="true"
+          background-class="file-bg"
+          image-class="file-img"
+          boundaries-class="file-boundaries"
+          :transition="true"
+        ></Cropper>
+
+        <div class="buttons__action">
+          <Button @click.native="changeImage">Terminer l'édition</Button>
+          <Button :primary="false" color="red" @click.native="cancelResize">Annuler l'édition</Button>
+        </div>
+      </div>
+
+      <div class="data" :class="{'loading-form' : loadingUpload }">
         <div class="data__general-info white-box">
           <h3>Informations générales</h3>
 
@@ -150,10 +180,8 @@
               <Bouton color="red">Supprimer l'entreprise</Bouton>
             </div> -->
             
-            <div class="change-button">
-              <Button class="change-button" @click.native="saveData"
-                >Modifier les informations</Button
-              >
+            <div v-show="!loadingUpload" class="change-button">
+              <Button class="change-button" @click.native="saveData">Modifier les informations</Button>
             </div>
           </div>
         </div>
@@ -175,8 +203,6 @@
                 @reload="reloadMemberlist"
               />
           </div>
-
-
         </div>
       </div>
       
@@ -185,7 +211,7 @@
         <div class="banner__title-box" />
       </div>
 
-      <div class="approbation white-box">
+      <div class="approbation white-box" :class="{'loading-form' : loadingUpload}">
         <h3>Demandes d'approbation</h3>
         <table>
           <thead>
@@ -214,12 +240,17 @@
 </template>
 
 <script>
+import { CircleStencil, Cropper } from 'vue-advanced-cropper';
 import UserActionCard from '@/components/partner/UserActionCard.vue';
 import partnerEdit from '@/mixins/partnerEdit';
+import 'vue-advanced-cropper/dist/style.css';
 
 export default {
   components: {
-    UserActionCard
+    UserActionCard,
+    Cropper,
+    /* eslint-disable */
+    CircleStencil
   },
   mixins: [partnerEdit],
   data() {
@@ -287,24 +318,27 @@ export default {
           opacity: 0,
           x: -200,
           background: '#2fb74d',
-          onComplete: () => {
+          onComplete: async () => {
             element.parentElement.removeChild(element);
 
-            this.$fire.firestore.collection('users').doc(request.userId).get().then(user => {
-              const data = user.data();
+            const user = await this.$fire.firestore.collection('users').doc(request.userId).get();
+            const data = user.data();
 
-              data.entreprise.rank = 3;
-              data.entreprise._id = this.$fire.firestore.collection('entreprises').doc(request.entreprise.id);
-              data.joinedAt = new Date();
+            data.entreprise.rank = 3;
+            data.entreprise._id = this.$fire.firestore.collection('entreprises').doc(request.entreprise.id);
+            data.joinedAt = new Date();
 
-              user.ref.update(data);
-              
-              this.$fire.firestore.collection('join-request').doc(request.id).delete();
-              this.$store.dispatch('sendNotif', {
-                type: 'success',
-                message: `La requête de ${request.username} a été acceptée.`
-              });
-            })
+            user.ref.update(data);
+            
+            const memberRequests = await this.$fire.firestore.collection('join-request').where('user', '==', user.ref).get();
+
+            memberRequests.docs.forEach(doc => {
+              doc.ref.delete();
+            });
+            this.$store.dispatch('sendNotif', {
+              type: 'success',
+              message: `La requête de ${request.username} a été acceptée.`
+            });
           }
         });
     },

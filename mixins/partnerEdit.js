@@ -15,7 +15,14 @@ export default {
       actualPartner: {},
       searchMember: '',
       approbationMember: [],
-
+      banner: {
+        isResizing: false,
+        cache: '',
+      },
+      avatar: {
+        isResizing: false,
+        cache: ''
+      }
     }
   },
   watch: {
@@ -83,10 +90,70 @@ export default {
         return;
       }
 
+      if(type === 'banner'){
+        this.banner.cache = this.entreprise.banner;
+        this.banner.isResizing = true;
+      }else{
+        this.avatar.cache = this.entreprise.avatar;
+        this.avatar.isResizing = true;
+      } 
+
       if(type === 'banner') this.entreprise.banner = URL.createObjectURL(this.bannerFile);
       else this.entreprise.avatar = URL.createObjectURL(this.avatarFile);
 
-      this.submitUpload = true
+      this.loading = true;
+      // this.submitUpload = true
+    },
+    // Resize image
+    changeImage() {
+      if(this.banner.isResizing) {
+        const { canvas } = this.$refs.cropperBanner.getResult();
+        this.entreprise.banner = canvas.toDataURL();
+
+        if(canvas) {
+          const form = new FormData();
+
+          canvas.toBlob(blob => {
+            form.append('file', blob);
+
+            this.bannerFile = blob;
+
+            this.loading = false;
+            this.banner.isResizing = false;
+            this.submitUpload = true;
+          })
+        } 
+      }
+
+      if(this.avatar.isResizing) {
+        const { canvas } = this.$refs.cropperAvatar.getResult();
+        this.entreprise.avatar = canvas.toDataURL();
+
+        if(canvas) {
+          const form = new FormData();
+
+          canvas.toBlob(blob => {
+            form.append('file', blob);
+
+            this.avatarFile = blob;
+
+            this.loading = false;
+            this.avatar.isResizing = false;
+            this.submitUpload = true;
+          })
+        } 
+      }
+    },
+    cancelResize() {
+      if(this.banner.isResizing){
+        this.entreprise.banner = this.banner.cache;
+        this.banner.isResizing = false;
+      }
+      if(this.avatar.isResizing){
+        this.entreprise.avatar = this.avatar.cache;
+        this.avatar.isResizing = false;
+      }
+      this.loading = false;
     },
     search() {
       this.memberlist = [];
@@ -119,79 +186,6 @@ export default {
             })
           })
         })
-    },
-    // Change banner or avatar
-    async confirmChange() {
-      this.loadingUpload = true
-
-      if (this.bannerFile) {
-        await this.$fire.storage
-          .ref()
-          .child(`entreprises/${this.entreprise.id}/banner.jpg`)
-          .put(this.bannerFile)
-
-        await this.$fire.storage
-          .ref()
-          .child(`entreprises/${this.entreprise.id}/banner.jpg`)
-          .getDownloadURL()
-          .then((URL) => {
-            this.entreprise.banner = URL
-          })
-      }
-      if (this.avatarFile && this.avatarFile !== 'default') {
-        await this.$fire.storage
-          .ref()
-          .child(`entreprises/${this.entreprise.id}/avatar.jpg`)
-          .put(this.avatarFile)
-
-        await this.$fire.storage
-          .ref()
-          .child(`entreprises/${this.entreprise.id}/avatar.jpg`)
-          .getDownloadURL()
-          .then((URL) => {
-            this.entreprise.avatar = URL
-          })
-      } else if (this.avatarFile === 'default') {
-        const img = await this.URLtoImage(require(`@/assets/img/avatar/defaultEnt.png`));
-        
-        const snapshot = await this.$fire.storage
-          .ref()
-          .child(`entreprise/${this.entreprise.id}/avatar.jpg`)
-          .put(img)
-
-        this.entreprise.avatar = await snapshot.ref.getDownloadURL()
-      }
-
-      const clone = Object.assign({}, this.entreprise);
-      delete clone.id;
-
-      await this.$fire.firestore
-        .collection('entreprises')
-        .doc(this.entreprise.id)
-        .set(clone)
-      this.submitUpload = this.loadingUpload = false
-    },
-    // Change data
-    async saveData() {
-      this.error = false
-
-      this.changeAcronyme();
-      this.changeDiscord();
-      await this.changeName();
-      await this.changeEurotruck();
-
-      if (!this.error) {
-        const clone = Object.assign({}, this.entreprise);
-        delete clone.id;
-        
-        await this.$fire.firestore.collection('entreprises').doc(this.entreprise.id).update(clone);
-        this.$store.dispatch('sendNotif', { message: `Vos informations ont été modifiés dans la base de données.` });
-        this.entName = ''
-        this.acronyme = ''
-        this.discord = ''
-        this.trucksbook = ''
-        this.redirect();
-      }
     },
     // Edition part
     changeAcronyme() {
@@ -266,6 +260,63 @@ export default {
           }
         }
       }
-    }
+    },
+    // Change banner or avatar
+    async confirmChange() {
+      this.loadingUpload = true
+
+      if (this.bannerFile) {
+        await this.$fire.storage.ref().child(`entreprises/${this.entreprise.id}/banner.jpg`).put(this.bannerFile)
+
+        const URL = await this.$fire.storage.ref().child(`entreprises/${this.entreprise.id}/banner.jpg`).getDownloadURL();
+        this.entreprise.banner = URL;
+      }
+      if (this.avatarFile && this.avatarFile !== 'default') {
+        await this.$fire.storage.ref().child(`entreprises/${this.entreprise.id}/avatar.jpg`).put(this.avatarFile)
+
+        const URL =await this.$fire.storage.ref().child(`entreprises/${this.entreprise.id}/avatar.jpg`).getDownloadURL();
+        this.entreprise.avatar = URL;
+      } else if (this.avatarFile === 'default') {
+        const img = await this.URLtoImage(require(`@/assets/img/avatar/defaultEnt.png`));
+        
+        const snapshot = await this.$fire.storage.ref().child(`entreprise/${this.entreprise.id}/avatar.jpg`).put(img)
+        this.entreprise.avatar = await snapshot.ref.getDownloadURL()
+      }
+
+      const clone = Object.assign({}, this.entreprise);
+      delete clone.id;
+
+      await this.$fire.firestore.collection('entreprises').doc(this.entreprise.id).update(clone)
+      this.submitUpload = this.loadingUpload = false;
+
+      const locations = this.$route.fullPath.split('/');
+      if(locations.includes('admin')){
+        this.$router.push(`/admin/partners/`)
+      }else {
+        this.$router.push(`/partner/${this.entreprise.name.split(' ').join('-')}`)
+      }
+    },
+    // Change data
+    async saveData() {
+      this.error = false
+
+      this.changeAcronyme();
+      this.changeDiscord();
+      await this.changeName();
+      await this.changeEurotruck();
+
+      if (!this.error) {
+        const clone = Object.assign({}, this.entreprise);
+        delete clone.id;
+        
+        await this.$fire.firestore.collection('entreprises').doc(this.entreprise.id).update(clone);
+        this.$store.dispatch('sendNotif', { message: `Vos informations ont été modifiés dans la base de données.` });
+        this.entName = ''
+        this.acronyme = ''
+        this.discord = ''
+        this.trucksbook = ''
+        this.redirect();
+      }
+    },
   }
 }

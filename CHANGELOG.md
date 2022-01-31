@@ -2,21 +2,26 @@
 
 Ce document stipulera de toutes les modifications effectuées.
 
-# 1.2.0 ??/01/2022
+# 1.2.0 31/01/2022
 
 ### **Ajouts**
 
 - Petite icône de chargement quand les données sont en train de charger.
 - Ajout d'une redirection quand l'on a fini d'éditer une `entreprise`.
-- Il est désormais possible de redimensionner l'image que l'on envoie en guise de photo de profil / bannière (vous pouvez aussi la cadrer comme bon vous semble).
+- Il est désormais possible de redimensionner l'image que l'on envoie en guise de photo de profil / bannière (vous pouvez aussi la cadrer comme bon vous semble) cette fonctionnalité est disponible pour tous les cas d'usages (c'est-à-dire ajouter un logo pour une entreprise, un utilisateur, une mission etc...).
+  - Note : Cette fonctionnalité ne sera pour l'instant pas disponible pour la création d'entreprise, je dois d'abord refaire le code.
 
 ### **Modifications**
 
 - Réajustement de la page d'édition de profil pour être + "propre" (fini les 300 boutons à cliquer sur la page).
 
-### **Fix**
+### **Fixs**
 
 - Fix du chargement de la page d'édition de profil.
+- Fix de la suppression de mission (Les missions restées sur le profil même après la suppression ce qui provoquait des erreurs).
+- Fix quand l'on demande à rejoindre une entreprise, on pouvait le faire plusieurs fois (De +, quand nous étions validé dans une entreprise notre requête était
+  toujours présente chez les autres).
+- Fix du bouton "Requête déjà envoyée" sur les pages d'entreprise qui ne s'affichait pas correctement.
 
 # 1.1.1 26/01/2022
 

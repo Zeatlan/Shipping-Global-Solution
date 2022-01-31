@@ -179,6 +179,7 @@ export default {
       isLoading: true,
       actualUser: null,
       creator: null,
+      loading:  false,
     }
   },
   async created() {
@@ -187,6 +188,8 @@ export default {
     // Get entreprise
     const snapEntreprise = await this.$fire.firestore.collection('entreprises').where('name', '==', partnerName).get();
     this.entreprise = { ...snapEntreprise.docs[0].data(), id: snapEntreprise.docs[0].id };
+
+    if(!Object.keys(this.entreprise).length) return;
 
     // Partner's doc ref
     this.entRef = snapEntreprise.docs[0].ref;
@@ -202,7 +205,9 @@ export default {
         this.userRank = snapActualUser.data().entreprise.rank;
 
       // Check if member already postulated
-      const snapJoinRequest = await this.$fire.firestore.collection('join-request').where('user', '==', actualUserDocRef).where('entreprise._id', '==', this.entRef).get();
+      const snapJoinRequest = await this.$fire.firestore.collection('join-request').where('user', '==', actualUserDocRef)
+        .where('entreprise', '==', this.entRef).get();
+        
       if(snapJoinRequest.docs.length > 0) this.askedJoin = true;
     }
     
@@ -228,7 +233,11 @@ export default {
     getRandomSizeText() {
       return Math.floor(Math.random()*this.textSize.length);
     },
-    joinEntreprise() {
+    async joinEntreprise() {
+      if(this.loading) return;
+
+      this.loading = true;
+
       if(this.actualUser.entreprise.rank === 0) {
         return this.$store.dispatch('sendNotif', {
           type: 'error',
@@ -238,16 +247,18 @@ export default {
 
       const userRef = this.$fire.firestore.collection('users').doc(this.$cookies.get('user-id'));
       const entrepriseRef = this.$fire.firestore.collection('entreprises').doc(this.entreprise.id);
+      const alreadyAsked = await this.$fire.firestore.collection('join-request').where('user', '==', userRef).where('entreprise', '==', entrepriseRef).get();
 
-      this.$fire.firestore.collection('join-request').add({
-        user: userRef,
-        entreprise: entrepriseRef,
-        requestedAt: new Date()
-      }).then(() => {
-        this.askedJoin = true;
+      if(!alreadyAsked.empty) {
+        this.loading = false;
+        return this.$store.dispatch('sendNotif', { type: 'error', message: 'Vous avez déjà demandé à rejoindre cette entreprise.' });
+      }
 
-        this.$store.dispatch('sendNotif', { type: 'success', message: `Vous avez demandé à rejoindre ${this.entreprise.name}.`});
-      });
+      await this.$fire.firestore.collection('join-request').add({ user: userRef, entreprise: entrepriseRef, requestedAt: new Date() });
+      this.$store.dispatch('sendNotif', { type: 'success', message: `Vous avez demandé à rejoindre ${this.entreprise.name}.`});
+      this.askedJoin = true;
+      this.loading = false;
+
     },
     leaveEntreprise() {
       this.askedJoin = false;
@@ -280,7 +291,7 @@ export default {
       this.memberlist = memberlist;
     },
     cellHovered({ hovered, user, el }) {
-      if(window.innerWidth < 740) return;
+      if(window.innerWidth < 740 || this.$refs.length === 0) return;
 
       // -------------------------------------------------------------------------------------
       // Take Card Element

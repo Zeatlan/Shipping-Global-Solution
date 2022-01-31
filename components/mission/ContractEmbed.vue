@@ -95,7 +95,7 @@ export default {
     if(this.state === 'failed') this.buttonMessage = 'Échoué';
   },
   methods: {
-    deleteMission() {
+    async deleteMission() {
       
       if(window.confirm(`Êtes-vous sûr de vouloir supprimer la mission "${this.mission.name}"" ?`)) {
         this.$gsap.to(this.$el, 0.3, {
@@ -113,14 +113,25 @@ export default {
           }
         });
 
+        const users = await this.$fire.firestore.collection('users').get();
+        users.docs.forEach(user => {
+          const data = user.data();
+          const idx = user.data().contractMissions.findIndex(m => m._mission.id === this.missionId);
+
+          if(idx > -1) {
+            data.contractMissions.splice(idx, 1);
+            user.ref.update(data);
+          }
+        });
+
+
         this.$fire.firestore.collection('missions-contrats').doc(this.missionId).delete();
 
         // Suppression des images de la mission
-        this.$fire.storage.ref().child(`missions/contrats/${this.missionId}`).listAll().then(files => {
-          files.items.forEach(item => {
-            item.delete();
-          })
-        });
+        const files = await this.$fire.storage.ref().child(`missions/contrats/${this.missionId}`).listAll();
+        files.items.forEach(item => {
+          item.delete();
+        })
 
         this.$store.commit('ADD_NOTIFICATION', {type: 'success', message: 'Mission supprimée avec succès.'})
 

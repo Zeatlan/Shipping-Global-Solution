@@ -15,22 +15,19 @@
         >
       </div>
     </div>
+
     <div class="container">
 
       <h1>Édition de {{ entreprise.name }}</h1>
 
       <!-- Banner -->
-      <div class="banner">
+      <div class="banner" :class="{'loading-form' : loadingUpload}">
         <div class="banner__title">
           <h2>Administration</h2>
           <div class="banner__title-box" />
         </div>
 
-        <div
-          v-if="entreprise.banner"
-          class="banner__img"
-          :style="`background: url('${entreprise.banner}') no-repeat center/cover;`"
-        >
+        <div v-if="entreprise.banner" v-show="!banner.isResizing" class="banner__img" :style="`background: url('${entreprise.banner}') no-repeat center/cover;`" >
           <div class="banner__img-input">
             <label for="banner">Téléchargez une nouvelle bannière</label>
             <input
@@ -43,14 +40,10 @@
           </div>
 
           <!-- Logo -->
-          <div
-            v-if="entreprise.avatar"
-            class="banner__logo"
-            :style="`background: url('${entreprise.avatar}') no-repeat center/cover;`"
-          />
+          <div v-if="entreprise.avatar" v-show="!avatar.isResizing" class="banner__logo" :style="`background: url('${entreprise.avatar}') no-repeat center/cover;`" />
         </div>
       </div>
-      <div class="data__input-options">
+      <div v-show="!loadingUpload && !banner.isResizing && !avatar.isResizing" class="data__input-options">
         <div>
           <label for="avatar" class="avatar-input">Télécharger un logo</label>
           <input
@@ -67,7 +60,45 @@
         >
       </div>
 
-      <div class="data">
+      <!-- Cropping -->
+      <div v-show="avatar.isResizing || banner.isResizing" class="file-cropper white-box">
+        <h3 class="file-cropper__title">Bougez l'image pour la recadrer</h3>
+        <!-- Banner Cropping -->
+        <Cropper v-show="banner.isResizing" ref="cropperBanner" class="cropper-banner"
+          :src="entreprise.banner"
+          :stencil-props="{ 
+            handlers: {},
+            movable: false,
+            scalable: false,
+          }"
+          :stencil-size="{
+            width: 1050,
+            height: 200
+          }"
+          :resize-image="{
+            adjustStencil: false
+          }"
+          image-restriction="stencil"
+        ></Cropper>
+
+        <!-- Avatar Cropping -->
+        <Cropper v-show="avatar.isResizing" ref="cropperAvatar" class="cropper-avatar"
+          :src="entreprise.avatar"	
+          :stencil-component="$options.components.CircleStencil"
+          :auto-zoom="true"
+          background-class="file-bg"
+          image-class="file-img"
+          boundaries-class="file-boundaries"
+          :transition="true"
+        ></Cropper>
+
+        <div class="buttons__action">
+          <Button @click.native="changeImage">Terminer l'édition</Button>
+          <Button :primary="false" color="red" @click.native="cancelResize">Annuler l'édition</Button>
+        </div>
+      </div>
+
+      <div class="data" :class="{'loading-form' : loadingUpload}">
         <div class="data__general-info white-box">
           <h3>Informations générales</h3>
 
@@ -172,7 +203,7 @@
         <div class="banner__title-box" />
       </div>
 
-      <div v-if="slug.pid !== '0'" class="validation-box white-box">
+      <div v-if="slug.pid !== '0'" class="validation-box white-box" :class="{'loading-form' : loadingUpload}">
         <h3>Valider l'entreprise ?</h3>
 
         <div>
@@ -191,12 +222,17 @@
 </template>   
 
 <script>
+import { CircleStencil, Cropper } from 'vue-advanced-cropper';
 import UserActionCard from '@/components/partner/UserActionCard.vue';
 import partnerEdit from '@/mixins/partnerEdit';
+import 'vue-advanced-cropper/dist/style.css';
 
 export default {
   components: {
-    UserActionCard
+    UserActionCard,
+    Cropper,
+    /* eslint-disable */
+    CircleStencil
   },
   mixins: [partnerEdit],
   layout: 'admin',

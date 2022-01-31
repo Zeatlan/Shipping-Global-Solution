@@ -170,10 +170,12 @@ h3 {
 
 .file-cropper {
   grid-column: 1 / span 2;
+  max-width: 100%;
 
   &__title {
     text-align: center;
     padding: 1rem 0;
+    color: $blue-70;
   }
 
   .file {
@@ -279,6 +281,11 @@ h3 {
   opacity: 0.5;
   user-select: none;
   cursor: not-allowed;
+
+  input,
+  textarea {
+    pointer-events: none;
+  }
 }
 
 .submit-upload {
