@@ -2,6 +2,12 @@
 
 Ce document stipulera de toutes les modifications effectuées.
 
+# 1.2.1 02/02/2022
+
+### **Fixs**
+
+- Fix des validations de mission
+
 # 1.2.0 31/01/2022
 
 ### **Ajouts**

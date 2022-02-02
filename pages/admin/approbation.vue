@@ -211,8 +211,8 @@ export default {
       });
     },
     async actionForSpeciale(form) {
-      const userQuery = await this.$fire.firestore.collection('users').where('username', '==', form.user).get();
-      const userData = userQuery.docs[0].data();
+      const userQuery = await this.$fire.firestore.collection('users').doc(form.userRef.id).get();
+      const userData = userQuery.data();
 
       const missionQuery = await this.$fire.firestore.collection('missions-speciales').where('name', '==', form.mission).get();
       
@@ -222,17 +222,17 @@ export default {
 
         if(idx > -1) {
           if(form.direction === 'depart') {
-            userData.specialMissions[idx].completedDepart.push(mission.ref);
-            dataMission.depart.membersAchieved.push(userQuery.docs[0].ref);
+            userData.specialMissions[idx].completedDepart.push(new Date());
+            dataMission.depart.membersAchieved.push(userQuery.ref);
           }else{
-            userData.specialMissions[idx].completedArrive.push(mission.ref);
-            dataMission.arrive.membersAchieved.push(userQuery.docs[0].ref);
+            userData.specialMissions[idx].completedArrive.push(new Date());
+            dataMission.arrive.membersAchieved.push(userQuery.ref);
           }
 
           userData.totalKm = parseInt(userData.totalKm) + parseInt(form.km);
 
           // Mis à jour de l'utilisateur
-          userQuery.docs[0].ref.update(userData);
+          userQuery.ref.update(userData);
           // Mis à jour de la mission
           mission.ref.update(dataMission);
           // Suppression du formulaire
@@ -243,8 +243,8 @@ export default {
 
     },
     async actionForContract(form) {
-      const userQuery = await this.$fire.firestore.collection('users').where('username', '==', form.user).get();
-      const userData = userQuery.docs[0].data();
+      const userQuery = await this.$fire.firestore.collection('users').doc(form.userRef.id).get();
+      const userData = userQuery.data();
 
       const missionQuery = await this.$fire.firestore.collection('missions-contrats').where('name', '==', form.mission).get();
       
@@ -256,10 +256,10 @@ export default {
           userData.contractMissions[idx].completedDate = form.completedAt;
           userData.contractMissions[idx].isCompleted = true;
           userData.totalKm = parseInt(userData.totalKm) + parseInt(dataMission.km);
-          dataMission.membersAchieved.push(userQuery.docs[0].ref);
+          dataMission.membersAchieved.push(userQuery.ref);
 
           // Mis à jour de l'utilisateur
-          userQuery.docs[0].ref.update(userData);
+          userQuery.ref.update(userData);
           // Mis à jour de la mission
           mission.ref.update(dataMission);
           // Suppression du formulaire

@@ -363,9 +363,13 @@ export default {
         })
       }
 
+      // Get User
+      const actualUser = this.$fire.firestore.collection('users').doc(this.$cookies.get('user-id'));
+
       this.$fire.firestore.collection('speciale-form').add({
         mission: this.mission.name,
         user: this.$refs.username.object.text,
+        userRef: actualUser,
         link: this.$refs.trucksbook.object.text,
         km: this.$refs.km.object.text,
         direction: this.direction,
