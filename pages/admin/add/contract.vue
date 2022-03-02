@@ -256,7 +256,6 @@
 
 <script>
 import { CircleStencil, Cropper } from 'vue-advanced-cropper';
-import {mapGetters} from 'vuex'
 import contractEdit from '@/mixins/contractEdit';
 import adminUtils from '@/mixins/adminUtils';
 import 'vue-advanced-cropper/dist/style.css';
@@ -273,11 +272,6 @@ export default {
       countryBegin: 'fr',
       countryEnd: 'gb-eng',
     }
-  },
-  computed: {
-    ...mapGetters({
-      avatar: 'avatar',
-    }),
   },
   methods: {
     checkError(object) {
@@ -296,97 +290,14 @@ export default {
         this.nbErrors++;
       }
     },
-    async sendDiscordMessage() {
-
-      const channelDiscord = await this.$fire.firestore.collection('discord-notifications').doc('mission-contrat').get();
-
-      if(channelDiscord.empty || !channelDiscord) return;
-      
-
-      try {
-        await this.$axios.post(`/api/messaging/embed/${channelDiscord.data().channel}`, {
-          title: this.mission.name,
-          description: (this.mission.description.length > 125) ? "```" + this.mission.description.substring(0, 125) + "...```" : "```" + this.mission.description + "```",
-          url: this.getContractLink(this.mission.name),
-          image: this.mission.banner,
-          author: {
-            name: this.$cookies.get('user-name'),
-            url: this.getProfileLink(this.$fire.auth.currentUser.uid)
-          },
-          thumbnail: this.avatar,
-          color: 'YELLOW',
-          fields: [
-            {
-              name: '```Nombre complétion```',
-              value: this.mission.completion,
-              isOneBlock: true,
-            },
-            {
-              name: '```Date début```',
-              value: this.mission.dates.beginning
-            },
-            {
-              name: '\u200b',
-              value: '\u200b',
-            },
-            {
-              name: '```Date fin```',
-              value: this.mission.dates.ending
-            },
-            {
-              name: '```Ville de départ```',
-              value: this.mission.depart.country.name
-            },
-            {
-              name: '```km```',
-              value: this.mission.km,
-            },
-            {
-              name: '```Ville d\'arrivé```',
-              value: this.mission.arrive.country.name
-            },
-            {
-              name: '```Entrepôt de départ```',
-              value: this.mission.depart.warehouse
-            },
-            {
-              name: '\u200b',
-              value: '\u200b',
-            },
-            {
-              name: '```Entrepôt d\'arrivé```',
-              value: this.mission.arrive.warehouse
-            },
-            {
-              name: '```Remorque```',
-              value: this.mission.remorque
-            },
-            {
-              name: '```Trucky```',
-              value: this.mission.trucky
-            },
-            {
-              name: '```Cargaison```',
-              value: this.mission.cargaison
-            },
-          ]
-        })
-      }catch(e) {
-        console.error("Erreur API: " + e)
-      }
-
-    },
     async addMission() {
 
       await this.checkInputs(true);
 
       if(this.errors || this.nbErrors > 0) return;
 
-      
       const newDoc = await this.$fire.firestore.collection('missions-contrats').add(this.mission);
       await this.updateFiles(newDoc);
-
-      await this.sendDiscordMessage();
       
       this.loading = false;
 

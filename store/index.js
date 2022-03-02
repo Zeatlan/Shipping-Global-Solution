@@ -36,11 +36,10 @@ const actions = {
       })
     }
   },
-  async resetInfoFromCookies({ commit, dispatch }, { user, username, rank, cookiesAgree }) {
+  async resetInfoFromCookies({ commit, dispatch }, { user, username, rank }) {
     commit('SET_USER', user);
     commit('SET_USERNAME', username);
-    commit('SET_RANK', rank); 
-    commit('SET_COOKIES_AGREE', cookiesAgree)
+    commit('SET_RANK', rank);
 
     await dispatch('getUserAvatar');
   },
@@ -54,9 +53,6 @@ const actions = {
   sendNotif(context, notif) {
     context.commit('ADD_NOTIFICATION', notif)
   },
-  setCookiesAgree({ commit }, cookiesAgree) {
-    commit('SET_COOKIES_AGREE', cookiesAgree);
-  }
 }
 
 const mutations = {
@@ -64,7 +60,6 @@ const mutations = {
   SET_USERNAME: (state, username) => (state.username = username),
   SET_AVATAR: (state, avatar) => (state.avatar = avatar),
   SET_RANK: (state, rank) => (state.rank = rank),
-  SET_COOKIES_AGREE: (state, cookiesAgree) => (state.cookiesAgree = cookiesAgree),
   ADD_NOTIFICATION: (state, notification) => (state.notifications.push(notification)),
   REMOVE_NOTIFICATION: (state, notification) => {
     const i = state.notifications.map(notif => notif.message).indexOf(notification.message);
@@ -83,7 +78,6 @@ const state = () => ({
   username: null,
   avatar: null,
   rank: null,
-  cookiesAgree: false,
   notifications: [],
 })
 
@@ -92,7 +86,6 @@ const getters = {
   username: state => state.username,
   avatar: state => state.avatar,
   rank: state => state.rank,
-  cookiesAgree: state => state.cookiesAgree,
   isLoggedIn: (state) => {
     try {
       return state.user.uid !== null

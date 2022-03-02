@@ -98,5 +98,3 @@ database.rules.json
 firebase.json
 firestore.indexes.json
 firestore.rules
-
-server/key.json

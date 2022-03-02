@@ -182,16 +182,6 @@ export default {
       loading:  false,
     }
   },
-  head() {
-    const entreprise = this.entreprise
-
-    return {
-      title: `${entreprise.name} - Shipping Global Solution`,
-      meta: [
-        {hid: 'description', name: 'description', content: `Profil publique de l'entreprise ${entreprise.name} chez Shipping Global Solution.`}
-      ]
-    }
-  },
   async created() {
     const partnerName = this.slug.partner.split('-').join(' ');
 

@@ -2,42 +2,6 @@
 
 Ce document stipulera de toutes les modifications effectuées.
 
-# 1.3.0 16/02/2022
-
-### **Ajouts**
-
-- Création du bot discord.
-  - Le bot souhaite la bienvenue (et dit au revoir) aux nouveaux membres du serveur discord.
-  - Ajout de la commande `affect` qui permet d'affecter à un channel un système de notification, vous pouvez notifier :
-    - l'inscription d'un utilisateur.
-    - la création d'une nouvelle mission spéciale.
-    - La création d'une nouvelle mission contrat.
-    - l'approbation d'une mission.
-  - Le bot envoie un message privée à l'inscription de l'utilisateur pour qu'il confirme son compte.
-    - Si l'utilisateur n'est pas sur le serveur discord lors de son inscription, le site l'en notifiera et il pourra toujours réenvoyer une demande de vérification via son profil.
-    - Si l'utilisateur stipule que ce compte ne lui appartient pas, celui-ci sera directement supprimé.
-  - Le bot envoie un message privée quand une course est désapprouvée (Il saura qui a refusé et aura un retour sur ce qu'il avait marqué).
-- Création d'une API pour communiquer avec le site.
-- Possibilité de modifier son mot de passe.
-- Ajout d'un champ "A propos" qui permet de pouvoir faire une courte introduction de soi-même sur le site. (Parce que pourquoi pas).
-- Ajout du `SEO` (référencement).
-- Ajout d'une erreur si la recherche dans le `listing des partenaires` n'aboutit à rien.
-- Nous pouvons désormais réinitialiser notre mot de passe.
-- Ajout de la fonctionnalité de `suppression du compte`.
-- Ajout d'un popup qui avertit l'utilisateur que nous utilisons ses cookies.
-
-### **Modifications**
-
-- La liste des missions s'affichent de manière décroissante (en fonction de leur date de début) au lieu d'une manière croissante.
-
-### **Fixs**
-
-- Edition de profil (on ne pouvait pas entrer de données dans les champs).
-- Fix suppression d'un utilisateur (seul les données de l'utilisateur se supprimait mais pas ses identifiants).
-- Fix expulsion d'un membre de son entreprise (j'avais oublié de changer un petit changement test qui faisait que le membre se retrouvait sans aucune entreprise).
-- Fix du menu qui apparaissait juste après l'inscription (Certaines données n'avaient pas le temps de s'initialiser), ça devrait être maintenant un peu plus stable.
-- Fix de la page équipe qui était légèrement cassée.
-
 # 1.2.1 02/02/2022
 
 ### **Fixs**

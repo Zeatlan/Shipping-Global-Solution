@@ -152,14 +152,6 @@ export default {
       interval: null,
     }
   },
-  head() {
-    return {
-      title: 'Nous rejoindre - Shipping Global Solution',
-      meta: [
-        {hid: 'description', name: 'description', content: 'Votre inscription pour rejoindre la grande communauté de Shipping Global Solution !'}
-      ]
-    }
-  },
   computed: {
     fakemail() {
       const final = this.username.split(' ').join('_');
@@ -194,47 +186,10 @@ export default {
       const downloadURL = await snapshot.ref.getDownloadURL();
       return downloadURL;
     },
-    // Send verification message
-    async sendVerification() {
-      try {
-        await this.$axios.post('/api/verifyIdentity/user/', {
-          userTAG: this.discord,
-          username: this.username,
-          guildID: "868516388883554325"
-        })
-      }catch (e) {
-        this.$store.dispatch('sendNotif', {
-          type: 'error',
-          message: `Nous n'avons pas trouvé "${this.discord}" sur notre serveur discord pour valider votre compte, n'hésitez pas à rejoindre notre serveur pour avoir un accès total du site.`
-        });
-      }
-
-    },
-    // Send welcome message to discord
-    async sendWelcomeDiscord() {
-      try {
-        // Get channel id
-        const channelDoc = await this.$fire.firestore.collection('discord-notifications').doc('nouveau-membre').get();
-
-        if(!channelDoc.empty){
-          // Send message
-          await this.$axios.post(`/api/messaging/message/${channelDoc.data().channel}`, {
-            message: `Bienvenue **${this.username}** ! Merci de t'être inscrit sur le site de Shipping Global Solution. 👋`
-          })
-        }
-      }catch(e) {
-        console.log("Erreur API: " + e);
-      }
-    },
     async createUser() {
       if(this.isLoading) return;
 
       this.isLoading = true;
-
-      await this.sendVerification();
-
-      await this.sendWelcomeDiscord();
-
       try {
         // Create new user
         const cred = await this.$fire.auth.createUserWithEmailAndPassword(
@@ -267,7 +222,7 @@ export default {
           contractMissions: [],
           totalKm: 0,
           createdAt: new Date(),
-          isValid: false,
+          isValid: true, // TODO: Faire passer à false lors de la version officielle
         });
 
         // Success
@@ -289,7 +244,8 @@ export default {
           maxAge: 1000 * 3600 * 24 * 30,
           path:'/'
         });
-        this.$cookies.set('user-valid', false, {
+        // TODO: Faire passer à false lors de la version officielle
+        this.$cookies.set('user-valid', true, {
           maxAge: 1000 * 3600 * 24 * 30,
           path:'/'
         });
@@ -351,8 +307,7 @@ export default {
       return !!pattern.test(str);
     },
     validDiscord(str) {
-      const match = str.match(/^((.+?)#\d{4})/);
-      return match && str === match[0];
+      return str.match(/^((.+?)#\d{4})/);
     }
   }
 }

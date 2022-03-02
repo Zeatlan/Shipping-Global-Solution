@@ -125,7 +125,6 @@
 
 <script>
 import { CircleStencil, Cropper } from 'vue-advanced-cropper';
-import {mapGetters} from 'vuex'
 import adminUtils from '@/mixins/adminUtils';
 import specialeEdit from '@/mixins/specialeEdit';
 import 'vue-advanced-cropper/dist/style.css';
@@ -147,11 +146,6 @@ export default {
     // Add one hour
     this.beginDate.setTime(this.beginDate.getTime() +  (1*60*60*1000));
   },
-  computed: {
-    ...mapGetters({
-      userAvatar: 'avatar',
-    }),
-  },
   methods: {
     checkError(object) {
       if(object.id === 'beginDate') this.beginDate = new Date(object.text);
@@ -164,48 +158,6 @@ export default {
       }
 
       if(object.error) this.incrementError();
-    },
-    async sendDiscordMessage(missionId) {
-      const channelDiscord = await this.$fire.firestore.collection('discord-notifications').doc('mission-speciale').get();
-
-      if(channelDiscord.empty || !channelDiscord) return;
-      
-
-      try {
-        await this.$axios.post(`/api/messaging/embed/${channelDiscord.data().channel}`, {
-          title: this.mission.name,
-          description: (this.mission.description.length > 125) ? "```" + this.mission.description.substring(0, 125) + "...```" : "```" + this.mission.description + "```",
-          url: this.getSpecialeLink(missionId),
-          author: {
-            name: this.$cookies.get('user-name'),
-            url: this.getProfileLink(this.$fire.auth.currentUser.uid),
-            avatar: this.userAvatar
-          },
-          thumbnail: this.mission.logo,
-          color: 'PURPLE',
-          fields: [
-            {
-              name: '```Domaine d\'activité```',
-              value: this.mission.job,
-              isOneBlock: true,
-            },
-            {
-              name: '```Date début```',
-              value: this.formatDate(this.mission.begin)
-            },
-            {
-              name: '\u200b',
-              value: '\u200b',
-            },
-            {
-              name: '```Date fin```',
-              value: this.formatDate(this.mission.end)
-            },
-          ]
-        })
-      }catch(e) {
-        console.error("Erreur API: " + e)
-      }
     },
     async addMission() {
       this.errors = false;
@@ -235,7 +187,6 @@ export default {
       const newDoc = await this.$fire.firestore.collection('missions-speciales').add(this.mission);
 
       await this.updateFiles(newDoc);
-      await this.sendDiscordMessage(newDoc.id);
 
       this.$store.dispatch('sendNotif', {
         type: 'success',

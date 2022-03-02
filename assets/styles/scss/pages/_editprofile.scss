@@ -79,11 +79,6 @@
     }
   }
 
-  .about-me {
-    margin-top: 1rem;
-    padding: 1rem;
-  }
-
   .data {
     // @include display-flex(space-between, flex-start);
     @include display-grid(repeat(2, 1fr), 1fr 0.5fr 0.5fr, 1rem 1.5rem);

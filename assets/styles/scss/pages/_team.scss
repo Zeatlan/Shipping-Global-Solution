@@ -30,7 +30,7 @@ $roles: (
   }
 
   @each $role, $color in $roles {
-    &-#{$role} {
+    ##{$role} {
       h1 {
         color: $color;
       }

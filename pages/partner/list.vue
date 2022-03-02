@@ -28,8 +28,7 @@
             </div>
           </div>
         </div>
-
-        <div v-else-if="entreprises.length === 0 && isLoading" class="listing">
+        <div v-else class="listing">
 
           <!-- Partner card -->
           <div class="partner-card white-box">
@@ -114,9 +113,6 @@
 
         </div>
 
-        <div v-else-if="entreprises.length === 0 && !isLoading" class="listing">
-          <h3 class="error-title">Aucun résultat trouvé.</h3>
-        </div>
         
 
         <div class="white-box filter">
@@ -172,18 +168,6 @@ export default {
       // End pagination settings
     }
   },
-  head() {
-    return {
-      title: `Liste des entreprises - Shipping Global Solution`,
-      meta: [
-        {
-          hid: 'description', 
-          name: 'description', 
-          content: `Liste des entreprises partenaires chez Shipping Global Solution.`
-        }
-      ]
-    }
-  },
   async mounted() {
     await this.loadData();
 
@@ -221,15 +205,8 @@ export default {
       if(bottomOfWindow && !this.isLoading && !this.eof) this.loadData();
 
     },
-    async filter() {
-      if(this.searchName === '' && this.searchFonda === '') {
-        this.entreprises.splice(0);
-        this.lastDoc = null;
-        this.eof = false;
-        this.isLoading = false;
-        await this.loadData();
-        return;
-      }
+    filter() {
+      if(this.searchName === '' && this.searchFonda === '') return;
 
       let query = this.$fire.firestore.collection('entreprises');
       if(this.searchName !== '') {
@@ -237,24 +214,15 @@ export default {
       }
 
       if(this.searchFonda !== '') {
-        const snapUser = await this.$fire.firestore.collection('users')
-          .where('username', '>=', this.searchFonda).where('username', '<=', this.searchFonda + '\uF8FF').get();
-        const user = snapUser.docs[0];
-
-        query = query.where('createdBy', '==', user.ref)
+        query = query.where('createdBy', '>=', this.searchFonda).where('createdBy', '<=', this.searchFonda + '\uF8FF')
       }
 
-      const snapshot = await query.limit(10).get()
-
-      this.entreprises.splice(0);
-
-      if(snapshot.docs.length === 0) {
-        this.isLoading = false;
-        return;
-      }
-        
-      snapshot.docs.forEach(doc => {
-        this.dataSearch(doc);
+      query.limit(10).get().then(snapshot => {
+        this.entreprises.splice(0);
+          
+        snapshot.docs.forEach(doc => {
+          this.dataSearch(doc);
+        });
       });
     },
     async dataSearch(doc) { 

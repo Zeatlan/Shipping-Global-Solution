@@ -8,7 +8,7 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Entreprise de Eurotruck Simulator 2 et Farming Simulator 22, remplissez des missions et participez activement à notre communauté de passionnés.' },
+      { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
@@ -112,7 +112,6 @@ export default {
   },
 
   proxy: {
-    '/api/': 'http://localhost:8000'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

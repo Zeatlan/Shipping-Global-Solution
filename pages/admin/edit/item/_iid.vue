@@ -52,6 +52,7 @@ export default{
   },
   methods: {
     async checkError(obj){
+      console.log("check error")
       if(obj.id === 'name' && obj.text !== this.item.name) {
         const checkUser = await this.$fire.firestore.collection('items').where('name', '==', obj.text).get();
 

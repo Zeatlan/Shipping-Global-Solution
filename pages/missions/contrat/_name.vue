@@ -207,16 +207,6 @@ export default {
       formAlreadySent: false,
     }
   },
-  head() {
-    const mission = this.mission;
-
-    return {
-      title: `${mission.name} - Shipping Global Solution`,
-      meta: [
-        {hid: 'description', name: 'description', content: `Consulter la mission contrat ${mission.name} chez Shipping Global Solution.`}
-      ]
-    }
-  },
   computed: {
     percentCompletion() {
       return parseInt((this.mission.membersAchieved.length * 100) / this.mission.completion);
