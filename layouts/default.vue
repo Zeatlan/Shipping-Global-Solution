@@ -13,23 +13,29 @@
           {{ notif.message }}
       </Notification>
     </transition-group>
+
+    <CookiesPopup v-if="!cookiesAgree"/>
     <Nuxt />
     <Footer />
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Footer from '@/components/Footer.vue';
 import Header from '@/components/Header.vue';
 import Notification from '@/components/Notification.vue';
+import CookiesPopup from '~/components/cookiesPopup.vue';
 
 export default {
   components: {
     Header,
     Footer,
-    Notification
+    Notification,
+    CookiesPopup
   },
   computed: {
+    ...mapGetters({cookiesAgree: 'cookiesAgree'}),
     notifications() {
       return this.$store.state.notifications
     }

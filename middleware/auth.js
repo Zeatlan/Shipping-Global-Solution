@@ -1,20 +1,20 @@
-// import * as admin from "firebase-admin";
 export default function({app, route, redirect, store}) {
   const user = app.$cookies.get('user-name');
   const rank = app.$cookies.get('user-rank');
 
+  if(store.state.cookiesAgree === false && app.$cookies.get('cookies-agree')) {
+    store.dispatch('setCookiesAgree', app.$cookies.get('cookies-agree'));
+  }
+
   // L'utilisateur a raffraichit la page
-  if(store.state.user === null && app.$cookies.get('user-id')) {
+  if((store.state.user === null || store.state.avatar === null) && app.$cookies.get('user-id')) {
     store.dispatch('resetInfoFromCookies', {
       user: { uid: app.$cookies.get('user-id'), email: user+"@sgs.com"},
       username: user,
-      rank: app.$cookies.get('user-rank')
+      rank: app.$cookies.get('user-rank'),
+      cookiesAgree: app.$cookies.get('cookies-agree') || false
     })
   }
-
-  // const auth = firebase.getAuth();
-
-  // console.log(admin.auth().getUser('mpCsB3BCfoS5L6ZuuQsUXOqwYUC2'));
 
   // Les routes interdites aux visiteurs
   const notForVisitor = ['/partner/join', '/leaderboard', '/edit/user']

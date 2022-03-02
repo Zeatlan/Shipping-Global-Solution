@@ -57,6 +57,14 @@ export default {
       batchSize: 10,
     }
   },
+  head() {
+    return {
+      title: 'Classement - Shipping Global Solution',
+      meta: [
+        {hid: 'description', name: 'description', content: 'Classement général de Shipping Global Solution'}
+      ]
+    }
+  },
   async mounted() {
     await this.loadData();
 

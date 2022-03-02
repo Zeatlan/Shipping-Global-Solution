@@ -11,13 +11,13 @@
     margin-top: 7em;
   }
 
-  button {
+  & > button {
     position: absolute;
     bottom: -25px;
     left: 0;
     right: 0;
     @include center-div;
-    min-width: 250px;
+    max-width: 250px;
   }
 
   .intro {

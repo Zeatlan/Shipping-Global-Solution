@@ -39,6 +39,22 @@ if(!Vue.__global_mixin__) {
           '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
         return !!pattern.test(str);
       },
+      // Get website URL
+      getWebsiteURL() {
+        const http = window.location.href.split('/')[0];
+        const domain = http +'//'+window.location.host;
+
+        return domain;
+      },
+      getProfileLink(uid) {
+        return this.getWebsiteURL() + "/user/" + uid;
+      },
+      getContractLink(name) {
+        return this.getWebsiteURL() + "/missions/contrat/" + name.split(' ').join('-');
+      },
+      getSpecialeLink(id) {
+        return this.getWebsiteURL() + "/missions/speciale/" + id;
+      }
     },
   })
 }

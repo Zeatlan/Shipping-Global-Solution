@@ -10,6 +10,7 @@ export default {
       discord: '',
       trucksbook: '',
       steam: '',
+      story: '',
       needToBeSaved: false,
       loading: false,
       loadingPassword: false,
@@ -24,10 +25,14 @@ export default {
       }
     }
   },
+  computed: {
+    about() {
+      return this.user.about;
+    }
+  },
   watch: {
     // Check for boolean to change
     needToBeSaved() {
-      // const el = document.querySelector('.save-changement');
       const el = document.querySelector('.submit-upload')
       if (this.needToBeSaved) {
         this.$gsap.set(el, {
@@ -49,26 +54,6 @@ export default {
             el.classList.remove('displayed')
           })
       }
-      /* if(this.needToBeSaved) {
-        el.classList.add('displaying');
-
-        this.$gsap.set(el, {
-          y: -150,
-          opacity: 0
-        })
-
-        this.$gsap.to(el, 0.3, {
-          y: 0,
-          opacity: 1
-        });
-      }else{
-        this.$gsap.to(el, 0.3, {
-          y: -150,
-          opacity: 0
-        }).then(() => {
-          el.classList.remove('displaying');
-        })
-      } */
     },
     // Check username change
     username() {
@@ -84,13 +69,17 @@ export default {
     steam() {
       this.checkData();
     },
-
+    about() {
+      this.checkData()
+    }
   },
   methods: {
     // Check every var
     checkData() {
-      if(this.username !== '' || this.discord !== ''|| this.trucksbook !== '' || this.steam !== '') this.needToBeSaved = true;
-      else this.needToBeSaved = false;
+      if(this.username !== '' || this.discord !== ''|| this.trucksbook !== '' || this.steam !== '' || (this.user.about !== '' && this.user.about !== this.story)) 
+        this.needToBeSaved = true;
+      else 
+        this.needToBeSaved = false;
     },
     // Avoir un aperçu des changements de bannière - avatar
     previewUpload(evt, type) {
@@ -199,6 +188,16 @@ export default {
       }
       this.loading = false;
     },
+    checkAbout() {
+      if(this.about.length > 512) {
+        
+        this.$store.dispatch('sendNotif',{
+          type: 'error', 
+          message: `La présentation est trop longue, vous n'avez le droit qu'à 512 caractères maximum.`
+        });
+        this.error = true;
+      }
+    },
     // Check error for username
     async checkUsername() {
       const onlyLettersAndNumbers = /^[0-9a-z]+$/i;
@@ -225,8 +224,7 @@ export default {
       }
       this.username = '';
     },
-    // TODO Firebase SDK
-    changePassword() {
+    async changePassword() {
       this.loadingPassword = true;
       if(this.newPassword === this.newPasswordConfirm) {
         if(this.newPassword.length < 8) { 
@@ -238,17 +236,23 @@ export default {
           return;
         }
 
-        /*
-        this.$fire.auth.currentUser.updatePassword(this.newPassword).then(() => {
+        try {
+          await this.$axios.post('/api/user/password', {
+            userID: this.$fire.auth.currentUser.uid,
+            newPassword: this.newPassword
+          });
           this.$store.dispatch('sendNotif', {
+            type: 'success',
             message: `Le mot de passe a été modifié.`
           });
-        }, () => {
-          this.$store.dispatch('sendNotif',{
-            type: 'error', 
-            message: `Nous avons besoin de vérifier vos identifiants, déconnectez et reconnectez-vous puis réessayez.`
-          })
-        }) */
+          this.newPassword = '';
+          this.newPasswordConfirm = '';
+        }catch(e) {
+          this.$store.dispatch('sendNotif', {
+            type: 'error',
+            message: `Une erreur s'est produite, essayez de vous déconnecter puis vous reconnecter.`
+          });
+        }
       }else {
         this.$store.dispatch('sendNotif',{
           type: 'error', 

@@ -3,7 +3,7 @@
     <div class="container">
 
       <!-- Super admin -->
-      <div id="super-admin" class="team-block">
+      <div id="team-super-admin" class="team-block">
         <!-- title -->
         <h1>Super administrateurs <span class="line" /> </h1>
 
@@ -19,7 +19,7 @@
       <!-- end Super Admin -->
 
       <!-- admin -->
-      <div id="admin" class="team-block">
+      <div id="team-admin" class="team-block">
         <!-- title -->
         <h1>Administrateurs <span class="line" /> </h1>
 
@@ -35,7 +35,7 @@
       <!-- end Admin -->
 
       <!-- Mods -->
-      <div id="mod" class="team-block">
+      <div id="team-mod" class="team-block">
         <!-- title -->
         <h1>Modérateurs <span class="line" /> </h1>
 
@@ -51,7 +51,7 @@
       <!-- end Mods -->
 
       <!-- Developer -->
-      <div id="dev" class="team-block">
+      <div id="team-dev" class="team-block">
         <!-- title -->
         <h1>Développeurs <span class="line" /> </h1>
 
@@ -85,6 +85,14 @@ export default {
       devs: [],
     }
   },
+  head() {
+    return {
+      title: 'Notre équipe - Shipping Global Solution',
+      meta: [
+        {hid: 'description', name: 'description', content: 'Notre équipe chez Shipping Global Solution'}
+      ]
+    }
+  },
   created() {
     // Fetching
     this.fetchDb('crown');    // Super admins
@@ -108,6 +116,6 @@ export default {
         if(role === 'code') this.devs.push({...doc.data(), id});
       })
     }
-  }
+  },
 }
 </script>

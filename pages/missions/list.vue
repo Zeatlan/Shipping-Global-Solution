@@ -93,6 +93,14 @@ export default {
       // End pagination settings
     }
   },
+  head() {
+    return {
+      title: `Liste des missions - Shipping Global Solution`,
+      meta: [
+        {hid: 'description', name: 'description', content: `Liste des missions disponibles chez Shipping Global Solution.`}
+      ]
+    }
+  },
   async mounted() {
     // Récupération des missions
     await this.retrieveData(this.collectionFetching);
@@ -106,9 +114,10 @@ export default {
 
       const ordering = collection === 'missions-contrats' ? 'dates.beginning' : 'begin';
       this.isLoading = true;
+
       let query = this.$fire.firestore.collection(collection)
         .where('isActive', '==', true)
-        .orderBy(ordering)
+        .orderBy(ordering, 'desc')
         .limit(this.batchSize);
 
       if(this.lastDoc) query = query.startAfter(this.lastDoc);

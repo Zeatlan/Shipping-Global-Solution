@@ -43,6 +43,11 @@
         </div>
       </div>
 
+      <div class="white-box about-me">
+        <h2>A propos</h2>
+        <textarea v-model="user.about" name="story" cols="30" rows="10"></textarea>
+      </div>
+
         <!-- Others datas -->
         <div class="data">
 
@@ -84,14 +89,14 @@
           <!-- Username -->
           <div v-show="!avatar.isResizing" v-if="user" class="data__input white-box" :class="{'loading-form' : loading}">
             <h3>Nom d'utilisateur</h3>
-            <input v-model="username" type="text" :placeholder="user.username" :readonly="{ 'readonly' : loading}"/>
+            <input v-model="username" type="text" :placeholder="user.username" :readonly="loading"/>
           </div>
 
           <!-- Password -->
           <div v-show="!avatar.isResizing" class="data__input white-box" :class="{'loading-form' : loading}">
             <h3>Mot de passe</h3>
-            <input v-model="newPassword" type="password" placeholder="Nouveau mot de passe" :readonly="{ 'readonly' : loading}" />
-            <input v-model="newPasswordConfirm" type="password" placeholder="Confirmer le nouveau mot de passe" :readonly="{ 'readonly' : loading}" />
+            <input v-model="newPassword" type="password" placeholder="Nouveau mot de passe" :readonly="loading" />
+            <input v-model="newPasswordConfirm" type="password" placeholder="Confirmer le nouveau mot de passe" :readonly="loading" />
 
             <div v-show="!loading" class="change-button">
               <Button v-if="!loadingPassword" class="change-button red" @click.native="changePassword">Modifier le mot de passe</Button>
@@ -105,17 +110,17 @@
             <div class="icon">
               <font-awesome-icon :icon="['fab', 'discord']" />
             </div>
-            <input v-model="discord" type="text" :placeholder="user.discord || 'Pseudo discord'" :readonly="{ 'readonly' : loading}" />
+            <input v-model="discord" type="text" :placeholder="user.discord || 'Pseudo discord'" :readonly="loading" />
             
             <div class="icon">
               <font-awesome-icon :icon="['fas', 'truck-moving']" />
             </div>
-            <input v-model="trucksbook" type="text" :placeholder="user.trucksbook || 'Lien trucksbook'" :readonly="{ 'readonly' : loading}" />
+            <input v-model="trucksbook" type="text" :placeholder="user.trucksbook || 'Lien trucksbook'" :readonly="loading" />
             
             <div class="icon">
               <font-awesome-icon :icon="['fab', 'steam']" />
             </div>
-            <input v-model="steam" type="text" :placeholder="user.steam || 'Pseudo steam'" :readonly="{ 'readonly' : loading}" />
+            <input v-model="steam" type="text" :placeholder="user.steam || 'Pseudo steam'" :readonly="loading" />
           </div>
 
           <!-- Rank -->
@@ -280,6 +285,8 @@ export default {
       this.loading = true;
 
       if(this.username.length > 0) await this.checkUsername();
+      if(this.user.about.length > 0) this.checkAbout();
+      
       await this.checkSocial();
 
       // Mise à jour du nom d'affichage
@@ -291,7 +298,6 @@ export default {
       await this.uploadFiles();
 
       try {
-        console.log(this.user)
         await this.$fire.firestore.collection('users').doc(this.slug.uid).update(this.user)
       }catch(e) {
         this.$store.dispatch('sendNotif', { type: 'error', message: `Un incident s'est produit, si le problème persiste contactez un développeur.` });

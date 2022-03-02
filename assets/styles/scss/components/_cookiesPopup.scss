@@ -1,0 +1,43 @@
+#cookies-popup {
+  position: fixed;
+  bottom: 1.3rem;
+  left: 1rem;
+  width: 300px;
+  text-align: center;
+  padding: 0.7rem;
+  background: white;
+  border-radius: 7px;
+  z-index: 9999;
+
+  & > .close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: $gray-10;
+    color: $gray-40;
+    font-weight: 700;
+    @include carre(32px);
+    line-height: 32px;
+    border-radius: 100%;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  & > h2 {
+    color: $pink-60;
+  }
+
+  & > p {
+    margin: 0.5rem 0;
+    color: $gray-80;
+  }
+
+  & > button {
+    margin-top: 0.8rem;
+    background-color: $pink-60;
+
+    &:hover {
+      background-color: $pink-40;
+    }
+  }
+}

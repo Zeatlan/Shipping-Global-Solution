@@ -184,7 +184,9 @@ export default {
             });
 
             this.$fire.firestore.collection('users').doc(user.id).delete();
-            // TODO Delete member from auth (back-end ?)
+            this.$axios.post('/api/user/delete/', {
+              userID: user.id
+            });
 
             this.$store.dispatch('sendNotif', {
               type: 'success',

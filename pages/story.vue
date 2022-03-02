@@ -77,6 +77,14 @@ export default {
     PresentationBlock,
     QualityCard
   },
+  head() {
+    return {
+      title: 'Notre histoire - Shipping Global Solution',
+      meta: [
+        {hid: 'description', name: 'description', content: 'L\'histoire de Shipping Global Solution.'}
+      ]
+    }
+  },
   // layout: 'transparentHeader',
 }
 </script>

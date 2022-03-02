@@ -116,7 +116,7 @@ export default {
           title: 'Succès',
           message: `${this.user.username} a été exclu.`,
         }
-        const poleEmploi = this.$fire.firestore.collection('entreprises').doc('default'); // TODO: Changer default en 0 pour la fin du projet
+        const poleEmploi = this.$fire.firestore.collection('entreprises').doc('0');
 
         this.member.entreprise.rank = 3;
         this.member.entreprise._id = poleEmploi;

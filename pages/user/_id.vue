@@ -59,6 +59,16 @@
           </div>
         </div>
 
+        <div v-if="$fire.auth.currentUser && user.id === $fire.auth.currentUser.uid && !user.isValid" class="verify-band" :class="{'verify-sent': verification.sent}">
+          <p>Votre compte n'est toujours pas validé, rejoignez notre serveur discord (cliquez ici) puis cliquez sur le bouton ci-dessus pour que notre robot vienne vérifier votre identité</p>
+          <Button v-show="!verification.sent" color="red" @click.native="sendVerif">Vérifier mon compte</Button>
+          <Button v-show="verification.sent" class="disabled" primary>Vérification envoyée, veuillez attendre {{ verification.cooldown }} secondes avant de recommencer.</Button>
+        </div>
+      </div>
+
+      <div class="about-me frame">
+        <h2>A propos</h2>
+        <p>{{ user.about }}</p>
       </div>
 
       <div class="body">
@@ -161,6 +171,20 @@ export default {
       userRanking: 0,
       totalUser: 0,
       isDataLoading: true,
+      verification: {
+        cooldown: 20,
+        sent: false,
+      },
+    }
+  },
+  head() {
+    const user = this.user
+
+    return {
+      title: `${user.username} - Shipping Global Solution`,
+      meta: [
+        {hid: 'description', name: 'description', content: `Profil publique de ${user.username} lié au compte discord ${user.discord} chez Shipping Global Solution.`}
+      ]
     }
   },
   created() {
@@ -223,6 +247,57 @@ export default {
           this.userRanking = snapLadder.docs.findIndex(el => el.id === userDoc.id) + 1;
         }
       })
+    },
+    async sendVerif() {
+      if(this.user.isValid) return this.$router.push(`/user/${this.slug.id}`)
+
+      this.verification.sent = true;
+      this.verification.cooldown = 20;
+
+      try {
+        const res = await this.$axios.post('/api/verifyIdentity/user/', {
+          userTAG: this.user.discord,
+          username: this.user.username,
+          guildID: "868516388883554325"
+        });
+
+        if(res.status === 200){
+
+          if(res.data.message) {
+            this.$store.dispatch('sendNotif', {
+              type: 'success',
+              message: `Nous avons envoyé un message privé à ${this.user.discord} sur Discord, merci de vérifier vos messages privées.`
+            });
+
+            // Cooldown
+            const count = setInterval(async () => {
+              this.verification.cooldown--;
+
+              if(this.verification.cooldown === 0){ 
+                const snapUser = await this.$fire.firestore.collection('users').doc(this.slug.id).get();
+                this.user = {...snapUser.data(), id: snapUser.id};
+
+                this.verification.sent = false;
+                this.verification.cooldown = 20;
+
+                clearInterval(count);
+
+                // Disconnect user
+                if(!this.user.username){ 
+                  this.$router.push('/')
+                  this.$fire.auth.signOut();
+                  this.$cookies.removeAll();
+                }
+              }
+            }, 1000);
+          }
+        }
+      }catch (e) {
+        this.$store.dispatch('sendNotif', {
+          type: 'error',
+          message: `Nous n'avons pas trouvé "${this.user.discord}" sur notre serveur discord pour valider votre compte, n'hésitez pas à rejoindre notre serveur pour avoir un accès total du site.`
+        });
+      }
     }
   }
 }

@@ -240,6 +240,16 @@ export default {
       direction: 'depart'
     }
   },
+  head() {
+    const mission = this.mission;
+
+    return {
+      title: `${mission.name} - Shipping Global Solution`,
+      meta: [
+        {hid: 'description', name: 'description', content: `Consulter la mission spéciale ${mission.name} chez Shipping Global Solution.`}
+      ]
+    }
+  },
   computed: {
     formatDateBegin() {
       return this.mission.begin

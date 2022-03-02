@@ -79,8 +79,10 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import Tabs from '@/components/mission/Tabs.vue'
 import Tab from '@/components/mission/Tab.vue'
+
 export default {
   components: {
     Tabs, 
@@ -102,6 +104,11 @@ export default {
       userRef: null,
       missionRef: null,
     }
+  },
+  computed: {
+    ...mapGetters({
+      userAvatar: 'avatar',
+    }),
   },
   async mounted() {
     await this.loadDatas();
@@ -177,10 +184,47 @@ export default {
         backgroundColor: '#f28787',
         x: -100,
         opacity: 0,
-        onComplete: () => {
+        onComplete: async () => {
           element.parentElement.removeChild(element);
 
           this.$fire.firestore.collection(collection).doc(form.id).delete();
+
+          // Get user Discord
+          const infoUser = await this.$axios.get(`/api/user/${form.userRef.id}`)
+          let fieldsTable = null;
+
+          if(collection === 'speciale-form') {
+            fieldsTable = [
+              {
+                name: '```Direction```',
+                value: form.direction
+              },
+              {
+                name: '```Kilomètres```',
+                value: form.km
+              },
+              {
+                name: '```Lien trucksbook```',
+                value: form.link,
+                isOneBlock: true,
+              },
+            ]
+          }
+
+          if(infoUser.status === 200) { 
+            // Send private message
+            this.$axios.post(`/api/messaging/embed/user/${infoUser.data.id}`, {
+              title: form.mission,
+              description: '```Un modérateur a désapprouvé votre mission, êtes-vous sûr d\'être en règle ?```',
+              author: {
+                name: this.$cookies.get('user-name'),
+                url: this.getProfileLink(this.$fire.auth.currentUser.uid),
+                avatar: this.userAvatar
+              },
+              color: 'RED',
+              fields: fieldsTable
+            })
+          }
 
           this.$store.dispatch('sendNotif', {
             type: 'success',
@@ -215,6 +259,41 @@ export default {
       const userData = userQuery.data();
 
       const missionQuery = await this.$fire.firestore.collection('missions-speciales').where('name', '==', form.mission).get();
+
+      // -----------------------
+      // Notify channel discord
+      // 👌 Get Channel
+      const channelSnap = await this.$fire.firestore.collection('discord-notifications').doc('mission-approuvee').get();
+      // 💬 Notify in Channel
+      this.$axios.post(`/api/messaging/embed/${channelSnap.data().channel}`, {
+        title: form.mission,
+        description: '```Un modérateur a approuvé la course pour une mission spéciale de '+ userData.username +' !```',
+        author: {
+          name: this.$cookies.get('user-name'),
+          url: this.getProfileLink(this.$fire.auth.currentUser.uid),
+          avatar: this.userAvatar
+        },
+        thumbnail: userData.avatar,
+        url: this.getSpecialeLink(missionQuery.docs[0].id),
+        color: 'PURPLE',
+        fields: [
+          {
+            name: '```Direction```',
+            value: form.direction
+          },
+          {
+            name: '```Kilomètres```',
+            value: form.km
+          },
+          {
+            name: '```Lien trucksbook```',
+            value: form.link,
+            isOneBlock: true,
+          },
+        ]
+      })
+      // -----------------------
+
       
       missionQuery.docs.forEach(mission => {                
         const dataMission = mission.data();
@@ -243,12 +322,38 @@ export default {
 
     },
     async actionForContract(form) {
-      const userQuery = await this.$fire.firestore.collection('users').doc(form.userRef.id).get();
+      const userQuery = await this.$fire.firestore.collection('users').doc(form._user.id).get();
       const userData = userQuery.data();
 
-      const missionQuery = await this.$fire.firestore.collection('missions-contrats').where('name', '==', form.mission).get();
+      const missionQuery = await this.$fire.firestore.collection('missions-contrats').where('name', '==', form.mission).get();      
       
-      missionQuery.docs.forEach(mission => {                
+      // -----------------------
+      // Notify channel discord
+      // 👌 Get Channel
+      const channelSnap = await this.$fire.firestore.collection('discord-notifications').doc('mission-approuvee').get();
+      // 💬 Notify in Channel
+      this.$axios.post(`/api/messaging/embed/${channelSnap.data().channel}`, {
+        title: form.mission,
+        description: '```Un modérateur a approuvé la course pour une mission contrat de '+ userData.username +' !```',
+        author: {
+          name: this.$cookies.get('user-name'),
+          url: this.getProfileLink(this.$fire.auth.currentUser.uid),
+          avatar: this.userAvatar
+        },
+        image: missionQuery.docs[0].data().banner,
+        url: this.getContractLink(missionQuery.docs[0].data().name),
+        color: 'YELLOW',
+        fields: [
+          {
+            name: '```Lien trucksbook```',
+            value: form.link,
+            isOneBlock: true,
+          },
+        ]
+      })
+      // -----------------------
+      
+     missionQuery.docs.forEach(mission => {                
         const dataMission = mission.data();
         const idx = userData.contractMissions.findIndex(ref => mission.ref.id === ref._mission.id);
 

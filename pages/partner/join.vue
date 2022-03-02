@@ -264,6 +264,14 @@ export default {
       newDoc: null,
     }
   },
+  head() {
+    return {
+      title: `Création d'entreprise - Shipping Global Solution`,
+      meta: [
+        {hid: 'description', name: 'description', content: `Rejoignez-nous en créant votre entreprise chez Shipping Global Solution.`}
+      ]
+    }
+  },
   computed: {
     filteredSuggestions() {
       return this.suggestions.filter((el) => {
@@ -381,7 +389,7 @@ export default {
       }else if(this.step === 4) { // Acronyme
         if(this.acronyme === '' || this.acronyme.length > 10) this.error = true;
       }else if(this.step === 8) { // Comrades
-        if(this.members.length < 0) this.error = true; // TODO Change '0' to '3' when official release
+        if(this.members.length < 3) this.error = true;
       }else if(this.step === 9) {
         this.isLoading = true;
 
@@ -470,14 +478,6 @@ export default {
         opacity: 0,
       }).then(() => {
         this.step++;
-        
-        // TODO Delete this when not demo
-        if(this.step === 8) {
-          this.$store.dispatch('sendNotif', {
-            type: 'info',
-            message: 'Pour cette démo, vous n\'êtes pas obligé d\'inviter qui que ce soit.'
-          })
-        }
         gsap.set('.form-row', {
           x: 200
         }).then(() => {
@@ -518,7 +518,6 @@ export default {
       if(index > -1) this.members.splice(index, 1);
     },
     finish(location, newWindow = false) {
-      console.log(this.newDoc);
       if(newWindow){
         window.open(location);
       }else{

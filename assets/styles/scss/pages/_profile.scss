@@ -4,6 +4,24 @@
     z-index: 1;
   }
 
+  .verify-band {
+    background-color: $red-40;
+    text-align: center;
+    padding: 1rem 0.3rem;
+    border: 2px solid $red-70;
+    border-radius: 0.4rem;
+    color: white;
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    &.verify-sent {
+      background-color: $green-50;
+      border-color: $green-70;
+    }
+  }
+
   .banner {
     position: relative;
     width: 100%;
@@ -102,7 +120,7 @@
 
         sup {
           color: white;
-          background: $gray-20;
+          background: $gray-30;
           font-size: 12px;
           font-weight: 500;
           padding: 0.1rem 0.2rem;
@@ -181,6 +199,26 @@
     }
   }
 
+  .frame {
+    background: #fff;
+    border-radius: 5px;
+    padding: 20px;
+
+    h2 {
+      color: $blue-80;
+    }
+  }
+
+  .about-me {
+    margin-top: 1rem;
+
+    p {
+      margin-top: 0.6rem;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+    }
+  }
+
   .body {
     @include display-flex(flex-start, flex-start);
     margin: 2.5rem 0;
@@ -194,16 +232,6 @@
 
     .best-of {
       margin-top: 2rem;
-    }
-
-    .frame {
-      background: #fff;
-      border-radius: 5px;
-      padding: 20px;
-
-      h2 {
-        color: $blue-80;
-      }
     }
 
     .infos {

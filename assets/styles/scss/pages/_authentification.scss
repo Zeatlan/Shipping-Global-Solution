@@ -58,6 +58,10 @@
     position: relative;
     z-index: 99;
 
+    &.lost-password {
+      @include display-grid(auto, repeat(2, 1fr), 0.3rem, true);
+    }
+
     // Media Queries: Medium
     @include sm {
       grid-column: 1;
@@ -241,6 +245,31 @@
 
     &:hover {
       background-color: $pink-40;
+    }
+
+    &.cancel {
+      background-color: $red-60;
+
+      &:hover {
+        background-color: $red-40;
+      }
+    }
+
+    &.disabled {
+      background-color: $gray-40;
+      color: white;
+      cursor: not-allowed;
+
+      &:hover {
+        background-color: $gray-50;
+      }
+    }
+  }
+
+  .lost-buttons {
+    text-align: center;
+    button {
+      margin: 0.5rem auto;
     }
   }
 
